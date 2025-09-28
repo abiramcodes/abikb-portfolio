@@ -1,0 +1,48 @@
+---
+const frontEnd = [
+  "HTML5",
+  "CSS / SCSS",
+  "JavaScript (ES6+)",
+  "TypeScript",
+  "Angular 20+",
+  "RxJs",
+  "NgRx",
+  "Angular Material",
+  "React.js",
+  "Ionic 7+",
+  "Git & GitHub",
+  "RESTful APIs",
+  "Astro",
+  "PrimeNG",
+  "TailwindCSS",
+  "Figma (Basic)",
+];
+
+const backEnd = ["Node.js", "NestJS", "Python", "Golang"];
+---
+
+<h2 class="!mb-2">Skills</h2>
+<h3>Frontend :</h3>
+<div class="grid grid-cols-3 md:grid-cols-4 gap-2 mb-6">
+  {
+    frontEnd.map((skill) => {
+      return (
+        <span class="text-secondary-light dark:text-secondary-dark">
+          {skill}
+        </span>
+      );
+    })
+  }
+</div>
+<h3>BackEnd - (Basic Experience) :</h3>
+<div class="grid grid-cols-3 md:grid-cols-4 gap-2">
+  {
+    backEnd.map((skill) => {
+      return (
+        <span class="text-secondary-light dark:text-secondary-dark">
+          {skill}
+        </span>
+      );
+    })
+  }
+</div>

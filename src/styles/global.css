@@ -1,40 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  html {
-    @apply bg-charcoal text-vintage-beige;
-  }
-
-  body {
-    @apply bg-charcoal;
-  }
-}
-
-@layer components {
-  /* Custom component classes using your color palette */
-  .btn-retro {
-    @apply bg-vintage-beige text-charcoal px-4 py-2 rounded-md hover:bg-burnt-sienna transition-colors duration-200;
-  }
-
-  .card-retro {
-    @apply bg-smoky-gray border border-vintage-beige/20 rounded-lg p-6;
-  }
-
-  .text-accent {
-    @apply text-burnt-sienna;
-  }
-
-  .highlight {
-    @apply bg-mustard-yellow text-charcoal px-2 pt-1 rounded;
-  }
-}
-
-p {
-  font-size: 1rem;
-}
-
 @font-face {
   font-family: "Montserrat";
   src: url("/fonts/Montserrat-VariableFont_wght.ttf");
@@ -43,10 +6,33 @@ p {
   font-display: swap;
 }
 
-@font-face {
-  font-family: "BebasNeue";
-  src: url("/fonts/BebasNeue-Regular.ttf");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
+/* global.css */
+html {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* Optional: animate whole page with View Transitions */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: fade 0.25s ease-in-out;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+body {
+  font-family: "Montserrat", sans-serif;
+  line-height: 1.6;
+  background-color: var(--background-light);
+  color: var(--text-light);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
