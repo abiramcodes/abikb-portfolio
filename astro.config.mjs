@@ -8,6 +8,5 @@ import tailwind from "@astrojs/tailwind";
 // https://astro.build/config
 export default defineConfig({
   site: "https://abiramcodes.github.io",
-  base: "/abikb-portfolio",
   integrations: [mdx(), sitemap(), tailwind()],
 });
