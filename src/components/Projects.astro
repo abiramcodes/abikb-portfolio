@@ -1,0 +1,49 @@
+---
+const Projects_List = [
+  {
+    name: "bookbot - Python",
+    description:
+      "A Python project designed to efficiently process and analyze text files, providing insights and statistics from textual data.",
+    link: "https://github.com/abiramcodes/bookbot",
+  },
+  {
+    name: "mini-url - Angular",
+    description:
+      "A user interface project for generating shortened URLs, developed as part of coding challenges by John Crickett.",
+    link: "https://github.com/abiramcodes/mini-url-frontEnd",
+  },
+];
+---
+
+<style>
+  .project-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+</style>
+
+<section>
+  <div class="mx-auto w-[42rem]">
+    <div class="project-list">
+      {
+        Projects_List.map((project) => (
+          <div>
+            <h2 class="text-lg uppercase font-semibold mb-2">{project.name}</h2>
+            <p class="mb-2 text-secondary-light dark:text-secondary-dark">
+              {project.description}
+            </p>
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener"
+              class="text-green-600"
+            >
+              GitHub - 🔗
+            </a>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

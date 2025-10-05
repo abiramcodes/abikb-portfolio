@@ -1,6 +1,7 @@
 ---
 import { SITE_TITLE } from "../consts";
 import Center from "./Center.astro";
+import HeaderLink from "./HeaderLink.astro";
 ---
 
 <Center>
@@ -14,7 +15,8 @@ import Center from "./Center.astro";
           {SITE_TITLE}<span class="text-accent">.</span>
         </a>
         <div class="hidden md:flex space-x-6 items-center justify-between">
-          <!-- <HeaderLink href="/">Home</HeaderLink> -->
+          <HeaderLink href="/">Home</HeaderLink>
+          <HeaderLink href="/projects">Projects</HeaderLink>
           <!-- <HeaderLink href="/blog">Blog</HeaderLink> -->
           <!-- <HeaderLink href="/about">About</HeaderLink> -->
           <button
