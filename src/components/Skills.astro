@@ -18,31 +18,37 @@ const frontEnd = [
   "Figma (Basic)",
 ];
 
-const backEnd = ["Node.js (Learning)", "NestJS", "Python", "Golang"];
+const backEnd = ["Node.js (Learning)", "NestJS (Learning)", "Python", "Golang"];
 ---
 
-<h2 class="!mb-2">Skills</h2>
-<h3>Frontend :</h3>
-<div class="grid grid-cols-3 md:grid-cols-4 gap-2 mb-6">
-  {
-    frontEnd.map((skill) => {
-      return (
-        <span class="text-secondary-light dark:text-secondary-dark">
-          {skill}
-        </span>
-      );
-    })
-  }
-</div>
-<h3>BackEnd - (Basic Experience) :</h3>
-<div class="grid grid-cols-3 md:grid-cols-4 gap-2">
-  {
-    backEnd.map((skill) => {
-      return (
-        <span class="text-secondary-light dark:text-secondary-dark">
-          {skill}
-        </span>
-      );
-    })
-  }
-</div>
+<section>
+  <h2 class="!mb-2 text-xl sm:text-3xl font-bold">Skills</h2>
+  <h3 class="!mb-2">Frontend :</h3>
+  <div
+    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mb-6 text-sm sm:text-base"
+  >
+    {
+      frontEnd.map((skill) => {
+        return (
+          <span class="text-secondary-light dark:text-secondary-dark">
+            {skill}
+          </span>
+        );
+      })
+    }
+  </div>
+  <h3 class="!mb-2">BackEnd - (Basic Experience) :</h3>
+  <div
+    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 text-sm sm:text-base"
+  >
+    {
+      backEnd.map((skill) => {
+        return (
+          <span class="text-secondary-light dark:text-secondary-dark">
+            {skill}
+          </span>
+        );
+      })
+    }
+  </div>
+</section>

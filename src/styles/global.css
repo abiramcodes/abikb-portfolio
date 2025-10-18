@@ -11,6 +11,27 @@ html {
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
+  /* responsive base font-size: slightly smaller on very small screens */
+  font-size: 14px;
+}
+
+@media (min-width: 640px) {
+  html {
+    font-size: 15px;
+  }
+}
+@media (min-width: 1024px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* Ensure images and svgs are fluid and don't overflow containers */
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 /* Optional: animate whole page with View Transitions */

@@ -8,29 +8,29 @@ import OpenSource from "../components/OpenSource.astro";
 ---
 
 <BaseLayout>
-  <section class="flex flex-col gap-8">
-    <div class="max-w-2xl mx-auto flex flex-col min-w-[42rem]">
-      <h1 class="text-xl">Hey!!, I'm Abiram 👋🏻😊</h1>
+  <section class="flex flex-col gap-6 sm:gap-8 px-4 sm:px-6">
+    <div class="w-full max-w-2xl mx-auto flex flex-col min-w-0">
+      <h1 class="text-2xl sm:text-3xl font-semibold">Hey!!, I'm Abiram 👋🏻😊</h1>
       {
         MAIN_SECTION.map((section) => {
           return (
-            <p class="mt-4 text-lg text-secondary-light dark:text-secondary-dark">
+            <p class="mt-4 text-base sm:text-lg text-secondary-light dark:text-secondary-dark">
               👉🏻 {section}
             </p>
           );
         })
       }
     </div>
-    <div class="prose dark:prose-dark min-w-[42rem] mx-auto">
+    <div class="w-full max-w-2xl mx-auto flex flex-col min-w-0">
       <Skills />
     </div>
-    <div class="mx-auto w-[42rem]">
+    <div class="w-full max-w-2xl mx-auto sm:px-0">
       <OpenSource />
     </div>
-    <div class="mx-auto w-[42rem]">
+    <div class="w-full max-w-2xl mx-auto sm:px-0">
       <Meetup />
     </div>
-    <div class="mx-auto min-w-[42rem]">
+    <div class="w-full max-w-2xl mx-auto sm:px-0">
       <Social />
     </div>
   </section>

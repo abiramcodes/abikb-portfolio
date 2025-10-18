@@ -2,66 +2,108 @@
 import { SITE_TITLE } from "../consts";
 import Center from "./Center.astro";
 import HeaderLink from "./HeaderLink.astro";
+
+interface Props {
+  title?: string;
+  showNav?: boolean;
+}
+
+const { title = SITE_TITLE, showNav = true } = Astro.props;
 ---
 
 <Center>
-  <header class="max-w-2xl mx-auto flex flex-col w-full justify-between mt-4">
-    <nav class="flex justify-between gap-8 items-center my-4 font-mont">
-      <div class="w-full mx-auto flex justify-between items-center">
-        <a
-          href="/"
-          class="text-2xl text-foreground-light dark:text-foreground-dark font-bold"
+  <header
+    class="w-full max-w-2xl mx-auto flex flex-col min-w-0 mt-4 px-4 sm:px-0"
+  >
+    <!-- Top row: logo + controls -->
+    <div class="w-full flex items-center justify-between">
+      <a
+        href="/"
+        class="text-2xl font-bold text-foreground-light dark:text-foreground-dark truncate"
+      >
+        {title}<span class="text-accent">.</span>
+      </a>
+
+      <div class="flex items-center gap-2">
+        <!-- Theme toggle: always visible (mobile + desktop) -->
+        <button
+          id="theme-toggle"
+          aria-label="Toggle theme"
+          class="p-2 rounded-lg bg-muted-light dark:bg-muted-dark text-gray-700 dark:text-gray-200 hover:bg-accent hover:text-white transition"
         >
-          {SITE_TITLE}<span class="text-accent">.</span>
-        </a>
-        <div class="hidden md:flex space-x-6 items-center justify-between">
+          <svg
+            id="theme-toggle-light-icon"
+            class="w-5 h-5"
+            aria-hidden="true"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <!-- ...existing light icon path... -->
+            <path fill-rule="evenodd" d="M13 3a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0V3ZM6.343 4.929A1 1 0 0 0 4.93 6.343l1.414 1.414a1 1 0 0 0 1.414-1.414L6.343 4.929Zm12.728 1.414a1 1 0 0 0-1.414-1.414l-1.414 1.414a1 1 0 0 0 1.414 1.414l1.414-1.414ZM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm-9 4a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2H3Zm16 0a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2h-2ZM7.757 17.657a1 1 0 1 0-1.414-1.414l-1.414 1.414a1 1 0 1 0 1.414 1.414l1.414-1.414Zm9.9-1.414a1 1 0 0 0-1.414 1.414l1.414 1.414a1 1 0 0 0 1.414-1.414l-1.414-1.414ZM13 19a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0v-2Z" clip-rule="evenodd"></path>
+          </svg>
+
+          <svg
+            id="theme-toggle-dark-icon"
+            class="hidden w-5 h-5"
+            aria-hidden="true"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <!-- ...existing dark icon path... -->
+            <path fill-rule="evenodd" d="M11.675 2.015a.998.998 0 0 0-.403.011C6.09 2.4 2 6.722 2 12c0 5.523 4.477 10 10 10 4.356 0 8.058-2.784 9.43-6.667a1 1 0 0 0-1.02-1.33c-.08.006-.105.005-.127.005h-.001l-.028-.002A5.227 5.227 0 0 0 20 14a8 8 0 0 1-8-8c0-.952.121-1.752.404-2.558a.996.996 0 0 0 .096-.428V3a1 1 0 0 0-.825-.985Z" clip-rule="evenodd"></path>
+          </svg>
+        </button>
+
+        <!-- Desktop nav (visible md+) -->
+        {showNav && (
+          <nav class="hidden md:flex items-center space-x-6 ml-2">
+            <HeaderLink href="/">Home</HeaderLink>
+            <HeaderLink href="/projects">Projects</HeaderLink>
+            <!-- <HeaderLink href="/blog">Blog</HeaderLink> -->
+          </nav>
+        )}
+
+        <!-- Mobile hamburger (visible < md) -->
+        {showNav && (
+          <button
+            id="mobile-menu-button"
+            class="md:hidden p-2 rounded-md bg-muted-light dark:bg-muted-dark"
+            aria-label="Toggle menu"
+            aria-expanded="false"
+          >
+            <svg id="menu-open-icon" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+            <svg id="menu-close-icon" class="hidden w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        )}
+      </div>
+    </div>
+
+    <!-- Mobile menu panel (hidden by default, shown when hamburger toggled) -->
+    {showNav && (
+      <div id="mobile-menu" class="hidden mt-3 md:hidden w-full">
+        <nav class="flex flex-col space-y-2 bg-transparent">
           <HeaderLink href="/">Home</HeaderLink>
           <HeaderLink href="/projects">Projects</HeaderLink>
           <!-- <HeaderLink href="/blog">Blog</HeaderLink> -->
-          <!-- <HeaderLink href="/about">About</HeaderLink> -->
-          <button
-            id="theme-toggle"
-            class="p-2 rounded-lg bg-muted-light dark:bg-muted-dark text-gray-700 dark:text-gray-200 hover:bg-accent hover:text-white transition hover:dark:bg-accent"
-          >
-            <svg
-              id="theme-toggle-light-icon"
-              class="w-5 h-5"
-              aria-hidden="true"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M13 3a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0V3ZM6.343 4.929A1 1 0 0 0 4.93 6.343l1.414 1.414a1 1 0 0 0 1.414-1.414L6.343 4.929Zm12.728 1.414a1 1 0 0 0-1.414-1.414l-1.414 1.414a1 1 0 0 0 1.414 1.414l1.414-1.414ZM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm-9 4a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2H3Zm16 0a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2h-2ZM7.757 17.657a1 1 0 1 0-1.414-1.414l-1.414 1.414a1 1 0 1 0 1.414 1.414l1.414-1.414Zm9.9-1.414a1 1 0 0 0-1.414 1.414l1.414 1.414a1 1 0 0 0 1.414-1.414l-1.414-1.414ZM13 19a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0v-2Z"
-                clip-rule="evenodd"></path>
-            </svg>
-
-            <svg
-              id="theme-toggle-dark-icon"
-              class="hidden w-5 h-5"
-              aria-hidden="true"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M11.675 2.015a.998.998 0 0 0-.403.011C6.09 2.4 2 6.722 2 12c0 5.523 4.477 10 10 10 4.356 0 8.058-2.784 9.43-6.667a1 1 0 0 0-1.02-1.33c-.08.006-.105.005-.127.005h-.001l-.028-.002A5.227 5.227 0 0 0 20 14a8 8 0 0 1-8-8c0-.952.121-1.752.404-2.558a.996.996 0 0 0 .096-.428V3a1 1 0 0 0-.825-.985Z"
-                clip-rule="evenodd"></path>
-            </svg>
-          </button>
-        </div>
+        </nav>
       </div>
-    </nav>
+    )}
   </header>
 </Center>
-<style></style>
+
 <script>
+  // Theme toggle logic (defensive)
   const toggleBtn = document.getElementById("theme-toggle");
   const lightIcon = document.getElementById("theme-toggle-light-icon");
   const darkIcon = document.getElementById("theme-toggle-dark-icon");
-  const html = document.documentElement;
+  const html = typeof document !== 'undefined' ? document.documentElement : null;
 
   function updateIcons() {
+    if (!html) return;
     if (html.classList.contains("dark")) {
       lightIcon?.classList.add("hidden");
       darkIcon?.classList.remove("hidden");
@@ -71,26 +113,53 @@ import HeaderLink from "./HeaderLink.astro";
     }
   }
 
-  // Init
-  if (
-    localStorage.theme === "dark" ||
-    (!("theme" in localStorage) &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches)
-  ) {
-    html.classList.add("dark");
-  } else {
-    html.classList.remove("dark");
-  }
-  updateIcons();
-
-  toggleBtn!.addEventListener("click", () => {
-    if (html.classList.contains("dark")) {
-      html.classList.remove("dark");
-      localStorage.theme = "light";
-    } else {
+  if (html) {
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
       html.classList.add("dark");
-      localStorage.theme = "dark";
+    } else {
+      html.classList.remove("dark");
     }
     updateIcons();
+
+    toggleBtn?.addEventListener("click", () => {
+      if (html.classList.contains("dark")) {
+        html.classList.remove("dark");
+        localStorage.theme = "light";
+      } else {
+        html.classList.add("dark");
+        localStorage.theme = "dark";
+      }
+      updateIcons();
+    });
+  }
+
+  // Mobile menu toggle
+  const mobileBtn = document.getElementById("mobile-menu-button");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const menuOpenIcon = document.getElementById("menu-open-icon");
+  const menuCloseIcon = document.getElementById("menu-close-icon");
+
+  mobileBtn?.addEventListener("click", () => {
+    if (!mobileMenu) return;
+    const expanded = mobileBtn.getAttribute("aria-expanded") === "true";
+    if (expanded) {
+      mobileMenu.classList.add("hidden");
+      mobileBtn.setAttribute("aria-expanded", "false");
+      menuOpenIcon?.classList.remove("hidden");
+      menuCloseIcon?.classList.add("hidden");
+    } else {
+      mobileMenu.classList.remove("hidden");
+      mobileBtn.setAttribute("aria-expanded", "true");
+      menuOpenIcon?.classList.add("hidden");
+      menuCloseIcon?.classList.remove("hidden");
+    }
   });
 </script>
+<style>
+  /* Keep any additional visual tweaks here if needed */
+</style>

@@ -21,21 +21,22 @@ const posts = (await getCollection("blog")).sort(
     <Header />
     <main>
       <section class="!min-h-0 py-12">
-        <ul>
+        <ul class="w-full max-w-2xl mx-auto px-4 sm:px-0 space-y-6">
           {
             posts.map((post) => (
               <li>
-                <a href={`/blog/${post.id}/`}>
+                <a href={`/blog/${post.id}/`} class="block">
                   {post.data.heroImage && (
                     <Image
                       width={720}
                       height={360}
                       src={post.data.heroImage}
                       alt=""
+                      class="rounded-lg mb-3"
                     />
                   )}
-                  <h4 class="title">{post.data.title}</h4>
-                  <p class="date">
+                  <h4 class="title text-lg sm:text-xl">{post.data.title}</h4>
+                  <p class="date text-sm text-secondary-light dark:text-secondary-dark">
                     <FormattedDate date={post.data.pubDate} />
                   </p>
                 </a>

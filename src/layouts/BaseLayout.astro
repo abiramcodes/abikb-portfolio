@@ -9,13 +9,13 @@ import Footer from "../components/Footer.astro";
     <title>Abiram | Portfolio</title>
   </head>
   <body
-    class="font-mont bg-background-light dark:bg-background-dark text-foreground-light dark:text-foreground-dark flex flex-col min-h-screen"
+    class="font-mont bg-background-light dark:bg-background-dark text-foreground-light dark:text-foreground-dark flex flex-col min-h-screen text-sm sm:text-base"
   >
     <Header />
     <main class="pt-10">
       <slot />
       <hr
-        class="border-color-light dark:border-color-dark border-1 mt-4 w-[42rem] mx-auto"
+        class="border-color-light dark:border-color-dark border-1 mt-4 w-full max-w-2xl mx-auto"
       />
       <Footer />
     </main>
