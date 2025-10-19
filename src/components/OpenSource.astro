@@ -1,13 +1,32 @@
 ---
-const carbon_components = [
-  "https://github.com/freeCodeCamp/freeCodeCamp/pull/62576",
-  "https://github.com/carbon-design-system/carbon-components-angular/pull/2945",
-  "https://github.com/carbon-design-system/carbon-components-angular/pull/2939",
-  "https://github.com/carbon-design-system/carbon-components-angular/pull/2789",
-  "https://github.com/carbon-design-system/carbon-components-angular/pull/2764",
-  "https://github.com/carbon-design-system/carbon-components-angular/pull/2748",
-  "https://github.com/carbon-design-system/carbon-components-angular/pull/2741",
-  "https://github.com/carbon-design-system/carbon-components-angular/pull/2740",
+type URL = `https://github.com/${string}/pull/${number}`;
+
+interface Contribution {
+  project: string;
+  projectUrl: string;
+  url: URL[];
+}
+
+const contributions: Contribution[] = [
+  {
+    project: "free-Code-Camp",
+    projectUrl: "https://github.com/freeCodeCamp/freeCodeCamp",
+    url: ["https://github.com/freeCodeCamp/freeCodeCamp/pull/62576"],
+  },
+  {
+    project: "carbon-components-angular",
+    projectUrl:
+      "https://github.com/carbon-design-system/carbon-components-angular",
+    url: [
+      "https://github.com/carbon-design-system/carbon-components-angular/pull/2945",
+      "https://github.com/carbon-design-system/carbon-components-angular/pull/2939",
+      "https://github.com/carbon-design-system/carbon-components-angular/pull/2789",
+      "https://github.com/carbon-design-system/carbon-components-angular/pull/2764",
+      "https://github.com/carbon-design-system/carbon-components-angular/pull/2748",
+      "https://github.com/carbon-design-system/carbon-components-angular/pull/2741",
+      "https://github.com/carbon-design-system/carbon-components-angular/pull/2740",
+    ],
+  },
 ];
 ---
 
@@ -17,16 +36,28 @@ const carbon_components = [
   </h2>
   <ul class="space-y-3">
     {
-      carbon_components.map((url) => (
+      contributions.map((contribution: Contribution) => (
         <li>
           <a
-            href={url}
+            href={contribution.projectUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="text-green-600 hover:underline break-all"
+            class="font-medium hover:underline decoration-wavy underline-offset-4"
           >
-            {url}
+            {contribution.project.toUpperCase()} 🔗
           </a>
+        </li>
+        <li>
+          {contribution.url.map((url) => (
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-green-600 hover:underline break-all block underline-offset-2"
+            >
+              {url}
+            </a>
+          ))}
         </li>
       ))
     }
