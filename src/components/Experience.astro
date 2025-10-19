@@ -1,0 +1,68 @@
+---
+interface Experience {
+  company: string;
+  role: string;
+  duration: string;
+  description: string[];
+}
+
+const experience: Experience[] = [
+  {
+    company: "Deloitte USI",
+    role: "FrontEnd Consultant",
+    duration: "June 2025 - Present",
+    description: [
+      `💪🏻 Started working as a Frontend Consultant, focusing on building scalable web applications using Angular 17+.`,
+      `💪🏻 Refractored existing codebases to improve performance and maintainability.`,
+      `💪🏻 Improved performance by optimizing Angular components using OnPush Strategy and implementing Lazy Loading Strategies.`,
+      `💪🏻 Migrated application from Angular 17 to the latest Angular 20 version, ensuring compatibility and leveraging new features.`,
+    ],
+  },
+  {
+    company: "Tata Consultancy Services",
+    role: "Frontend Developer",
+    duration: "Dec 2021 - Jun 2025",
+    description: [
+      `💪🏻 Developed and maintained dynamic UI components using Angular 15+ and Angular Material, ensuring seamless updates and enhancing user experience.`,
+      `💪🏻 Optimized application performance by <strong class="text-[#51b86b]">50%</strong> 
+          through NgRx state management, reducing redundant API calls and improving data consistency.`,
+      `💪🏻 Reduced page load times by <strong class="text-[#51b86b]">40%</strong> with virtual scrolling techniques, improving performance and responsiveness.`,
+      `💪🏻 Improved test coverage by <strong class="text-[#51b86b]">80%</strong>, implementing unit and integration tests using Jest, leading to better code quality and stability.`,
+      `💪🏻 TroubleShot and resolved <strong class="text-[#51b86b]">100+</strong> bugs and deployment issues, leveraging GitHub Actions for automated CI/CD deployments on Azure environments.`,
+      `💪🏻 Collaborated with cross-functional teams (design, backend, QA) within an Agile/Scrum environment to deliver high-quality web solutions.`,
+      `💪🏻 Designed and implemented complex UI workflows across <strong class="text-[#51b86b]">5+</strong> major modules, ensuring a consistent user experience and accessibility compliance.`,
+      `💪🏻 Actively contributed to sprint planning and tracking using JIRA, ensuring timely delivery of high-priority features and bug fixes.`,
+      `💪🏻 Migrated an application from Angular 13+ (Modular Architecture) to Angular 17+ (Standalone Architecture), ensuring compatibility with new features and performance improvements.`,
+      `💪🏻 Covered unit test using Jest and Karma for Angular applications <strong class="text-[#51b86b]">(80%)</strong>, ensuring code reliability and maintainability.`,
+    ],
+  },
+];
+---
+
+<section>
+  <div class="w-full max-w-2xl mx-auto px-4 sm:px-0">
+    {
+      experience.map((exp) => (
+        <div class="mb-6">
+          <h3 class="text-lg sm:text-xl font-semibold">
+            {exp.role} @ {exp.company}
+          </h3>
+          <p class="text-sm sm:text-base italic text-secondary-light dark:text-secondary-dark">
+            {exp.duration}
+          </p>
+          <ul class="mt-2 list-none list-inside text-sm sm:text-base text-secondary-light dark:text-secondary-dark">
+            {exp.description.map((desc) => (
+              <li class="mt-4" set:html={desc} />
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .metrics {
+    color: #51b86b;
+  }
+</style>
