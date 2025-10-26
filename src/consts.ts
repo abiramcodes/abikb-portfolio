@@ -7,12 +7,8 @@ export const SITE_DESCRIPTION = "Welcome to my website!";
 export const MAIN_SECTION = [
   `I'm a Result's Driven Frontend Developer, specializing in building
         clean, minimal, and performant web applications. With around 4 years of
-        experience, I focus on delivering high quality code and seamless user
-        experiences ❤️.`,
-  `I have a basic experience in backend technologies and capable of working
-        in backend with the help of Large Language Models 🤖.`,
-  `I love to learn new technologies and stay updated with the latest trends
-        in the web development world.`,
-  `In my free time, I contribute to open source projects and enjoy solving problems on CodeWars, LeetCode and
-        read books on frontend development.`,
+        experience, I focus on delivering high-quality code and seamless user experiences ❤️.`,
+  `I have basic experience in backend technologies and can work with them using Large Language Models 🤖.`,
+  `I love learning new technologies and staying updated with the latest web development trends.`,
+  `In my free time, I contribute to open-source projects, solve problems on CodeWars and LeetCode, and read books on frontend development.`,
 ];
