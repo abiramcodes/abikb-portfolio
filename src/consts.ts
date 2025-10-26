@@ -13,6 +13,6 @@ export const MAIN_SECTION = [
         in backend with the help of Large Language Models 🤖.`,
   `I love to learn new technologies and stay updated with the latest trends
         in the web development world.`,
-  `In my free time, I enjoy solving problems on CodeWars, LeetCode and
+  `In my free time, I contribute to open source projects and enjoy solving problems on CodeWars, LeetCode and
         read books on frontend development.`,
 ];
