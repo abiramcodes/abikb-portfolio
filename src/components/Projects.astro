@@ -1,5 +1,11 @@
 ---
-const Projects_List = [
+interface Project {
+  name: string;
+  description: string;
+  link: string;
+}
+
+const Projects_List: Project[] = [
   {
     name: "md-Pdf-converter - Angular, NestJS",
     description:
@@ -45,7 +51,7 @@ const Projects_List = [
               rel="noopener"
               class="text-green-600 text-sm sm:text-base"
             >
-              GitHub - 🔗
+              Source Code - GitHub
             </a>
           </div>
         ))
