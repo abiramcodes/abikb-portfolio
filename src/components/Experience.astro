@@ -6,18 +6,19 @@ interface Experience {
   description: string[];
 }
 
-const experience: Experience[] = [
+const experiences: Experience[] = [
   {
     company: "Deloitte USI",
     role: "FrontEnd Consultant",
     duration: "June 2025 - Present",
     description: [
-      `💪🏻 Started working as a Frontend Consultant, focusing on building scalable web applications using Angular 17+.`,
-      `💪🏻 Refractored existing codebases to improve performance and maintainability.`,
-      `💪🏻 Improved performance by optimizing Angular components using OnPush Strategy and implementing Lazy Loading Strategies.`,
-      `💪🏻 Migrated application from Angular 17 to the latest Angular 20 version, ensuring compatibility and leveraging new features.`,
+      `💪🏻 Started working as a Frontend Consultant, focusing on building scalable web applications using Angular 17+ and modern web technologies.`,
+      `💪🏻 Refactored existing codebases to improve performance, maintainability, and adherence to best practices.`,
+      `💪🏻 Improved application performance by optimizing Angular components using OnPush Strategy and implementing Lazy Loading Strategies, resulting in faster load times.`,
+      `💪🏻 Spearheaded migrating the application from Angular 17 to the latest Angular 20 version, ensuring compatibility and leveraging new features.`,
       `💪🏻 Implemented unit tests using Jest and Karma, achieving a test coverage of <strong class="text-[#51b86b]">85%</strong> to ensure code reliability and maintainability.`,
       `💪🏻 Developed Proof of Concepts (PoCs) to demonstrate technical solutions for client proposals.`,
+      `💪🏻 On December 2025, received the Applause Award for executing a flawless migration from Angular 17 to V20, achieving zero defects.`,
     ],
   },
   {
@@ -44,16 +45,16 @@ const experience: Experience[] = [
 <section>
   <div class="w-full max-w-2xl mx-auto px-4 sm:px-0">
     {
-      experience.map((exp) => (
+      experiences.map((experience) => (
         <div class="mb-6">
           <h3 class="text-lg sm:text-xl font-semibold">
-            {exp.role} @ {exp.company}
+            {experience.role} @ {experience.company}
           </h3>
           <p class="text-sm sm:text-base italic text-secondary-light dark:text-secondary-dark">
-            {exp.duration}
+            {experience.duration}
           </p>
           <ul class="mt-2 list-none list-inside text-sm sm:text-base text-secondary-light dark:text-secondary-dark">
-            {exp.description.map((desc) => (
+            {experience.description.map((desc) => (
               <li class="mt-4" set:html={desc} />
             ))}
           </ul>
