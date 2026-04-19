@@ -1,20 +1,31 @@
 ---
 const frontEnd = [
-  "HTML5",
+  "HTML",
   "CSS / SCSS",
   "JavaScript (ES6+)",
   "TypeScript",
   "Angular 20+",
-  "RxJs",
-  "NgRx",
+  "React.js 19+",
+  "Astro",
+  "Micro-Frontends",
+];
+
+const libraries = [
   "Angular Material",
-  "React.js",
+  "PrimeNG",
   "Ionic 7+",
   "Git & GitHub",
   "RESTful APIs",
-  "Astro",
-  "PrimeNG",
+  "RxJs",
+  "NgRx",
+  "TanStack Query",
+  "TanStack Table",
+  "TanStack Form",
+  "TanStack Router",
+  "Tanstack Virtual",
+  "Zod",
   "TailwindCSS",
+  "Rspack",
   "Figma (Basic)",
 ];
 
@@ -29,6 +40,20 @@ const backEnd = ["Node.js (Learning)", "NestJS (Learning)", "Python", "Golang"];
   >
     {
       frontEnd.map((skill) => {
+        return (
+          <span class="text-secondary-light dark:text-secondary-dark">
+            {skill}
+          </span>
+        );
+      })
+    }
+  </div>
+  <h3 class="!mb-2">Libraries & Tools :</h3>
+  <div
+    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mb-6 text-sm sm:text-base"
+  >
+    {
+      libraries.map((skill) => {
         return (
           <span class="text-secondary-light dark:text-secondary-dark">
             {skill}

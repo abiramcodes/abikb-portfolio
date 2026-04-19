@@ -6,7 +6,7 @@ export const SITE_DESCRIPTION = "Welcome to my website!";
 
 export const MAIN_SECTION = [
   `I'm a Result's Driven Frontend Developer, specializing in building
-        clean, minimal, and performant web applications. With around 4 years of
+        clean, minimal, and performant web applications. With around 4.5 years of
         experience, I focus on delivering high-quality code and seamless user experiences ❤️.`,
   `I have basic experience in backend technologies and can work with them using Large Language Models 🤖.`,
   `I love learning new technologies and staying updated with the latest web development trends.`,
