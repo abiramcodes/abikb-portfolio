@@ -20,7 +20,7 @@ const posts = (await getCollection("blog")).sort(
   <body>
     <Header />
     <main>
-      <section class="!min-h-0 py-12">
+      <section class="min-h-0! py-12">
         <ul class="w-full max-w-2xl mx-auto px-4 sm:px-0 space-y-6">
           {
             posts.map((post) => (
@@ -36,7 +36,7 @@ const posts = (await getCollection("blog")).sort(
                     />
                   )}
                   <h4 class="title text-lg sm:text-xl">{post.data.title}</h4>
-                  <p class="date text-sm text-secondary-light dark:text-secondary-dark">
+                  <p class="date text-sm text-secondary-dark">
                     <FormattedDate date={post.data.pubDate} />
                   </p>
                 </a>

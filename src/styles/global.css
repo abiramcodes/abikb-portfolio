@@ -1,3 +1,7 @@
+@import "tailwindcss";
+@config "../../tailwind.config.mjs";
+@plugin "@tailwindcss/typography";
+
 @font-face {
   font-family: "Montserrat";
   src: url("/fonts/Montserrat-VariableFont_wght.ttf");
@@ -6,54 +10,169 @@
   font-display: swap;
 }
 
-/* global.css */
-html {
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
-  /* responsive base font-size: slightly smaller on very small screens */
-  font-size: 14px;
-}
-
-@media (min-width: 640px) {
-  html {
-    font-size: 15px;
+@layer base {
+  :root {
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   }
-}
-@media (min-width: 1024px) {
+
   html {
-    font-size: 16px;
+    font-size: 14px;
   }
-}
 
-/* Ensure images and svgs are fluid and don't overflow containers */
-img,
-svg {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
+  @media (min-width: 640px) {
+    html {
+      font-size: 15px;
+    }
+  }
 
-/* Optional: animate whole page with View Transitions */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: fade 0.25s ease-in-out;
-}
+  @media (min-width: 1024px) {
+    html {
+      font-size: 16px;
+    }
+  }
 
-@keyframes fade {
-  from {
+  body {
+    font-family: "Montserrat", sans-serif;
+    line-height: 1.6;
+    background-attachment: fixed;
+  }
+
+  /* ── Hero entrance — the single orchestrated moment ── */
+  .hero-reveal {
+    clip-path: inset(0 0 100% 0);
+    animation: hero-enter 0.6s var(--ease-in-out) 0.1s forwards;
+  }
+
+  @keyframes hero-enter {
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  /* ── Bottom dock entrance ── */
+  #bottom-dock {
+    transform: translateY(100%);
+    opacity: 0;
+    animation: dock-enter 0.4s var(--ease-out) 0.5s forwards;
+  }
+
+  @keyframes dock-enter {
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* ── Press feedback — every interactive element ── */
+  button,
+  a,
+  [role="button"] {
+    transition: transform 160ms var(--ease-out);
+  }
+
+  button:active,
+  a:active,
+  [role="button"]:active {
+    transform: scale(0.97);
+  }
+
+  /* ── Hover gating — touch devices don't get hover motion ── */
+  @media (hover: hover) and (pointer: fine) {
+    a:hover,
+    button:hover {
+      transition:
+        transform 160ms var(--ease-out),
+        color 0.2s var(--ease-out);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-reveal {
+      clip-path: none;
+      animation: none;
+    }
+    #bottom-dock {
+      transform: none;
+      opacity: 1;
+      animation: none;
+    }
+    button:active,
+    a:active,
+    [role="button"]:active {
+      transform: none;
+    }
+  }
+
+  /* ── Dot grid ── */
+  body[data-pattern="dots"] {
+    background-image:
+      radial-gradient(ellipse 800px 600px at 50% 0%, rgba(131, 151, 136, 0.18), transparent),
+      radial-gradient(ellipse 600px 500px at 80% 50%, rgba(131, 151, 136, 0.1), transparent),
+      radial-gradient(circle, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+    background-size: 100%, 100%, 24px 24px, 300px 300px;
+  }
+
+  /* ── Cross grid ── */
+  body[data-pattern="cross"] {
+    background-image:
+      radial-gradient(ellipse 800px 600px at 50% 0%, rgba(131, 151, 136, 0.18), transparent),
+      radial-gradient(ellipse 600px 500px at 80% 50%, rgba(131, 151, 136, 0.1), transparent),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M12 9v6M9 12h6' stroke='rgba(255,255,255,0.12)' fill='none'/%3E%3C/svg%3E");
+    background-size: 100%, 100%, 24px 24px;
+  }
+
+  /* ── Noise texture ── */
+  body[data-pattern="noise"] {
+    background-image:
+      radial-gradient(ellipse 800px 600px at 50% 0%, rgba(131, 151, 136, 0.18), transparent),
+      radial-gradient(ellipse 600px 500px at 80% 50%, rgba(131, 151, 136, 0.1), transparent),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+    background-size: 100%, 100%, 300px 300px;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: fade 0.25s var(--ease-in-out);
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 6rem;
+    background: linear-gradient(to bottom, transparent, var(--bg-color-dark, #222325));
+    pointer-events: none;
+    z-index: 10;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  html[data-at-bottom] body::after {
     opacity: 0;
   }
-  to {
-    opacity: 1;
-  }
 }
-body {
-  font-family: "Montserrat", sans-serif;
-  line-height: 1.6;
-  background-color: var(--background-light);
-  color: var(--text-light);
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+
+/* ── Boost text contrast on random solid backgrounds ──
+   Un-layered so these override @layer utilities */
+html[data-random-bg] .text-secondary-dark {
+  color: #d1d5db;
+}
+html[data-random-bg] .bg-muted-dark {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+html[data-random-bg] .border-muted-dark {
+  border-color: rgba(255, 255, 255, 0.1);
 }

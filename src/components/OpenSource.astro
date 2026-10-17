@@ -9,29 +9,38 @@ interface Contribution {
 
 const contributions: Contribution[] = [
   {
+    project: "pangular-inspector",
+    projectUrl: "https://github.com/pangular-inspector/devtools",
+    url: [
+      "https://github.com/pangular-inspector/devtools/pull/28",
+      "https://github.com/pangular-inspector/devtools/pull/45",
+      "https://github.com/pangular-inspector/devtools/pull/62",
+      "https://github.com/pangular-inspector/devtools/pull/200",
+      "https://github.com/pangular-inspector/devtools/pull/201",
+    ]
+  },
+  {
     project: "spartan ng",
     projectUrl: "https://github.com/spartan-ng/spartan",
     url: [
       "https://github.com/spartan-ng/spartan/pull/981",
       "https://github.com/spartan-ng/spartan/pull/980",
-      "https://github.com/spartan-ng/spartan/pull/979"
-    ]
+      "https://github.com/spartan-ng/spartan/pull/979",
+    ],
   },
   {
     project: "ng-primitives",
     projectUrl: "https://github.com/ng-primitives/ng-primitives",
-    url: [
-      "https://github.com/ng-primitives/ng-primitives/pull/499"
-    ]
+    url: ["https://github.com/ng-primitives/ng-primitives/pull/499"],
   },
   {
     project: "ng-icons",
     projectUrl: "https://github.com/ng-icons/ng-icons",
-    url:[
+    url: [
       "https://github.com/ng-icons/ng-icons/pull/202",
       "https://github.com/ng-icons/ng-icons/pull/203",
-      "https://github.com/ng-icons/ng-icons/pull/204"
-    ]
+      "https://github.com/ng-icons/ng-icons/pull/204",
+    ],
   },
   {
     project: "free-Code-Camp",
@@ -53,38 +62,61 @@ const contributions: Contribution[] = [
     ],
   },
 ];
+
+function extractPrNumber(url: string): string {
+  return "#" + url.split("/pull/")[1];
+}
+
+function extractRepo(url: string): string {
+  const match = url.match(/github\.com\/([^/]+\/[^/]+)/);
+  return match ? match[1] : "";
+}
 ---
 
 <section>
-  <h2 class="text-xl sm:text-2xl font-semibold mb-4">
+  <h2 class="text-xl sm:text-2xl font-semibold mb-6">
     Open Source Contributions
   </h2>
-  <ul class="space-y-3">
+  <div class="space-y-5">
     {
-      contributions.map((contribution: Contribution) => (
-        <li>
-          <a
-            href={contribution.projectUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="font-medium hover:underline decoration-wavy underline-offset-4"
-          >
-            {contribution.project.toUpperCase()} 🔗
-          </a>
-        </li>
-        <li>
-          {contribution.url.map((url) => (
+      contributions.map((c) => (
+        <div class="flex flex-col gap-1.5">
+          <div class="flex items-baseline justify-between gap-2">
             <a
-              href={url}
+              href={c.projectUrl}
               target="_blank"
               rel="noopener noreferrer"
-              class="text-green-600 hover:underline break-all block underline-offset-2"
+              class="font-medium text-foreground-dark hover:text-accent transition"
             >
-              {url}
+              {extractRepo(c.projectUrl)}
+              <svg
+                class="inline w-3.5 h-3.5 ml-1 opacity-40"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M7 17L17 7M17 7H7M17 7v10" />
+              </svg>
             </a>
-          ))}
-        </li>
+            <span class="text-xs text-secondary-dark whitespace-nowrap">
+              {c.url.length} {c.url.length === 1 ? "PR" : "PRs"}
+            </span>
+          </div>
+          <div class="flex flex-wrap gap-x-2 gap-y-1 text-sm">
+            {c.url.map((url) => (
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-accent hover:brightness-125 hover:underline underline-offset-2 transition"
+              >
+                {extractPrNumber(url)}
+              </a>
+            ))}
+          </div>
+        </div>
       ))
     }
-  </ul>
+  </div>
 </section>

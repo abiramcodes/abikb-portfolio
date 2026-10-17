@@ -3,63 +3,67 @@ interface Experience {
   company: string;
   role: string;
   duration: string;
-  description: string[];
+  highlights: string[];
 }
 
 const experiences: Experience[] = [
   {
     company: "Deloitte USI",
-    role: "FrontEnd Consultant",
-    duration: "June 2025 - Present",
-    description: [
-      `💪🏻 Started working as a Frontend Consultant, focusing on building scalable web applications using Angular 17+ and modern web technologies.`,
-      `💪🏻 Refactored existing codebases to improve performance, maintainability, and adherence to best practices.`,
-      `💪🏻 Improved application performance by optimizing Angular components using OnPush Strategy and implementing Lazy Loading Strategies, resulting in faster load times.`,
-      `💪🏻 Spearheaded migrating the application from Angular 17 to the latest Angular 20 version, ensuring compatibility and leveraging new features.`,
-      `💪🏻 Implemented unit tests using Jest and Karma, achieving a test coverage of <strong class="text-[#51b86b]">85%</strong> to ensure code reliability and maintainability.`,
-      `💪🏻 Developed Proof of Concepts (PoCs) to demonstrate technical solutions for client proposals.`,
-      `💪🏻 On December 2025, received the <strong class="text-[#51b86b]">Applause Award</strong> for executing a flawless migration from Angular 17 to V20, achieving zero defects.`,
-      `💪🏻 Engineered a <strong class="text-[#51b86b]">Micro Frontend (MFE)</strong> architecture using a Shell and Remote pattern, while leading and mentoring a team of 4 developers.`,
-      `💪🏻 Established the core architecture and best practices, introducing <strong class="text-[#51b86b]">React 19</strong> methodologies and modern development standards to the project.`,
-      `💪🏻 Configured and optimized <strong class="text-[#51b86b]">Nginx and Ingress</strong> rules to facilitate seamless routing and integration for the custom MFE ecosystem.`,
-      `💪🏻 Received a <strong class="text-[#51b86b]">2nd Applause Award</strong> for the successful end-to-end setup and delivery of the MFE architecture using React 19.`,
+    role: "Frontend Consultant",
+    duration: "Jun 2025 — Present",
+    highlights: [
+      "Building scalable web applications using Angular 17+ and modern web technologies.",
+      "Refactored existing codebases to improve performance, maintainability, and adherence to best practices.",
+      "Optimized Angular components using OnPush strategy and lazy loading, resulting in faster load times.",
+      "Spearheaded migrating the application from Angular 17 to Angular 20, ensuring compatibility and leveraging new features.",
+      "Implemented unit tests using Jest and Karma, achieving <strong class='text-accent'>85%</strong> test coverage.",
+      "Developed Proof of Concepts (PoCs) to demonstrate technical solutions for client proposals.",
+      "Received the <strong class='text-accent'>Applause Award</strong> for executing a flawless migration from Angular 17 to v20 with zero defects.",
+      "Engineered a <strong class='text-accent'>Micro Frontend</strong> architecture using Shell and Remote pattern, leading a team of 4 developers.",
+      "Established core architecture and best practices, introducing <strong class='text-accent'>React 19</strong> methodologies to the project.",
+      "Configured and optimized <strong class='text-accent'>Nginx and Ingress</strong> rules for seamless MFE routing and integration.",
+      "Received a <strong class='text-accent'>2nd Applause Award</strong> for end-to-end setup and delivery of the MFE architecture using React 19.",
     ],
   },
   {
     company: "Tata Consultancy Services",
     role: "Frontend Developer",
-    duration: "Dec 2021 - Jun 2025",
-    description: [
-      `💪🏻 Developed and maintained dynamic UI components using Angular 15+ and Angular Material, ensuring seamless updates and enhancing user experience.`,
-      `💪🏻 Optimized application performance by <strong class="text-[#51b86b]">50%</strong> 
-          through NgRx state management, reducing redundant API calls and improving data consistency.`,
-      `💪🏻 Reduced page load times by <strong class="text-[#51b86b]">40%</strong> with virtual scrolling techniques, improving performance and responsiveness.`,
-      `💪🏻 Improved test coverage by <strong class="text-[#51b86b]">80%</strong>, implementing unit and integration tests using Jest, leading to better code quality and stability.`,
-      `💪🏻 TroubleShot and resolved <strong class="text-[#51b86b]">100+</strong> bugs and deployment issues, leveraging GitHub Actions for automated CI/CD deployments on Azure environments.`,
-      `💪🏻 Collaborated with cross-functional teams (design, backend, QA) within an Agile/Scrum environment to deliver high-quality web solutions.`,
-      `💪🏻 Designed and implemented complex UI workflows across <strong class="text-[#51b86b]">5+</strong> major modules, ensuring a consistent user experience and accessibility compliance.`,
-      `💪🏻 Actively contributed to sprint planning and tracking using JIRA, ensuring timely delivery of high-priority features and bug fixes.`,
-      `💪🏻 Migrated an application from Angular 13+ (Modular Architecture) to Angular 17+ (Standalone Architecture), ensuring compatibility with new features and performance improvements.`,
-      `💪🏻 Covered unit test using Jest and Karma for Angular applications <strong class="text-[#51b86b]">(80%)</strong>, ensuring code reliability and maintainability.`,
+    duration: "Dec 2021 — Jun 2025",
+    highlights: [
+      "Developed and maintained dynamic UI components using Angular 15+ and Angular Material.",
+      "Optimized application performance by <strong class='text-accent'>50%</strong> through NgRx state management, reducing redundant API calls.",
+      "Reduced page load times by <strong class='text-accent'>40%</strong> with virtual scrolling techniques.",
+      "Improved test coverage to <strong class='text-accent'>80%</strong> with Jest, leading to better code quality and stability.",
+      "Resolved <strong class='text-accent'>100+</strong> bugs and deployment issues, leveraging GitHub Actions for CI/CD on Azure.",
+      "Collaborated with cross-functional teams within Agile/Scrum to deliver high-quality web solutions.",
+      "Designed complex UI workflows across <strong class='text-accent'>5+</strong> major modules with accessibility compliance.",
+      "Migrated an application from Angular 13 (Modular) to Angular 17 (Standalone Architecture).",
     ],
   },
 ];
 ---
 
-<section>
-  <div class="w-full max-w-2xl mx-auto px-4 sm:px-0">
+<section class="w-full max-w-2xl mx-auto px-4 sm:px-0">
+  <h2 class="text-xl sm:text-2xl font-semibold mb-8">Experience</h2>
+  <div class="space-y-10">
     {
-      experiences.map((experience) => (
-        <div class="mb-6">
-          <h3 class="text-lg sm:text-xl font-semibold">
-            {experience.role} @ {experience.company}
-          </h3>
-          <p class="text-sm sm:text-base italic text-secondary-light dark:text-secondary-dark">
-            {experience.duration}
-          </p>
-          <ul class="mt-2 list-none list-inside text-sm sm:text-base text-secondary-light dark:text-secondary-dark">
-            {experience.description.map((desc) => (
-              <li class="mt-4" set:html={desc} />
+      experiences.map((exp) => (
+        <div class="relative pl-5 border-l-2 border-muted-dark">
+          <div class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-accent" />
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-3">
+            <div>
+              <h3 class="text-lg sm:text-xl font-semibold">
+                {exp.role}
+              </h3>
+              <p class="text-sm text-accent font-medium">{exp.company}</p>
+            </div>
+            <span class="text-sm text-secondary-dark whitespace-nowrap">
+              {exp.duration}
+            </span>
+          </div>
+          <ul class="space-y-2 text-sm sm:text-base text-secondary-dark">
+            {exp.highlights.map((item) => (
+              <li class="leading-relaxed" set:html={item} />
             ))}
           </ul>
         </div>

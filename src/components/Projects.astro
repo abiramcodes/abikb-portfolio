@@ -1,61 +1,74 @@
 ---
 interface Project {
   name: string;
+  tech: string;
   description: string;
   link: string;
 }
 
-const Projects_List: Project[] = [
+const projects: Project[] = [
   {
-    name: "md-Pdf-converter - Angular, NestJS",
+    name: "md-Pdf-converter",
+    tech: "Angular, NestJS",
     description:
       "A web application that converts Markdown files to PDF format, built using Angular for the frontend and NestJS for the backend.",
     link: "https://github.com/abiramcodes/MD-PDF",
   },
   {
-    name: "dynamic-forms-demo - Angular",
+    name: "dynamic-forms-demo",
+    tech: "Angular",
     description:
-      "This project is all about the demo application that is used in the ng India - Chennai Meetup, 2025.",
+      "Demo application used in the ng India Chennai Meetup, 2025. Demonstrates dynamic components and forms.",
     link: "https://github.com/abiramcodes/dynamic-forms-demo",
   },
   {
-    name: "mini-url - Angular",
+    name: "mini-url",
+    tech: "Angular",
     description:
-      "A user interface project for generating shortened URLs, developed as part of coding challenges by John Crickett.",
+      "A UI for generating shortened URLs, developed as part of coding challenges by John Crickett.",
     link: "https://github.com/abiramcodes/mini-url-frontEnd",
   },
   {
-    name: "bookbot - Python",
+    name: "bookbot",
+    tech: "Python",
     description:
-      "A Python project designed to efficiently process and analyze text files, providing insights and statistics from textual data.",
+      "Processes and analyzes text files, providing insights and statistics from textual data.",
     link: "https://github.com/abiramcodes/bookbot",
   },
 ];
 ---
 
-<section>
-  <div class="w-full max-w-2xl mx-auto px-4 sm:px-0">
-    <div class="flex flex-col sm:flex-row sm:flex-wrap gap-6 justify-between">
-      {
-        Projects_List.map((project) => (
-          <div class="w-full sm:w-[48%] md:w-[48%] lg:w-[46%] p-4 border rounded-md">
-            <h2 class="text-base sm:text-lg uppercase font-semibold mb-2">
+<section class="w-full max-w-2xl mx-auto px-4 sm:px-0">
+  <h2 class="text-xl sm:text-2xl font-semibold mb-6">Projects</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    {
+      projects.map((project) => (
+        <a
+          href={project.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group flex flex-col gap-2 p-4 rounded-lg border border-muted-dark hover:border-accent transition"
+        >
+          <div class="flex items-baseline justify-between gap-2">
+            <h3 class="font-semibold text-foreground-dark group-hover:text-accent transition">
               {project.name}
-            </h2>
-            <p class="mb-2 text-sm sm:text-base text-secondary-light dark:text-secondary-dark">
-              {project.description}
-            </p>
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noopener"
-              class="text-green-600 text-sm sm:text-base"
+            </h3>
+            <svg
+              class="w-4 h-4 shrink-0 opacity-30 group-hover:opacity-70 transition"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
             >
-              Source Code - GitHub
-            </a>
+              <path d="M7 17L17 7M17 7H7M17 7v10" />
+            </svg>
           </div>
-        ))
-      }
-    </div>
+          <span class="text-xs text-accent font-medium">{project.tech}</span>
+          <p class="text-sm text-secondary-dark leading-relaxed">
+            {project.description}
+          </p>
+        </a>
+      ))
+    }
   </div>
 </section>

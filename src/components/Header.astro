@@ -1,11 +1,9 @@
 ---
 import { SITE_TITLE } from "../consts";
 import Center from "./Center.astro";
-import HeaderLink from "./HeaderLink.astro";
 
 interface Props {
   title?: string;
-  showNav?: boolean;
 }
 
 const { title = SITE_TITLE } = Astro.props;
@@ -13,261 +11,96 @@ const { title = SITE_TITLE } = Astro.props;
 
 <Center>
   <header
-    class="w-full max-w-2xl mx-auto flex flex-col min-w-0 mt-4 px-4 sm:px-0"
+    class="w-full max-w-2xl mx-auto flex items-center justify-between min-w-0 mt-4 px-4 sm:px-0"
   >
-    <!-- Top row: logo + controls -->
-    <div class="w-full flex items-center justify-between">
-      <a
-        href="/"
-        class="text-2xl font-bold text-foreground-light dark:text-foreground-dark truncate"
-      >
-        {title}<span class="text-accent">.</span>
-      </a>
+    <a
+      href="/"
+      class="text-2xl font-bold text-foreground-dark truncate"
+    >
+      {title}<span class="text-accent">.</span>
+    </a>
 
-      <div class="flex items-center gap-2">
-        <!-- Theme toggle: always visible (mobile + desktop) -->
-        <button
-          id="theme-toggle"
-          aria-label="Toggle theme"
-          class="p-2 rounded-lg bg-muted-light dark:bg-muted-dark text-gray-700 dark:text-gray-200 hover:bg-accent hover:text-white transition"
-        >
-          <svg
-            id="theme-toggle-light-icon"
-            class="w-5 h-5"
-            aria-hidden="true"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M13 3a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0V3ZM6.343 4.929A1 1 0 0 0 4.93 6.343l1.414 1.414a1 1 0 0 0 1.414-1.414L6.343 4.929Zm12.728 1.414a1 1 0 0 0-1.414-1.414l-1.414 1.414a1 1 0 0 0 1.414 1.414l1.414-1.414ZM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm-9 4a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2H3Zm16 0a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2h-2ZM7.757 17.657a1 1 0 1 0-1.414-1.414l-1.414 1.414a1 1 0 1 0 1.414 1.414l1.414-1.414Zm9.9-1.414a1 1 0 0 0-1.414 1.414l1.414 1.414a1 1 0 0 0 1.414-1.414l-1.414-1.414ZM13 19a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0v-2Z"
-              clip-rule="evenodd"></path>
-          </svg>
-
-          <svg
-            id="theme-toggle-dark-icon"
-            class="hidden w-5 h-5"
-            aria-hidden="true"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M11.675 2.015a.998.998 0 0 0-.403.011C6.09 2.4 2 6.722 2 12c0 5.523 4.477 10 10 10 4.356 0 8.058-2.784 9.43-6.667a1 1 0 0 0-1.02-1.33c-.08.006-.105.005-.127.005h-.001l-.028-.002A5.227 5.227 0 0 0 20 14a8 8 0 0 1-8-8c0-.952.121-1.752.404-2.558a.996.996 0 0 0 .096-.428V3a1 1 0 0 0-.825-.985Z"
-              clip-rule="evenodd"></path>
-          </svg>
-        </button>
-        <button
-          id="mobile-menu-button"
-          class="p-2 rounded-md bg-muted-light dark:bg-muted-dark"
-          aria-label="Open menu"
-          aria-expanded="false"
-        >
-          <svg
-            id="menu-open-icon"
-            class="w-6 h-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-          <svg
-            id="menu-close-icon"
-            class="hidden w-6 h-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <!-- Dialog-based popup for navigation -->
-    <dialog id="mobile-menu-dialog" class="rounded-md p-0 bg-transparent">
-      <div
-        class="w-screen h-screen sm:max-w-md sm:rounded-md sm:mx-auto bg-background-light dark:bg-background-dark text-foreground-light dark:text-foreground-dark flex flex-col"
-      >
-        <div
-          class="flex items-center justify-between p-4 border-b border-muted-light dark:border-muted-dark"
-        >
-          <strong id="mobile-menu-title" class="text-lg">Menu</strong>
-          <div class="flex items-center gap-2">
-            <!-- Duplicate close button inside dialog (accessible) -->
-            <button
-              id="dialog-close"
-              aria-label="Close menu"
-              class="p-2 rounded-md bg-muted-light dark:bg-muted-dark cursor-pointer"
-            >
-              <svg
-                class="w-5 h-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <nav class="p-6 flex flex-col gap-4">
-          <HeaderLink href="/">Home</HeaderLink>
-          <HeaderLink href="/projects">Projects</HeaderLink>
-          <HeaderLink href="/experience">Experience</HeaderLink>
-          <!-- <HeaderLink href="/blog">Blog</HeaderLink> -->
-        </nav>
-      </div>
-    </dialog>
+    <!-- Desktop inline nav -->
+    <nav class="hidden sm:flex items-center gap-6 text-sm">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/projects" class="nav-link">Projects</a>
+      <a href="/experience" class="nav-link">Experience</a>
+    </nav>
   </header>
 </Center>
 
+<!-- Floating bottom dock (mobile) -->
+<nav
+  id="bottom-dock"
+  class="sm:hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 px-2 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl"
+>
+  <a href="/" class="dock-item" data-page="/">
+    <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z" />
+    </svg>
+    <span>Home</span>
+  </a>
+  <a href="/projects" class="dock-item" data-page="/projects">
+    <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+    </svg>
+    <span>Projects</span>
+  </a>
+  <a href="/experience" class="dock-item" data-page="/experience">
+    <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m8 0H8m8 0a2 2 0 012 2v1M8 6a2 2 0 00-2 2v1" />
+    </svg>
+    <span>Experience</span>
+  </a>
+</nav>
+
 <script>
-  // Theme toggle logic (shared)
-  const toggleBtn = document.getElementById("theme-toggle");
-  const dialogToggleBtn = document.getElementById("theme-toggle-dialog");
-  const lightIcon = document.getElementById("theme-toggle-light-icon");
-  const darkIcon = document.getElementById("theme-toggle-dark-icon");
-  const dialogLightIcon = document.getElementById(
-    "theme-toggle-dialog-light-icon"
-  );
-  const dialogDarkIcon = document.getElementById(
-    "theme-toggle-dialog-dark-icon"
-  );
-  const html =
-    typeof document !== "undefined" ? document.documentElement : null;
-
-  function updateIcons() {
-    if (!html) return;
-    const isDark = html.classList.contains("dark");
-    [lightIcon, dialogLightIcon].forEach((el) =>
-      el?.classList.toggle("hidden", isDark)
-    );
-    [darkIcon, dialogDarkIcon].forEach((el) =>
-      el?.classList.toggle("hidden", !isDark)
-    );
-  }
-
-  if (html) {
-    if (
-      localStorage.theme === "dark" ||
-      (!("theme" in localStorage) &&
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      html.classList.add("dark");
-    } else {
-      html.classList.remove("dark");
-    }
-    updateIcons();
-
-    const toggleTheme = () => {
-      if (html.classList.contains("dark")) {
-        html.classList.remove("dark");
-        localStorage.theme = "light";
-      } else {
-        html.classList.add("dark");
-        localStorage.theme = "dark";
-      }
-      updateIcons();
-    };
-
-    toggleBtn?.addEventListener("click", toggleTheme);
-    dialogToggleBtn?.addEventListener("click", toggleTheme);
-  }
-
-  // Dialog menu logic
-  const mobileBtn = document.getElementById("mobile-menu-button");
-  const dialog = document.getElementById(
-    "mobile-menu-dialog"
-  ) as HTMLDialogElement | null;
-  const dialogClose = document.getElementById("dialog-close");
-  const menuOpenIcon = document.getElementById("menu-open-icon");
-  const menuCloseIcon = document.getElementById("menu-close-icon");
-
-  function openMenu() {
-    if (!dialog) return;
-    if (typeof dialog.showModal === "function") {
-      dialog.showModal();
-    } else {
-      // fallback for browsers without dialog: toggle a class
-      dialog.setAttribute("open", "true");
-    }
-    mobileBtn?.setAttribute("aria-expanded", "true");
-    menuOpenIcon?.classList.add("hidden");
-    menuCloseIcon?.classList.remove("hidden");
-  }
-
-  function closeMenu() {
-    if (!dialog) return;
-    if (typeof dialog.close === "function") {
-      dialog.close();
-    } else {
-      dialog.removeAttribute("open");
-    }
-    mobileBtn?.setAttribute("aria-expanded", "false");
-    menuOpenIcon?.classList.remove("hidden");
-    menuCloseIcon?.classList.add("hidden");
-  }
-
-  mobileBtn?.addEventListener("click", () => {
-    // Toggle: if dialog is open, close; otherwise open
-    const isOpen = dialog?.open;
-    if (isOpen) closeMenu();
-    else openMenu();
+  const path = window.location.pathname.replace(/\/$/, "") || "/";
+  document.querySelectorAll<HTMLAnchorElement>(".dock-item").forEach((el) => {
+    const page = el.dataset.page || "/";
+    if (page === path) el.classList.add("active");
   });
-
-  dialogClose?.addEventListener("click", () => closeMenu());
-
-  // Close when clicking backdrop (target === dialog)
-  dialog?.addEventListener("click", (e) => {
-    if (e.target === dialog) closeMenu();
-  });
-
-  // Ensure icons reflect dialog close (when user presses ESC)
-  dialog?.addEventListener("close", () => {
-    mobileBtn?.setAttribute("aria-expanded", "false");
-    menuOpenIcon?.classList.remove("hidden");
-    menuCloseIcon?.classList.add("hidden");
+  document.querySelectorAll<HTMLAnchorElement>(".nav-link").forEach((el) => {
+    const href = (el.getAttribute("href") || "/").replace(/\/$/, "") || "/";
+    if (href === path) el.classList.add("active");
   });
 </script>
 
 <style>
-  /* Dialog styles: full-screen on small screens, centered on larger screens */
-  dialog#mobile-menu-dialog {
-    border: 0;
-    padding: 0;
+  .nav-link {
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.2s var(--ease-out);
   }
-  dialog#mobile-menu-dialog::backdrop {
-    background: rgba(0, 0, 0, 0.4);
+  .nav-link.active {
+    color: var(--accent-color, #839788);
   }
-  @media (max-width: 640px) {
-    dialog#mobile-menu-dialog > div {
-      width: 20rem;
-      height: auto;
-      margin: 0;
-      border-radius: 0;
+  @media (hover: hover) and (pointer: fine) {
+    .nav-link:hover {
+      color: var(--accent-color, #839788);
     }
   }
-  @media (min-width: 641px) {
-    dialog#mobile-menu-dialog > div {
-      width: min(90vw, 420px);
-      height: auto;
-      margin: 6vh auto;
+
+  .dock-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5);
+    transition:
+      color 0.2s var(--ease-out),
+      background-color 0.2s var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .dock-item:hover {
+      color: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.06);
     }
+  }
+  .dock-item.active {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
   }
 </style>

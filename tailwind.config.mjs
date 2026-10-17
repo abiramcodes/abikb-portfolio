@@ -1,33 +1,26 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  darkMode: "class", // toggle dark mode by adding 'dark' to <html> or <body>
+
+export default {
+  darkMode: "class",
   content: ["./src/**/*.{astro,html,js,ts,jsx,tsx,vue,svelte,mdx,md}"],
   theme: {
     extend: {
       colors: {
         background: {
-          light: "#ffffff",
-          dark: "#222325", // neutral-900
+          dark: "var(--bg-color-dark, #222325)",
         },
         foreground: {
-          light: "#222325", // text primary (light)
-          dark: "#f9fafb", // text primary (dark)
+          dark: "#f9fafb",
         },
         muted: {
-          light: "#f9fafb", // neutral-50
-          dark: "#1f2937", // neutral-800
+          dark: "#1f2937",
         },
         secondary: {
-          light: "#6b7280", // neutral-500
-          dark: "#9ca3af", // neutral-400
+          dark: "#9ca3af",
         },
         accent: {
-          DEFAULT: "#839788", // blue-600
+          DEFAULT: "var(--accent-color, #839788)",
         },
-      },
-      backgroundImage: {
-        "subtle-light": "linear-gradient(to bottom right, #f9fafb, #ffffff)",
-        "subtle-dark": "linear-gradient(to bottom right, #222325, #0f172a)",
       },
       fontFamily: {
         mont: ["Montserrat", "sans-serif"],
@@ -35,20 +28,8 @@ module.exports = {
       typography: (theme) => ({
         DEFAULT: {
           css: {
-            color: theme("colors.foreground.light"),
-            a: { color: theme("colors.accent.DEFAULT"), fontWeight: "500" },
-            strong: { color: theme("colors.foreground.light") },
-            p: { color: theme("colors.secondary.light") },
-            h1: { color: theme("colors.foreground.light") },
-            h2: { color: theme("colors.foreground.light") },
-            h3: { color: theme("colors.foreground.light") },
-            blockquote: { color: theme("colors.secondary.light") },
-          },
-        },
-        dark: {
-          css: {
             color: theme("colors.foreground.dark"),
-            a: { color: theme("colors.accent.light") },
+            a: { color: theme("colors.accent.DEFAULT"), fontWeight: "500" },
             strong: { color: theme("colors.foreground.dark") },
             p: { color: theme("colors.secondary.dark") },
             h1: { color: theme("colors.foreground.dark") },
@@ -60,5 +41,4 @@ module.exports = {
       }),
     },
   },
-  plugins: [require("@tailwindcss/typography")],
 };

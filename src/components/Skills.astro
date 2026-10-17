@@ -1,79 +1,74 @@
 ---
-const frontEnd = [
-  "HTML",
-  "CSS / SCSS",
-  "JavaScript (ES6+)",
-  "TypeScript",
-  "Angular 20+",
-  "React.js 19+",
-  "Astro",
-  "Micro-Frontends",
-];
+interface SkillGroup {
+  label: string;
+  items: string[];
+}
 
-const libraries = [
-  "Angular Material",
-  "PrimeNG",
-  "Ionic 7+",
-  "Git & GitHub",
-  "RESTful APIs",
-  "RxJs",
-  "NgRx",
-  "TanStack Query",
-  "TanStack Table",
-  "TanStack Form",
-  "TanStack Router",
-  "Tanstack Virtual",
-  "Zod",
-  "TailwindCSS",
-  "Rspack",
-  "Figma (Basic)",
+const groups: SkillGroup[] = [
+  {
+    label: "Frontend",
+    items: [
+      "HTML",
+      "CSS / SCSS",
+      "JavaScript (ES6+)",
+      "TypeScript",
+      "Angular 20+",
+      "React.js 19+",
+      "Astro",
+      "Micro-Frontends",
+    ],
+  },
+  {
+    label: "Libraries & Tools",
+    items: [
+      "Angular Material",
+      "PrimeNG",
+      "Ionic 7+",
+      "Git & GitHub",
+      "RESTful APIs",
+      "RxJs",
+      "NgRx",
+      "TanStack Query",
+      "TanStack Table",
+      "TanStack Form",
+      "Zod",
+      "TailwindCSS",
+      "Native Federation",
+      "Module Federation",
+      "Rspack",
+      "Figma (Basic)",
+    ],
+  },
+  {
+    label: "Backend",
+    items: [
+      "Node.js (Learning)",
+      "NestJS (Learning)",
+      "Python",
+      "Golang",
+    ],
+  },
 ];
-
-const backEnd = ["Node.js (Learning)", "NestJS (Learning)", "Python", "Golang"];
 ---
 
 <section>
-  <h2 class="!mb-2 text-xl sm:text-2xl font-bold">Skills</h2>
-  <h3 class="!mb-2">Frontend :</h3>
-  <div
-    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mb-6 text-sm sm:text-base"
-  >
+  <h2 class="text-xl sm:text-2xl font-semibold mb-6">Skills</h2>
+  <div class="space-y-5">
     {
-      frontEnd.map((skill) => {
-        return (
-          <span class="text-secondary-light dark:text-secondary-dark">
-            {skill}
-          </span>
-        );
-      })
-    }
-  </div>
-  <h3 class="!mb-2">Libraries & Tools :</h3>
-  <div
-    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mb-6 text-sm sm:text-base"
-  >
-    {
-      libraries.map((skill) => {
-        return (
-          <span class="text-secondary-light dark:text-secondary-dark">
-            {skill}
-          </span>
-        );
-      })
-    }
-  </div>
-  <h3 class="!mb-2">BackEnd - (Basic Experience) :</h3>
-  <div
-    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 text-sm sm:text-base"
-  >
-    {
-      backEnd.map((skill) => {
-        return (
-          <span class="text-secondary-light dark:text-secondary-dark">
-            {skill}
-          </span>
-        );
-      })
+      groups.map((group) => (
+        <div>
+          <h3 class="text-sm font-medium text-secondary-dark mb-2">
+            {group.label}
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            {group.items.map((skill) => (
+              <span class="text-sm px-2.5 py-1 rounded-md bg-muted-dark text-foreground-dark">
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))
     }
   </div>
 </section>
