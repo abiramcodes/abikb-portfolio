@@ -146,6 +146,24 @@
     }
   }
 
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6rem;
+    background: linear-gradient(to top, transparent, var(--bg-color-dark, #222325));
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  html[data-scrolled] body::before {
+    opacity: 1;
+  }
+
   body::after {
     content: "";
     position: fixed;

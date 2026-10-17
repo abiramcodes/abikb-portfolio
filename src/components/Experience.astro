@@ -1,43 +1,100 @@
 ---
+interface HighlightGroup {
+  category: string;
+  items: string[];
+}
+
 interface Experience {
   company: string;
   role: string;
   duration: string;
-  highlights: string[];
+  computed?: string;
+  groups: HighlightGroup[];
+}
+
+function computeDuration(startStr: string, endStr: string): string {
+  const parse = (s: string) => {
+    const [mon, yr] = s.trim().split(" ");
+    const months: Record<string, number> = {
+      Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+      Jul: 6, Aug: 7, Sep: 8, Sept: 8, Oct: 9, Nov: 10, Dec: 11,
+    };
+    return new Date(parseInt(yr), months[mon] ?? 0);
+  };
+  const start = parse(startStr);
+  const end = endStr === "Present" ? new Date() : parse(endStr);
+  let yrs = end.getFullYear() - start.getFullYear();
+  let mos = end.getMonth() - start.getMonth();
+  if (mos < 0) { yrs--; mos += 12; }
+  const parts: string[] = [];
+  if (yrs > 0) parts.push(`${yrs} yr${yrs > 1 ? "s" : ""}`);
+  if (mos > 0) parts.push(`${mos} mo`);
+  return parts.join(" ") || "< 1 mo";
 }
 
 const experiences: Experience[] = [
   {
     company: "Deloitte USI",
     role: "Frontend Consultant",
-    duration: "Jun 2025 — Present",
-    highlights: [
-      "Building scalable web applications using Angular 17+ and modern web technologies.",
-      "Refactored existing codebases to improve performance, maintainability, and adherence to best practices.",
-      "Optimized Angular components using OnPush strategy and lazy loading, resulting in faster load times.",
-      "Spearheaded migrating the application from Angular 17 to Angular 20, ensuring compatibility and leveraging new features.",
-      "Implemented unit tests using Jest and Karma, achieving <strong class='text-accent'>85%</strong> test coverage.",
-      "Developed Proof of Concepts (PoCs) to demonstrate technical solutions for client proposals.",
-      "Received the <strong class='text-accent'>Applause Award</strong> for executing a flawless migration from Angular 17 to v20 with zero defects.",
-      "Engineered a <strong class='text-accent'>Micro Frontend</strong> architecture using Shell and Remote pattern, leading a team of 4 developers.",
-      "Established core architecture and best practices, introducing <strong class='text-accent'>React 19</strong> methodologies to the project.",
-      "Configured and optimized <strong class='text-accent'>Nginx and Ingress</strong> rules for seamless MFE routing and integration.",
-      "Received a <strong class='text-accent'>2nd Applause Award</strong> for end-to-end setup and delivery of the MFE architecture using React 19.",
+    duration: "Jun 2025 - Present",
+    computed: computeDuration("Jun 2025", "Present"),
+    groups: [
+      {
+        category: "Architecture & Delivery",
+        items: [
+          "Engineered a <strong class='text-accent'>Micro Frontend</strong> architecture using Shell and Remote pattern, leading a team of 4 developers.",
+          "Configured and optimized <strong class='text-accent'>Nginx and Ingress</strong> rules for seamless MFE routing and integration.",
+          "Established core architecture and best practices, introducing <strong class='text-accent'>React 19</strong> methodologies to the project.",
+        ],
+      },
+      {
+        category: "Migrations & Modernization",
+        items: [
+          "Migrated <strong class='text-accent'>PrimeNG to Optimus UI</strong> and <strong class='text-accent'>Angular 21 to 22</strong> with modern Signal APIs across <strong class='text-accent'>8 micro frontend</strong> repositories using Native Federation, leveraging AI agent tools (Claude Code, Copilot).",
+          "Spearheaded migrating the application from Angular 17 to Angular 20, ensuring compatibility and leveraging new features.",
+          "Modernized a legacy Angular project, significantly reducing build size and improving application performance.",
+        ],
+      },
+      {
+        category: "AI & Tooling",
+        items: [
+          "Authored custom AI agent skills for project needs (grill-me, architect) and curated open-source skills (<strong class='text-accent'>caveman, ponytail, Vercel React best practices, Angular skills</strong>) to optimize token usage and enforce coding standards.",
+          "Developed Proof of Concepts (PoCs) to demonstrate technical solutions for client proposals.",
+        ],
+      },
+      {
+        category: "Quality & Recognition",
+        items: [
+          "Received the <strong class='text-accent'>Applause Award</strong> for executing a flawless migration from Angular 17 to v20 with zero defects.",
+          "Received a <strong class='text-accent'>2nd Applause Award</strong> for end-to-end setup and delivery of the MFE architecture using React 19.",
+          "Implemented unit tests using Jest and Karma, achieving <strong class='text-accent'>85%</strong> test coverage.",
+        ],
+      },
     ],
   },
   {
     company: "Tata Consultancy Services",
     role: "Frontend Developer",
-    duration: "Dec 2021 — Jun 2025",
-    highlights: [
-      "Developed and maintained dynamic UI components using Angular 15+ and Angular Material.",
-      "Optimized application performance by <strong class='text-accent'>50%</strong> through NgRx state management, reducing redundant API calls.",
-      "Reduced page load times by <strong class='text-accent'>40%</strong> with virtual scrolling techniques.",
-      "Improved test coverage to <strong class='text-accent'>80%</strong> with Jest, leading to better code quality and stability.",
-      "Resolved <strong class='text-accent'>100+</strong> bugs and deployment issues, leveraging GitHub Actions for CI/CD on Azure.",
-      "Collaborated with cross-functional teams within Agile/Scrum to deliver high-quality web solutions.",
-      "Designed complex UI workflows across <strong class='text-accent'>5+</strong> major modules with accessibility compliance.",
-      "Migrated an application from Angular 13 (Modular) to Angular 17 (Standalone Architecture).",
+    duration: "Dec 2021 - Jun 2025",
+    computed: computeDuration("Dec 2021", "Jun 2025"),
+    groups: [
+      {
+        category: "Performance & Quality",
+        items: [
+          "Optimized application performance by <strong class='text-accent'>50%</strong> through NgRx state management, reducing redundant API calls.",
+          "Reduced page load times by <strong class='text-accent'>40%</strong> with virtual scrolling techniques.",
+          "Improved test coverage to <strong class='text-accent'>80%</strong> with Jest, leading to better code quality and stability.",
+        ],
+      },
+      {
+        category: "Development & Delivery",
+        items: [
+          "Designed complex UI workflows across <strong class='text-accent'>5+</strong> major modules with accessibility compliance.",
+          "Resolved <strong class='text-accent'>100+</strong> bugs and deployment issues, leveraging GitHub Actions for CI/CD on Azure.",
+          "Migrated an application from Angular 13 (Modular) to Angular 17 (Standalone Architecture).",
+          "Collaborated with cross-functional teams within Agile/Scrum to deliver high-quality web solutions.",
+        ],
+      },
     ],
   },
 ];
@@ -50,22 +107,38 @@ const experiences: Experience[] = [
       experiences.map((exp) => (
         <div class="relative pl-5 border-l-2 border-muted-dark">
           <div class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-accent" />
-          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-3">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-4">
             <div>
               <h3 class="text-lg sm:text-xl font-semibold">
                 {exp.role}
               </h3>
               <p class="text-sm text-accent font-medium">{exp.company}</p>
             </div>
-            <span class="text-sm text-secondary-dark whitespace-nowrap">
-              {exp.duration}
-            </span>
+            <div class="flex items-baseline gap-2">
+              <span class="text-sm  whitespace-nowrap">
+                {exp.duration}
+              </span>
+              {exp.computed && (
+                <span class="text-xs  whitespace-nowrap">
+                  ({exp.computed})
+                </span>
+              )}
+            </div>
           </div>
-          <ul class="space-y-2 text-sm sm:text-base text-secondary-dark">
-            {exp.highlights.map((item) => (
-              <li class="leading-relaxed" set:html={item} />
+          <div class="space-y-4">
+            {exp.groups.map((group) => (
+              <div>
+                <h4 class="text-xs font-medium uppercase tracking-wider text-accent/70 mb-2">
+                  {group.category}
+                </h4>
+                <ul class="space-y-1.5 text-sm sm:text-base text-secondary-dark">
+                  {group.items.map((item) => (
+                    <li class="leading-relaxed" set:html={item} />
+                  ))}
+                </ul>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       ))
     }

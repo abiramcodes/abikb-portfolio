@@ -71,12 +71,19 @@ function extractRepo(url: string): string {
   const match = url.match(/github\.com\/([^/]+\/[^/]+)/);
   return match ? match[1] : "";
 }
+
+const totalPRs = contributions.reduce((sum, c) => sum + c.url.length, 0);
 ---
 
 <section>
-  <h2 class="text-xl sm:text-2xl font-semibold mb-6">
-    Open Source Contributions
-  </h2>
+  <div class="flex items-baseline justify-between mb-6">
+    <h2 class="text-xl sm:text-2xl font-semibold">
+      Open Source Contributions
+    </h2>
+    <span class="text-sm text-secondary-dark">
+      <strong class="text-accent">{totalPRs}</strong> PRs across <strong class="text-accent">{contributions.length}</strong> projects
+    </span>
+  </div>
   <div class="space-y-5">
     {
       contributions.map((c) => (

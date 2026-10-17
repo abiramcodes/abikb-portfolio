@@ -2,13 +2,21 @@
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
+
+const start = new Date(2021, 11);
+const now = new Date();
+let years = now.getFullYear() - start.getFullYear();
+let months = now.getMonth() - start.getMonth();
+if (months < 0) { years--; months += 12; }
+const exp = months > 0 ? `${years}.${months}` : `${years}`;
 ---
 
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Abiram — Frontend developer with 4.5 years of experience building clean, performant web applications with Angular, React, and modern web technologies." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="description" content={`Abiram — Frontend developer with ${exp} years of experience building clean, performant web applications with Angular, React, and modern web technologies.`} />
     <meta property="og:title" content="Abiram | Portfolio" />
     <meta property="og:description" content="Frontend developer specializing in Angular, React, and modern web technologies." />
     <meta property="og:type" content="website" />
@@ -59,14 +67,16 @@ import "../styles/global.css";
         localStorage.getItem("bg-pattern") || "dots"
       );
 
-      function checkBottom() {
+      function checkScroll() {
+        const scrollY = window.scrollY;
+        document.documentElement.toggleAttribute("data-scrolled", scrollY > 20);
         const atBottom =
-          window.innerHeight + window.scrollY >=
+          window.innerHeight + scrollY >=
           document.documentElement.scrollHeight - 40;
         document.documentElement.toggleAttribute("data-at-bottom", atBottom);
       }
-      window.addEventListener("scroll", checkBottom, { passive: true });
-      checkBottom();
+      window.addEventListener("scroll", checkScroll, { passive: true });
+      checkScroll();
 
       // Dev-only color picker (localhost only)
       if (location.hostname === "localhost") {

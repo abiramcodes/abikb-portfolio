@@ -1,0 +1,59 @@
+---
+interface Project {
+  title: string;
+  description: string;
+  tech: string[];
+  scale: string;
+}
+
+const projects: Project[] = [
+  {
+    title: "Micro Frontend Platform",
+    description: "Architected a Shell + Remote MFE platform with seamless routing, leading a team of 4 developers. Received an Applause Award for delivery.",
+    tech: ["Angular 22", "Native Federation", "React 19", "Module Federation", "Nginx", "Ingress"],
+    scale: "Multi-app platform",
+  },
+  {
+    title: "Large-Scale UI Migration",
+    description: "Migrated PrimeNG to Optimus UI and Angular 21 to 22 with Signal APIs across 8 micro frontend repos, leveraging AI agents for speed.",
+    tech: ["Angular 22", "Optimus UI", "Claude Code", "Copilot"],
+    scale: "Micro Frontends (Multiple Repo's)",
+  },
+  {
+    title: "Framework Modernization",
+    description: "Led Angular 17 to 20 migration with zero defects, earning an Applause Award. Reduced build size and improved runtime performance.",
+    tech: ["Angular 20", "Jest", "Karma", "Standalone APIs"],
+    scale: "Enterprise app",
+  },
+  {
+    title: "State-Driven Dashboard",
+    description: "Built complex UI workflows with NgRx state management, reducing redundant API calls by 50% and page load times by 40%.",
+    tech: ["Angular 15+", "NgRx", "Angular Material", "Azure"],
+    scale: "5+ modules",
+  },
+];
+---
+
+<section class="w-full max-w-2xl mx-auto px-4 sm:px-0">
+  <h2 class="text-xl sm:text-2xl font-semibold mb-6">What I Built at Work</h2>
+  <div class="grid gap-4 sm:grid-cols-2">
+    {
+      projects.map((p) => (
+        <div class="rounded-lg border border-white/10 bg-white/[0.03] p-4 flex flex-col gap-2">
+          <div class="flex items-baseline justify-between gap-2">
+            <h3 class="font-medium text-foreground-dark">{p.title}</h3>
+            <span class="text-xs text-accent whitespace-nowrap">{p.scale}</span>
+          </div>
+          <p class="text-sm text-secondary-dark leading-relaxed">{p.description}</p>
+          <div class="flex flex-wrap gap-1.5 mt-auto pt-2">
+            {p.tech.map((t) => (
+              <span class="text-xs px-2 py-0.5 rounded bg-muted-dark text-secondary-dark">
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>

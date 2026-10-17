@@ -2,11 +2,13 @@
 interface SkillGroup {
   label: string;
   items: string[];
+  primary?: boolean;
 }
 
 const groups: SkillGroup[] = [
   {
     label: "Frontend",
+    primary: true,
     items: [
       "HTML",
       "CSS / SCSS",
@@ -22,7 +24,7 @@ const groups: SkillGroup[] = [
     label: "Libraries & Tools",
     items: [
       "Angular Material",
-      "PrimeNG",
+      "PrimeNG / Optimus UI",
       "Ionic 7+",
       "Git & GitHub",
       "RESTful APIs",
@@ -37,6 +39,15 @@ const groups: SkillGroup[] = [
       "Module Federation",
       "Rspack",
       "Figma (Basic)",
+    ],
+  },
+  {
+    label: "AI Tools",
+    items: [
+      "Claude Code",
+      "GitHub Copilot / Copilot CLI",
+      "Open Code",
+      "Custom AI Agents",
     ],
   },
   {
@@ -57,12 +68,12 @@ const groups: SkillGroup[] = [
     {
       groups.map((group) => (
         <div>
-          <h3 class="text-sm font-medium text-secondary-dark mb-2">
+          <h3 class={`text-sm font-medium mb-2 ${group.primary ? "text-accent" : "text-secondary-dark"}`}>
             {group.label}
           </h3>
           <div class="flex flex-wrap gap-2">
             {group.items.map((skill) => (
-              <span class="text-sm px-2.5 py-1 rounded-md bg-muted-dark text-foreground-dark">
+              <span class={`text-sm px-2.5 py-1 rounded-md ${group.primary ? "bg-accent/15 text-accent font-medium" : "bg-muted-dark text-foreground-dark"}`}>
                 {skill}
               </span>
             ))}
