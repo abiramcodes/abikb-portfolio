@@ -63,6 +63,63 @@ const contributions: Contribution[] = [
   },
 ];
 
+interface RepoMeta {
+  description: string;
+  language: string | null;
+}
+
+// Snapshots from the GitHub API, used when a build-time fetch fails
+// or rate-limits so the hover card never renders empty.
+const FALLBACK_META: Record<string, RepoMeta> = {
+  "pangular-inspector/devtools": {
+    description: "Angular DevTools: inspect components, signals, DI, and routes. Runs as a Chrome extension and standalone app.",
+    language: "TypeScript",
+  },
+  "spartan-ng/spartan": {
+    description: "Cutting-edge tools powering Angular full-stack development.",
+    language: "TypeScript",
+  },
+  "ng-primitives/ng-primitives": {
+    description: "Headless, composable primitives for building accessible UI components in Angular.",
+    language: "TypeScript",
+  },
+  "ng-icons/ng-icons": {
+    description: "The ultimate icon library for Angular",
+    language: "TypeScript",
+  },
+  "freeCodeCamp/freeCodeCamp": {
+    description: "freeCodeCamp.org's open-source codebase and curriculum. Learn math, programming, and computer science.",
+    language: "TypeScript",
+  },
+  "carbon-design-system/carbon-components-angular": {
+    description: "An Angular implementation of the Carbon Design System for IBM.",
+    language: "TypeScript",
+  },
+};
+
+async function fetchRepoMeta(slug: string): Promise<RepoMeta> {
+  // Dev renders per-request: hitting the API there would stall every
+  // page load. Snapshots keep dev instant; production builds (one
+  // prerender per deploy) still fetch fresh data, capped by timeout.
+  if (import.meta.env.DEV) return FALLBACK_META[slug] ?? { description: "", language: null };
+  try {
+    const res = await fetch(`https://api.github.com/repos/${slug}`, {
+      headers: { Accept: "application/vnd.github+json", "User-Agent": "abikb-portfolio-build" },
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!res.ok) throw new Error(String(res.status));
+    const d: any = await res.json();
+    return {
+      description: d.description ?? FALLBACK_META[slug]?.description ?? "",
+      language: d.language ?? null,
+    };
+  } catch {
+    return FALLBACK_META[slug] ?? { description: "", language: null };
+  }
+}
+
+
+
 function extractPrNumber(url: string): string {
   return "#" + url.split("/pull/")[1];
 }
@@ -73,27 +130,32 @@ function extractRepo(url: string): string {
 }
 
 const totalPRs = contributions.reduce((sum, c) => sum + c.url.length, 0);
+
+const metaEntries = await Promise.all(
+  contributions.map(async (c) => {
+    const slug = extractRepo(c.projectUrl);
+    return [slug, await fetchRepoMeta(slug)] as const;
+  }),
+);
+const metaByRepo: Record<string, RepoMeta> = Object.fromEntries(metaEntries);
 ---
 
 <section>
-  <div class="flex items-baseline justify-between mb-6">
-    <h2 class="text-xl sm:text-2xl font-semibold">
-      Open Source Contributions
-    </h2>
-    <span class="text-sm text-secondary-dark">
-      <strong class="text-accent">{totalPRs}</strong> PRs across <strong class="text-accent">{contributions.length}</strong> projects
-    </span>
-  </div>
-  <div class="space-y-5">
+  <p class="text-sm text-secondary-dark mb-2" data-reveal>
+    <strong class="text-accent font-semibold">{totalPRs} PRs</strong> merged across{" "}
+    <strong class="text-accent font-semibold">{contributions.length} projects</strong>
+  </p>
+  <div>
     {
-      contributions.map((c) => (
-        <div class="flex flex-col gap-1.5">
-          <div class="flex items-baseline justify-between gap-2">
+      contributions.map((c, i) => (
+        <div class="group relative py-5 border-t border-line" data-reveal style={`--index:${i}`}>
+          <div class="flex items-baseline justify-between gap-2 mb-2">
             <a
               href={c.projectUrl}
               target="_blank"
               rel="noopener noreferrer"
               class="font-medium text-foreground-dark hover:text-accent transition"
+              aria-describedby={`repo-card-${i}`}
             >
               {extractRepo(c.projectUrl)}
               <svg
@@ -106,22 +168,37 @@ const totalPRs = contributions.reduce((sum, c) => sum + c.url.length, 0);
                 <path d="M7 17L17 7M17 7H7M17 7v10" />
               </svg>
             </a>
-            <span class="text-xs text-secondary-dark whitespace-nowrap">
+            <span class="font-mono text-xs text-secondary-dark whitespace-nowrap">
               {c.url.length} {c.url.length === 1 ? "PR" : "PRs"}
             </span>
           </div>
-          <div class="flex flex-wrap gap-x-2 gap-y-1 text-sm">
+          <div class="flex flex-wrap gap-1.5">
             {c.url.map((url) => (
               <a
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-accent hover:brightness-125 hover:underline underline-offset-2 transition"
+                class="font-mono text-xs px-2 py-1 rounded-full bg-surface-2 border border-line text-accent hover:border-accent transition"
               >
                 {extractPrNumber(url)}
               </a>
             ))}
           </div>
+          {(() => {
+            const meta = metaByRepo[extractRepo(c.projectUrl)];
+            return meta && meta.description ? (
+              <div
+                id={`repo-card-${i}`}
+                role="note"
+                class="hover-card absolute left-0 top-full z-20 mt-1 w-[min(20rem,80vw)] rounded-xl border border-line bg-surface p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
+              >
+                <p class="text-sm text-secondary-dark leading-relaxed">{meta.description}</p>
+                <div class="flex flex-wrap gap-x-4 gap-y-1 mt-3 font-mono text-xs text-secondary-dark">
+                  {meta.language && <span>{meta.language}</span>}
+                </div>
+              </div>
+            ) : null;
+          })()}
         </div>
       ))
     }

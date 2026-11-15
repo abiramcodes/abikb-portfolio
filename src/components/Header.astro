@@ -1,4 +1,5 @@
 ---
+import { Moon, Sun } from "@lucide/astro";
 import { SITE_TITLE } from "../consts";
 import Center from "./Center.astro";
 
@@ -7,32 +8,50 @@ interface Props {
 }
 
 const { title = SITE_TITLE } = Astro.props;
+
+const githubIcon =
+  "M12.006 2a9.847 9.847 0 0 0-6.484 2.44 10.32 10.32 0 0 0-3.393 6.17 10.48 10.48 0 0 0 1.317 6.955 10.045 10.045 0 0 0 5.4 4.418c.504.095.683-.223.683-.494 0-.245-.01-1.052-.014-1.908-2.78.62-3.366-1.21-3.366-1.21a2.711 2.711 0 0 0-1.11-1.5c-.907-.637.07-.621.07-.621.317.044.62.163.885.346.266.183.487.426.647.71.135.253.318.476.538.655a2.079 2.079 0 0 0 2.37.196c.045-.52.27-1.006.635-1.37-2.219-.259-4.554-1.138-4.554-5.07a4.022 4.022 0 0 1 1.031-2.75 3.77 3.77 0 0 1 .096-2.713s.839-.275 2.749 1.05a9.26 9.26 0 0 1 5.004 0c1.906-1.325 2.74-1.05 2.74-1.05.37.858.406 1.828.101 2.713a4.017 4.017 0 0 1 1.029 2.75c0 3.939-2.339 4.805-4.564 5.058a2.471 2.471 0 0 1 .679 1.897c0 1.372-.012 2.477-.012 2.814 0 .272.18.592.687.492a10.05 10.05 0 0 0 5.388-4.421 10.473 10.473 0 0 0 1.313-6.948 10.32 10.32 0 0 0-3.39-6.165A9.847 9.847 0 0 0 12.007 2Z";
 ---
 
 <Center>
   <header
-    class="w-full max-w-2xl mx-auto flex items-center justify-between min-w-0 mt-4 px-4 sm:px-0"
+    class="w-full max-w-3xl mx-auto flex items-center justify-between min-w-0 mt-4 px-4 sm:px-0"
   >
     <a
       href="/"
-      class="text-2xl font-bold text-foreground-dark truncate"
+      class="font-display text-3xl text-foreground-dark truncate"
     >
       {title}<span class="text-accent">.</span>
     </a>
 
-    <!-- Desktop inline nav -->
-    <nav class="hidden sm:flex items-center gap-6 text-sm">
-      <a href="/" class="nav-link">Home</a>
-      <a href="/projects" class="nav-link">Projects</a>
-      <a href="/experience" class="nav-link">Experience</a>
-    </nav>
+    <div class="flex items-center gap-5">
+      <!-- Desktop inline nav -->
+      <nav class="hidden sm:flex items-center gap-6 text-sm">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/projects" class="nav-link">Projects</a>
+        <a href="/experience" class="nav-link">Experience</a>
+        <a href="/open-source" class="nav-link">Open Source</a>
+        <a href="/skills" class="nav-link">Skills</a>
+      </nav>
+
+      <button
+        id="theme-toggle"
+        type="button"
+        class="theme-toggle"
+        aria-label="Toggle color theme"
+        title="Toggle color theme"
+      >
+        <Moon class="theme-icon-moon" size={20} stroke-width={1.8} aria-hidden="true" />
+        <Sun class="theme-icon-sun" size={20} stroke-width={1.8} aria-hidden="true" />
+      </button>
+    </div>
   </header>
 </Center>
 
 <!-- Floating bottom dock (mobile) -->
 <nav
   id="bottom-dock"
-  class="sm:hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 px-2 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl"
+  class="sm:hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 flex items-center gap-0.5 px-1.5 py-1.5 rounded-full border border-line bg-surface/90 backdrop-blur-xl"
 >
   <a href="/" class="dock-item" data-page="/">
     <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -50,7 +69,19 @@ const { title = SITE_TITLE } = Astro.props;
     <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m8 0H8m8 0a2 2 0 012 2v1M8 6a2 2 0 00-2 2v1" />
     </svg>
-    <span>Experience</span>
+    <span>Work</span>
+  </a>
+  <a href="/open-source" class="dock-item" data-page="/open-source">
+    <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path fill-rule="evenodd" d={githubIcon} clip-rule="evenodd" />
+    </svg>
+    <span>OSS</span>
+  </a>
+  <a href="/skills" class="dock-item" data-page="/skills">
+    <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="m8 8-4 4 4 4m8-8 4 4-4 4" />
+    </svg>
+    <span>Skills</span>
   </a>
 </nav>
 
@@ -66,43 +97,110 @@ const { title = SITE_TITLE } = Astro.props;
     });
   }
   markActiveRoute();
+
+  // Theme toggle. Resolved theme = explicit attribute if present,
+  // otherwise the OS preference — a missing attribute must never be
+  // assumed to mean light, or the first click under a dark OS would
+  // "switch" to the already-visible dark and look broken.
+  const rootEl = document.documentElement;
+  const systemQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+  function resolvedTheme(): string {
+    const attr = rootEl.getAttribute("data-theme");
+    if (attr === "dark" || attr === "light") return attr;
+    return systemQuery.matches ? "dark" : "light";
+  }
+
+  function storedTheme(): string | null {
+    try {
+      return localStorage.getItem("theme");
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function applyTheme(target: string, animate: boolean) {
+    if (animate) rootEl.classList.add("theme-anim");
+    rootEl.setAttribute("data-theme", target);
+    if (animate) window.setTimeout(() => rootEl.classList.remove("theme-anim"), 500);
+  }
+
+  // Heal any missing attribute up front so icon state and the first
+  // click both start from the truth.
+  applyTheme(resolvedTheme(), false);
+
+  const toggle = document.getElementById("theme-toggle");
+  toggle?.addEventListener("click", () => {
+    const target = resolvedTheme() === "dark" ? "light" : "dark";
+    try {
+      // Store only when diverging from the OS; matching it clears the
+      // override so the site follows the system again.
+      if (target === (systemQuery.matches ? "dark" : "light")) localStorage.removeItem("theme");
+      else localStorage.setItem("theme", target);
+    } catch (e) {
+      /* storage unavailable: theme still applies for this page */
+    }
+    applyTheme(target, true);
+  });
+
+  // Follow live OS changes only while the user hasn't pinned a choice.
+  systemQuery.addEventListener("change", () => {
+    if (!storedTheme()) applyTheme(systemQuery.matches ? "dark" : "light", true);
+  });
 </script>
 
 <style>
   .nav-link {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--muted-text);
     transition: color 0.2s var(--ease-out);
   }
   .nav-link.active {
-    color: var(--accent-color, #839788);
+    color: var(--accent);
   }
   @media (hover: hover) and (pointer: fine) {
     .nav-link:hover {
-      color: var(--accent-color, #839788);
+      color: var(--accent);
+    }
+  }
+
+  .theme-toggle {
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    color: var(--muted-text);
+    border: 1px solid var(--line);
+    background: var(--surface);
+    cursor: pointer;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .theme-toggle:hover {
+      color: var(--accent);
     }
   }
 
   .dock-item {
     display: flex;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0.45rem 0.75rem;
+    gap: 0.3rem;
+    padding: 0.45rem 0.6rem;
     border-radius: 9999px;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--muted-text);
     transition:
       color 0.2s var(--ease-out),
       background-color 0.2s var(--ease-out);
   }
   @media (hover: hover) and (pointer: fine) {
     .dock-item:hover {
-      color: rgba(255, 255, 255, 0.8);
-      background: rgba(255, 255, 255, 0.06);
+      color: var(--ink);
+      background: var(--surface-2);
     }
   }
   .dock-item.active {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1);
+    color: var(--accent);
+    background: var(--accent-bg);
   }
 </style>

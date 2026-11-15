@@ -5,53 +5,80 @@ import "../styles/global.css";
 
 import { getExperience } from "../utils/experience.ts";
 
+interface Props {
+  title?: string;
+  description?: string;
+}
+
 const { exp } = getExperience();
+
+const {
+  title = "Abiram | Portfolio",
+  description = `Abiram — Frontend developer with ${exp} years of experience building clean, performant web applications with Angular, React, and modern web technologies.`,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL("/og.png", Astro.site).href;
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Abiram",
+  url: "https://www.abikb.xyz",
+  jobTitle: "Frontend Engineer",
+  worksFor: { "@type": "Organization", name: "Deloitte USI" },
+  sameAs: [
+    "https://www.github.com/abiramcodes",
+    "https://www.linkedin.com/in/abirama-kannan-baskar",
+    "https://x.com/abiramcodes",
+  ],
+};
 ---
 
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fcfcfa" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101214" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="description" content={`Abiram — Frontend developer with ${exp} years of experience building clean, performant web applications with Angular, React, and modern web technologies.`} />
-    <meta property="og:title" content="Abiram | Portfolio" />
-    <meta property="og:description" content="Frontend developer specializing in Angular, React, and modern web technologies." />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <title>Abiram | Portfolio</title>
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <title>{title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
     <script is:inline>
+      // Resolve the theme before first paint: stored choice wins,
+      // otherwise follow the OS. Also flag JS so reveal states only
+      // hide content when they can be revealed again.
       (function () {
         var d = document.documentElement;
-
-        var palette = [
-          { bg: "#0f172a", accent: "#7dd3fc", name: "Deep Navy" },
-          { bg: "#1a1a2e", accent: "#a78bfa", name: "Charcoal" },
-          { bg: "#0d1b2a", accent: "#67e8f9", name: "Dark Teal" },
-          { bg: "#064e3b", accent: "#fbbf24", name: "Emerald" },
-          { bg: "#1e1b4b", accent: "#c4b5fd", name: "Deep Purple" },
-          { bg: "#172554", accent: "#93c5fd", name: "Midnight Blue" },
-          { bg: "#450a0a", accent: "#fca5a5", name: "Burgundy" },
-          { bg: "#1c1917", accent: "#d6d3d1", name: "Warm Stone" },
-          { bg: "#164e63", accent: "#5eead4", name: "Deep Cyan" },
-          { bg: "#1e3a5f", accent: "#7dd3fc", name: "Ocean Blue" },
-          { bg: "#2d1b69", accent: "#d8b4fe", name: "Royal Violet" },
-          { bg: "#14532d", accent: "#fcd34d", name: "Forest Green" },
-        ];
-
-        // Fresh pick on every full page load.
-        var idx = Math.floor(Math.random() * palette.length);
-        var chosen = palette[idx];
-        d.style.setProperty("--bg-color-dark", chosen.bg);
-        d.style.setProperty("--accent-color", chosen.accent);
-        d.classList.add("dark");
-        d.setAttribute("data-random-bg", "true");
-        d.setAttribute("data-color-idx", String(idx));
-
-        window.__palette = palette;
+        d.classList.add("js");
+        try {
+          var stored = localStorage.getItem("theme");
+          var dark = stored
+            ? stored === "dark"
+            : window.matchMedia("(prefers-color-scheme: dark)").matches;
+          d.setAttribute("data-theme", dark ? "dark" : "light");
+        } catch (e) {
+          d.setAttribute("data-theme", "light");
+        }
       })();
     </script>
   </head>
   <body
-    class="font-mont bg-background-dark text-foreground-dark flex flex-col min-h-screen text-sm sm:text-base"
+    class="font-sans bg-background-dark text-foreground-dark flex flex-col min-h-screen text-sm sm:text-base antialiased"
   >
     <Header />
     <main class="pt-10">
@@ -60,11 +87,6 @@ const { exp } = getExperience();
     </main>
 
     <script>
-      document.body.setAttribute(
-        "data-pattern",
-        localStorage.getItem("bg-pattern") || "dots"
-      );
-
       function checkScroll() {
         const scrollY = window.scrollY;
         document.documentElement.toggleAttribute("data-scrolled", scrollY > 20);
@@ -76,68 +98,24 @@ const { exp } = getExperience();
       window.addEventListener("scroll", checkScroll, { passive: true });
       checkScroll();
 
-      // Dev-only color picker (localhost only)
-      if (location.hostname === "localhost") {
-        const palette = (window as any).__palette as {
-          bg: string;
-          accent: string;
-          name: string;
-        }[];
-        if (palette) {
-          const currentIdx =
-            document.documentElement.getAttribute("data-color-idx") || "0";
-
-          const wrapper = document.createElement("div");
-          wrapper.id = "dev-color-picker";
-          Object.assign(wrapper.style, {
-            position: "fixed",
-            top: "1.5rem",
-            right: "1.5rem",
-            display: "flex",
-            alignItems: "center",
-            gap: "0.4rem",
-            padding: "0.3rem 0.5rem",
-            borderRadius: "0.5rem",
-            background: "rgba(0,0,0,0.7)",
-            backdropFilter: "blur(8px)",
-            zIndex: "9999",
-            fontSize: "0.7rem",
-            color: "#aaa",
-          });
-          wrapper.innerHTML = `<label>BG</label>`;
-
-          const select = document.createElement("select");
-          Object.assign(select.style, {
-            background: "rgba(255,255,255,0.1)",
-            color: "#fff",
-            border: "1px solid rgba(255,255,255,0.15)",
-            borderRadius: "0.25rem",
-            padding: "0.2rem 0.4rem",
-            fontSize: "0.7rem",
-            cursor: "pointer",
-          });
-          palette.forEach((p, i) => {
-            const opt = document.createElement("option");
-            opt.value = String(i);
-            opt.textContent = p.name;
-            opt.style.backgroundColor = p.bg;
-            opt.style.color = p.accent;
-            if (String(i) === currentIdx) opt.selected = true;
-            select.appendChild(opt);
-          });
-
-          select.addEventListener("change", () => {
-            const idx = parseInt(select.value, 10);
-            const chosen = palette[idx];
-            const d = document.documentElement;
-            d.style.setProperty("--bg-color-dark", chosen.bg);
-            d.style.setProperty("--accent-color", chosen.accent);
-            d.setAttribute("data-color-idx", String(idx));
-          });
-
-          wrapper.appendChild(select);
-          document.body.appendChild(wrapper);
-        }
+      // Scroll-entry reveals. Content is visible by default; the head
+      // script's `js` class enables the hidden start state, and this
+      // observer resolves it as blocks enter the viewport.
+      if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("revealed");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12 },
+        );
+        document.querySelectorAll("[data-reveal]").forEach((el) => observer.observe(el));
+      } else {
+        document.querySelectorAll("[data-reveal]").forEach((el) => el.classList.add("revealed"));
       }
     </script>
 

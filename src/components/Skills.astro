@@ -47,7 +47,9 @@ const groups: SkillGroup[] = [
       "Claude Code",
       "GitHub Copilot / Copilot CLI",
       "Open Code",
+      "Cursor / Cursor CLI",
       "Custom AI Agents",
+      "Muse Code"
     ],
   },
   {
@@ -63,17 +65,20 @@ const groups: SkillGroup[] = [
 ---
 
 <section>
-  <h2 class="text-xl sm:text-2xl font-semibold mb-6">Skills</h2>
-  <div class="space-y-5">
+  <div>
     {
-      groups.map((group) => (
-        <div>
-          <h3 class={`text-sm font-medium mb-2 ${group.primary ? "text-accent" : "text-secondary-dark"}`}>
+      groups.map((group, i) => (
+        <div
+          class="grid sm:grid-cols-[160px_1fr] gap-2 sm:gap-6 py-5 border-t border-line"
+          data-reveal
+          style={`--index:${i}`}
+        >
+          <h3 class={`font-mono text-xs uppercase tracking-[0.08em] pt-1 ${group.primary ? "text-accent" : "text-secondary-dark"}`}>
             {group.label}
           </h3>
-          <div class="flex flex-wrap gap-2">
+          <div class="flex flex-wrap gap-1.5">
             {group.items.map((skill) => (
-              <span class={`text-sm px-2.5 py-1 rounded-md ${group.primary ? "bg-accent/15 text-accent font-medium" : "bg-muted-dark text-foreground-dark"}`}>
+              <span class={`text-sm px-2.5 py-1 rounded-full border border-line ${group.primary ? "bg-accent-2bg text-accent-2 font-medium" : "bg-surface-2 text-foreground-dark"}`}>
                 {skill}
               </span>
             ))}

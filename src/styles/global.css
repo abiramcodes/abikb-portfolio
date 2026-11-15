@@ -2,10 +2,60 @@
 @config "../../tailwind.config.mjs";
 @plugin "@tailwindcss/typography";
 
+/* ── Self-hosted fonts (SIL Open Font License 1.1, see LICENSE files) ── */
 @font-face {
-  font-family: "Montserrat";
-  src: url("/fonts/Montserrat-VariableFont_wght.ttf");
-  font-weight: 100 900;
+  font-family: "Geist Sans";
+  src: url("/fonts/geist-sans-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Sans";
+  src: url("/fonts/geist-sans-latin-500-normal.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Sans";
+  src: url("/fonts/geist-sans-latin-600-normal.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Sans";
+  src: url("/fonts/geist-sans-latin-700-normal.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/geist-mono-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/geist-mono-latin-500-normal.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/geist-mono-latin-600-normal.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/geist-mono-latin-700-normal.woff2") format("woff2");
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
@@ -14,6 +64,53 @@
   :root {
     --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
     --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
+    /* Light (default) — Editor Ink: green = links, amber = tags, clay = rare */
+    color-scheme: light;
+    --bg: #fcfcfa;
+    --surface: #ffffff;
+    --surface-2: #f4f4f0;
+    --ink: #1a1d1a;
+    --muted-text: #5f645e;
+    --line: #e6e8e3;
+    --accent: #3e7c4f;
+    --accent-bg: #eff5ec;
+    --accent-2: #8a6108;
+    --accent-2-bg: #f7eed3;
+    --clay: #a6502b;
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #101214;
+    --surface: #17191c;
+    --surface-2: #1e2126;
+    --ink: #edefea;
+    --muted-text: #8a918a;
+    --line: rgba(255, 255, 255, 0.08);
+    --accent: #8cc084;
+    --accent-bg: rgba(140, 192, 132, 0.13);
+    --accent-2: #d9b45b;
+    --accent-2-bg: rgba(217, 180, 91, 0.13);
+    --clay: #d89b7d;
+  }
+
+  /* No-JS fallback: follow the OS when the theme script never ran. */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+      color-scheme: dark;
+      --bg: #101214;
+      --surface: #17191c;
+      --surface-2: #1e2126;
+      --ink: #edefea;
+      --muted-text: #8a918a;
+      --line: rgba(255, 255, 255, 0.08);
+      --accent: #8cc084;
+      --accent-bg: rgba(140, 192, 132, 0.13);
+      --accent-2: #d9b45b;
+      --accent-2-bg: rgba(217, 180, 91, 0.13);
+      --clay: #d89b7d;
+    }
   }
 
   html {
@@ -33,34 +130,45 @@
   }
 
   body {
-    font-family: "Montserrat", sans-serif;
+    font-family: "Geist Sans", "Helvetica Neue", Arial, sans-serif;
     line-height: 1.6;
-    background-attachment: fixed;
+    background-color: var(--bg);
+    color: var(--ink);
   }
 
-  /* ── Hero entrance — the single orchestrated moment ── */
-  .hero-reveal {
-    clip-path: inset(0 0 100% 0);
-    animation: hero-enter 0.6s var(--ease-in-out) 0.1s forwards;
+  /* ── Theme change crossfade (class present only during a toggle) ── */
+  html.theme-anim body,
+  html.theme-anim body *,
+  html.theme-anim body *::before,
+  html.theme-anim body *::after {
+    transition:
+      background-color 500ms var(--ease-in-out),
+      color 500ms var(--ease-in-out),
+      border-color 500ms var(--ease-in-out),
+      fill 500ms var(--ease-in-out),
+      stroke 500ms var(--ease-in-out) !important;
   }
 
-  @keyframes hero-enter {
-    to {
-      clip-path: inset(0 0 0 0);
+  /* Surfaces trail the page fade by a beat. */
+  html.theme-anim body article,
+  html.theme-anim body header,
+  html.theme-anim body #bottom-dock {
+    transition-delay: 40ms;
+  }
+
+  /* ── Scroll entry reveal ── */
+  @media (prefers-reduced-motion: no-preference) {
+    html.js [data-reveal] {
+      opacity: 0;
+      transform: translateY(12px);
     }
-  }
-
-  /* ── Bottom dock entrance ── */
-  #bottom-dock {
-    transform: translateY(100%);
-    opacity: 0;
-    animation: dock-enter 0.4s var(--ease-out) 0.5s forwards;
-  }
-
-  @keyframes dock-enter {
-    to {
-      transform: translateY(0);
+    html.js [data-reveal].revealed {
       opacity: 1;
+      transform: none;
+      transition:
+        opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: calc(var(--index, 0) * 80ms);
     }
   }
 
@@ -88,50 +196,21 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-reveal {
-      clip-path: none;
-      animation: none;
-    }
-    #bottom-dock {
-      transform: none;
-      opacity: 1;
-      animation: none;
-    }
     button:active,
     a:active,
     [role="button"]:active {
       transform: none;
     }
+    /* Theme changes keep a short color fade, nothing spatial. */
+    html.theme-anim body,
+    html.theme-anim body *,
+    html.theme-anim body *::before,
+    html.theme-anim body *::after {
+      transition-duration: 150ms !important;
+    }
   }
 
-  /* ── Dot grid ── */
-  body[data-pattern="dots"] {
-    background-image:
-      radial-gradient(ellipse 800px 600px at 50% 0%, rgba(131, 151, 136, 0.18), transparent),
-      radial-gradient(ellipse 600px 500px at 80% 50%, rgba(131, 151, 136, 0.1), transparent),
-      radial-gradient(circle, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
-    background-size: 100%, 100%, 24px 24px, 300px 300px;
-  }
-
-  /* ── Cross grid ── */
-  body[data-pattern="cross"] {
-    background-image:
-      radial-gradient(ellipse 800px 600px at 50% 0%, rgba(131, 151, 136, 0.18), transparent),
-      radial-gradient(ellipse 600px 500px at 80% 50%, rgba(131, 151, 136, 0.1), transparent),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M12 9v6M9 12h6' stroke='rgba(255,255,255,0.12)' fill='none'/%3E%3C/svg%3E");
-    background-size: 100%, 100%, 24px 24px;
-  }
-
-  /* ── Noise texture ── */
-  body[data-pattern="noise"] {
-    background-image:
-      radial-gradient(ellipse 800px 600px at 50% 0%, rgba(131, 151, 136, 0.18), transparent),
-      radial-gradient(ellipse 600px 500px at 80% 50%, rgba(131, 151, 136, 0.1), transparent),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
-    background-size: 100%, 100%, 300px 300px;
-  }
-
+  /* ── Scroll edge fades ── */
   body::before {
     content: "";
     position: fixed;
@@ -139,7 +218,7 @@
     left: 0;
     right: 0;
     height: 6rem;
-    background: linear-gradient(to top, transparent, var(--bg-color-dark, #222325));
+    background: linear-gradient(to top, transparent, var(--bg));
     pointer-events: none;
     z-index: 10;
     opacity: 0;
@@ -157,7 +236,7 @@
     left: 0;
     right: 0;
     height: 6rem;
-    background: linear-gradient(to bottom, transparent, var(--bg-color-dark, #222325));
+    background: linear-gradient(to bottom, transparent, var(--bg));
     pointer-events: none;
     z-index: 10;
     opacity: 1;
@@ -169,14 +248,80 @@
   }
 }
 
-/* ── Boost text contrast on random solid backgrounds ──
-   Un-layered so these override @layer utilities */
-html[data-random-bg] .text-secondary-dark {
-  color: #d1d5db;
+/* ── Theme toggle icons — unlayered so they always win over
+   preflight/utility rules. Both icons stack in the button and
+   crossfade/rotate between states; visibility keeps exactly one
+   perceivable at rest. Overshoot lives only on this 20px icon. ── */
+html .theme-toggle {
+  display: grid;
+  place-items: center;
 }
-html[data-random-bg] .bg-muted-dark {
-  background-color: rgba(255, 255, 255, 0.08);
+html .theme-toggle .theme-icon-sun,
+html .theme-toggle .theme-icon-moon {
+  grid-area: 1 / 1;
+  justify-self: center;
+  align-self: center;
+  transition:
+    opacity 300ms var(--ease-in-out),
+    transform 300ms var(--ease-in-out),
+    visibility 0s linear 320ms;
 }
-html[data-random-bg] .border-muted-dark {
-  border-color: rgba(255, 255, 255, 0.1);
+html .theme-icon-moon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+  visibility: visible;
+  transition-delay: 0s, 0s, 0s;
+}
+html .theme-icon-sun {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.6);
+  visibility: hidden;
+}
+html[data-theme="dark"] .theme-icon-moon {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.6);
+  visibility: hidden;
+}
+html[data-theme="dark"] .theme-icon-sun {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+  visibility: visible;
+  transition-delay: 0s, 0s, 0s;
+}
+
+html .theme-toggle:active {
+  transform: scale(0.92);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html .theme-toggle .theme-icon-sun,
+  html .theme-toggle .theme-icon-moon {
+    transition: none;
+  }
+}
+
+/* ── Hover metadata cards (open-source titles, social icons) ── */
+.hover-card {
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition:
+    opacity 180ms var(--ease-out),
+    transform 180ms var(--ease-out);
+}
+.group:focus-within .hover-card {
+  opacity: 1;
+  transform: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .group:hover .hover-card {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hover-card {
+    transition: none;
+    transform: none;
+  }
 }

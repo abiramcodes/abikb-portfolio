@@ -1,6 +1,6 @@
-# PROJECT.md — exp staleness fix (Draft)
+# PROJECT.md — exp staleness fix (Final)
 
-> Status: **Draft** — not accepted. Do not implement beyond this record until scope is accepted and a separate implementation request is made.
+> Status: **Final** — accepted by owner and implemented (single source of truth in `src/utils/experience.ts`, verified by build). Kept as the decision record.
 
 ## Problem
 - `src/pages/index.astro` hero ("Frontend engineer with {exp} years") and `src/layouts/BaseLayout.astro` meta description compute `exp` with `new Date()` in frontmatter.

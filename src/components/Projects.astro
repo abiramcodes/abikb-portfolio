@@ -38,16 +38,19 @@ const projects: Project[] = [
 ];
 ---
 
-<section class="w-full max-w-2xl mx-auto px-4 sm:px-0">
-  <h2 class="text-xl sm:text-2xl font-semibold mb-6">Projects</h2>
+<section class="w-full max-w-3xl mx-auto px-4 sm:px-0">
+  <h2 class="font-display text-4xl sm:text-5xl tracking-[-0.02em] mb-3">Side Projects</h2>
+  <p class="text-secondary-dark mb-8" data-reveal>Small tools and demos, built in the open.</p>
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     {
-      projects.map((project) => (
+      projects.map((project, i) => (
         <a
           href={project.link}
           target="_blank"
           rel="noopener noreferrer"
-          class="group flex flex-col gap-2 p-4 rounded-lg border border-muted-dark hover:border-accent transition"
+          class="group flex flex-col gap-2 p-5 rounded-xl border border-line bg-surface hover:border-accent transition"
+          data-reveal
+          style={`--index:${i}`}
         >
           <div class="flex items-baseline justify-between gap-2">
             <h3 class="font-semibold text-foreground-dark group-hover:text-accent transition">

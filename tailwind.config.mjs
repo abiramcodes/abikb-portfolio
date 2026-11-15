@@ -1,29 +1,40 @@
 /** @type {import('tailwindcss').Config} */
 
 export default {
-  darkMode: "class",
+  darkMode: ["class", '[data-theme="dark"]'],
   content: ["./src/**/*.{astro,html,js,ts,jsx,tsx,vue,svelte,mdx,md}"],
   theme: {
     extend: {
       colors: {
         background: {
-          dark: "var(--bg-color-dark, #222325)",
+          dark: "var(--bg)",
         },
         foreground: {
-          dark: "#f9fafb",
+          dark: "var(--ink)",
         },
         muted: {
-          dark: "#1f2937",
+          dark: "var(--surface-2)",
         },
         secondary: {
-          dark: "#9ca3af",
+          dark: "var(--muted-text)",
         },
+        surface: {
+          DEFAULT: "var(--surface)",
+          2: "var(--surface-2)",
+        },
+        line: "var(--line)",
         accent: {
-          DEFAULT: "var(--accent-color, #839788)",
+          DEFAULT: "var(--accent)",
+          bg: "var(--accent-bg)",
+          2: "var(--accent-2)",
+          "2bg": "var(--accent-2-bg)",
         },
+        clay: "var(--clay)",
       },
       fontFamily: {
-        mont: ["Montserrat", "sans-serif"],
+        sans: ["Geist Sans", "Helvetica Neue", "Arial", "sans-serif"],
+        display: ["Geist Mono", "ui-monospace", "SF Mono", "Menlo", "monospace"],
+        mono: ["Geist Mono", "ui-monospace", "SF Mono", "Menlo", "monospace"],
       },
       typography: (theme) => ({
         DEFAULT: {

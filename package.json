@@ -10,8 +10,11 @@
     "remove:dev": "astro preferences disable devToolbar"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.5",
+    "@lucide/astro": "^1.73.0",
     "@tailwindcss/typography": "^0.5.19",
     "astro": "^7.4.0",
+    "cookie": "^2.0.2",
     "sharp": "^0.34.3"
   },
   "devDependencies": {
