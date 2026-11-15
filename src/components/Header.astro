@@ -55,15 +55,17 @@ const { title = SITE_TITLE } = Astro.props;
 </nav>
 
 <script>
-  const path = window.location.pathname.replace(/\/$/, "") || "/";
-  document.querySelectorAll<HTMLAnchorElement>(".dock-item").forEach((el) => {
-    const page = el.dataset.page || "/";
-    if (page === path) el.classList.add("active");
-  });
-  document.querySelectorAll<HTMLAnchorElement>(".nav-link").forEach((el) => {
-    const href = (el.getAttribute("href") || "/").replace(/\/$/, "") || "/";
-    if (href === path) el.classList.add("active");
-  });
+  function markActiveRoute() {
+    const path = window.location.pathname.replace(/\/$/, "") || "/";
+    document.querySelectorAll<HTMLAnchorElement>(".dock-item").forEach((el) => {
+      el.classList.toggle("active", (el.dataset.page || "/") === path);
+    });
+    document.querySelectorAll<HTMLAnchorElement>(".nav-link").forEach((el) => {
+      const href = (el.getAttribute("href") || "/").replace(/\/$/, "") || "/";
+      el.classList.toggle("active", href === path);
+    });
+  }
+  markActiveRoute();
 </script>
 
 <style>

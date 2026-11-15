@@ -132,20 +132,6 @@
     background-size: 100%, 100%, 300px 300px;
   }
 
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: fade 0.25s var(--ease-in-out);
-  }
-
-  @keyframes fade {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
   body::before {
     content: "";
     position: fixed;

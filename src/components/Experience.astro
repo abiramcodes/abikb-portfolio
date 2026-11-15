@@ -1,4 +1,6 @@
 ---
+import { computeDuration } from "../utils/experience.ts";
+
 interface HighlightGroup {
   category: string;
   items: string[];
@@ -8,28 +10,10 @@ interface Experience {
   company: string;
   role: string;
   duration: string;
+  start: string;
+  end: string;
   computed?: string;
   groups: HighlightGroup[];
-}
-
-function computeDuration(startStr: string, endStr: string): string {
-  const parse = (s: string) => {
-    const [mon, yr] = s.trim().split(" ");
-    const months: Record<string, number> = {
-      Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
-      Jul: 6, Aug: 7, Sep: 8, Sept: 8, Oct: 9, Nov: 10, Dec: 11,
-    };
-    return new Date(parseInt(yr), months[mon] ?? 0);
-  };
-  const start = parse(startStr);
-  const end = endStr === "Present" ? new Date() : parse(endStr);
-  let yrs = end.getFullYear() - start.getFullYear();
-  let mos = end.getMonth() - start.getMonth();
-  if (mos < 0) { yrs--; mos += 12; }
-  const parts: string[] = [];
-  if (yrs > 0) parts.push(`${yrs} yr${yrs > 1 ? "s" : ""}`);
-  if (mos > 0) parts.push(`${mos} mo`);
-  return parts.join(" ") || "< 1 mo";
 }
 
 const experiences: Experience[] = [
@@ -37,6 +21,8 @@ const experiences: Experience[] = [
     company: "Deloitte USI",
     role: "Frontend Consultant",
     duration: "Jun 2025 - Present",
+    start: "Jun 2025",
+    end: "Present",
     computed: computeDuration("Jun 2025", "Present"),
     groups: [
       {
@@ -76,6 +62,8 @@ const experiences: Experience[] = [
     company: "Tata Consultancy Services",
     role: "Frontend Developer",
     duration: "Dec 2021 - Jun 2025",
+    start: "Dec 2021",
+    end: "Jun 2025",
     computed: computeDuration("Dec 2021", "Jun 2025"),
     groups: [
       {
@@ -119,7 +107,7 @@ const experiences: Experience[] = [
                 {exp.duration}
               </span>
               {exp.computed && (
-                <span class="text-xs  whitespace-nowrap">
+                <span class="text-xs  whitespace-nowrap" data-start={exp.start} data-end={exp.end}>
                   ({exp.computed})
                 </span>
               )}
@@ -144,3 +132,15 @@ const experiences: Experience[] = [
     }
   </div>
 </section>
+
+<script>
+  // Recompute "Present" tenures in the browser so they never freeze at
+  // the build date. Same module as the build-time fallback above.
+  import { computeDuration } from "../utils/experience.ts";
+
+  document.querySelectorAll("[data-start]").forEach((el) => {
+    const start = el.getAttribute("data-start");
+    const end = el.getAttribute("data-end");
+    if (start && end) el.textContent = `(${computeDuration(start, end)})`;
+  });
+</script>

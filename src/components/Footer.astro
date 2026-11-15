@@ -1,3 +1,9 @@
+---
+import { getSiteYear } from "../utils/experience.ts";
+
+const year = getSiteYear();
+---
+
 <footer
   class="py-6 text-center text-sm sm:text-base text-secondary-dark"
 >
@@ -5,7 +11,7 @@
     class="w-full max-w-2xl mx-auto flex flex-col md:flex-row gap-2 md:justify-between items-center px-4 sm:px-0"
   >
     <span>
-      &copy; {new Date().getFullYear()} Abiram.
+      &copy; <span data-year>{year}</span> Abiram.
     </span>
     <span>
       Built with
@@ -20,3 +26,11 @@
     </span>
   </div>
 </footer>
+
+<script>
+  import { getSiteYear } from "../utils/experience.ts";
+
+  document.querySelectorAll("[data-year]").forEach((el) => {
+    el.textContent = String(getSiteYear());
+  });
+</script>

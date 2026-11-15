@@ -3,12 +3,9 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
 
-const start = new Date(2021, 11);
-const now = new Date();
-let years = now.getFullYear() - start.getFullYear();
-let months = now.getMonth() - start.getMonth();
-if (months < 0) { years--; months += 12; }
-const exp = months > 0 ? `${years}.${months}` : `${years}`;
+import { getExperience } from "../utils/experience.ts";
+
+const { exp } = getExperience();
 ---
 
 <html lang="en">
@@ -24,7 +21,6 @@ const exp = months > 0 ? `${years}.${months}` : `${years}`;
     <script is:inline>
       (function () {
         var d = document.documentElement;
-        d.classList.add("dark");
 
         var palette = [
           { bg: "#0f172a", accent: "#7dd3fc", name: "Deep Navy" },
@@ -41,10 +37,12 @@ const exp = months > 0 ? `${years}.${months}` : `${years}`;
           { bg: "#14532d", accent: "#fcd34d", name: "Forest Green" },
         ];
 
+        // Fresh pick on every full page load.
         var idx = Math.floor(Math.random() * palette.length);
         var chosen = palette[idx];
         d.style.setProperty("--bg-color-dark", chosen.bg);
         d.style.setProperty("--accent-color", chosen.accent);
+        d.classList.add("dark");
         d.setAttribute("data-random-bg", "true");
         d.setAttribute("data-color-idx", String(idx));
 
