@@ -4,9 +4,18 @@ interface Project {
   tech: string;
   description: string;
   link: string;
+  command?: string;
 }
 
 const projects: Project[] = [
+  {
+    name: "angular-doctor",
+    tech: "Angular, Node CLI",
+    description:
+      "Deterministic health scans for Angular codebases — CLI health score, categorized diagnostics, and an agent-ready report with an Oxlint + template ESLint stack.",
+    link: "https://github.com/abiramcodes/angular-doctor",
+    command: "npx @abiramcodes/angular-doctor@latest",
+  },
   {
     name: "md-Pdf-converter",
     tech: "Angular, NestJS",
@@ -28,31 +37,26 @@ const projects: Project[] = [
       "A UI for generating shortened URLs, developed as part of coding challenges by John Crickett.",
     link: "https://github.com/abiramcodes/mini-url-frontEnd",
   },
-  {
-    name: "bookbot",
-    tech: "Python",
-    description:
-      "Processes and analyzes text files, providing insights and statistics from textual data.",
-    link: "https://github.com/abiramcodes/bookbot",
-  },
 ];
 ---
 
 <section class="w-full max-w-3xl mx-auto px-4 sm:px-0">
-  <h2 class="font-display text-4xl sm:text-5xl tracking-[-0.02em] mb-3">Side Projects</h2>
-  <p class="text-secondary-dark mb-8" data-reveal>Small tools and demos, built in the open.</p>
+  <h2 class="font-display text-4xl sm:text-5xl tracking-[-0.02em] mb-3">Projects</h2>
+  <p class="text-secondary-dark mb-8" data-reveal>Tools and demos, built in the open.</p>
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     {
       projects.map((project, i) => (
-        <a
-          href={project.link}
-          target="_blank"
-          rel="noopener noreferrer"
+        <article
           class="group flex flex-col gap-2 p-5 rounded-xl border border-line bg-surface hover:border-accent transition"
           data-reveal
           style={`--index:${i}`}
         >
-          <div class="flex items-baseline justify-between gap-2">
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-baseline justify-between gap-2"
+          >
             <h3 class="font-semibold text-foreground-dark group-hover:text-accent transition">
               {project.name}
             </h3>
@@ -65,13 +69,37 @@ const projects: Project[] = [
             >
               <path d="M7 17L17 7M17 7H7M17 7v10" />
             </svg>
-          </div>
+          </a>
           <span class="text-xs text-accent font-medium">{project.tech}</span>
           <p class="text-sm text-secondary-dark leading-relaxed">
             {project.description}
           </p>
-        </a>
-      ))
-    }
+          {project.command && (
+            <button type="button" data-copy={project.command} aria-label={`Copy install command: ${project.command}`} class="mt-auto pt-1 text-left text-xs font-mono text-accent bg-background-dark border border-line rounded-md px-2 py-1.5 overflow-x-auto whitespace-nowrap cursor-pointer hover:border-accent transition">{project.command}</button>
+          )}
+        </article>
+      ))}
   </div>
 </section>
+
+<script>
+  document.querySelectorAll("[data-copy]").forEach((el) => {
+    el.addEventListener("click", async () => {
+      const text = el.getAttribute("data-copy");
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+      }
+      const label = el.textContent;
+      el.textContent = "Copied!";
+      window.setTimeout(() => { el.textContent = label; }, 1200);
+    });
+  });
+</script>
