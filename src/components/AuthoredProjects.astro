@@ -1,0 +1,125 @@
+---
+interface AuthoredProject {
+  name: string;
+  description: string;
+  link: string;
+  docs: string;
+  command: string;
+}
+
+const projects: AuthoredProject[] = [
+  {
+    name: "ng-point",
+    description:
+      "Dev-mode Angular library - Alt+Click any element in your running app to capture an LLM ready context block for your AI coding agent. Redacted at capture, never in production bundles.",
+    link: "https://github.com/abiramcodes/ng-point",
+    docs: "https://abiramcodes.github.io/ng-point/",
+    command: "npm i -D ng-point",
+  },
+  {
+    name: "angular-doctor",
+    description:
+      "Deterministic health scans for Angular codebases - health score, categorized diagnostics, and an agent-ready report. One command, zero config.",
+    link: "https://github.com/abiramcodes/angular-doctor",
+    docs: "https://ngdoctor.dev/",
+    command: "npx @abiramcodes/angular-doctor@latest",
+  },
+];
+---
+
+<section>
+  <div
+    class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 sm:gap-4 mb-6"
+    data-reveal
+  >
+    <div>
+      <h2 class="font-display text-2xl sm:text-3xl tracking-[-0.02em]">
+        Tools I've shipped
+      </h2>
+      <p class="text-secondary-dark mt-2">
+        Angular tooling I design, build, and maintain on npm.
+      </p>
+    </div>
+    <a
+      href="/projects"
+      class="text-sm font-medium text-accent hover:underline underline-offset-4 transition whitespace-nowrap"
+    >
+      More projects &rarr;
+    </a>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    {
+      projects.map((project, i) => (
+        <article
+          class="group flex flex-col gap-2 p-5 rounded-xl border border-line bg-surface hover:border-accent transition"
+          data-reveal
+          style={`--index:${i + 1}`}
+        >
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-baseline justify-between gap-2"
+          >
+            <h3 class="font-semibold text-foreground-dark group-hover:text-accent transition">
+              {project.name}
+            </h3>
+            <svg
+              class="w-4 h-4 shrink-0 opacity-30 group-hover:opacity-70 transition"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M7 17L17 7M17 7H7M17 7v10" />
+            </svg>
+          </a>
+          <p class="text-sm text-secondary-dark leading-relaxed text-balance">
+            {project.description}
+          </p>
+          <div class="mt-auto pt-1 flex items-center gap-2">
+            <button
+              type="button"
+              data-copy={project.command}
+              aria-label={`Copy install command: ${project.command}`}
+              class="flex-1 min-w-0 text-left text-xs font-mono text-accent bg-background-dark border border-line rounded-md px-2 py-1.5 overflow-x-auto whitespace-nowrap cursor-pointer hover:border-accent transition"
+            >
+              {project.command}
+            </button>
+            <a
+              href={project.docs}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Read ${project.name} docs`}
+              class="text-xs font-medium text-accent hover:underline underline-offset-4 transition whitespace-nowrap"
+            >
+              Docs &rarr;
+            </a>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll("[data-copy]").forEach((el) => {
+    el.addEventListener("click", async () => {
+      const text = el.getAttribute("data-copy");
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+      }
+      const label = el.textContent;
+      el.textContent = "Copied!";
+      window.setTimeout(() => { el.textContent = label; }, 1200);
+    });
+  });
+</script>

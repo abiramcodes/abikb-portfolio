@@ -4,16 +4,27 @@ interface Project {
   tech: string;
   description: string;
   link: string;
+  docs?: string;
   command?: string;
 }
 
 const projects: Project[] = [
   {
+    name: "ng-point",
+    tech: "Angular, TypeScript",
+    description:
+      "Dev-mode Angular library - Alt+Click any element in your running app to capture an LLM ready context block (component, file:line, template) for your AI coding agent. Redacted at capture; production builds never load it.",
+    link: "https://github.com/abiramcodes/ng-point",
+    docs: "https://abiramcodes.github.io/ng-point/",
+    command: "npm i -D ng-point",
+  },
+  {
     name: "angular-doctor",
     tech: "Angular, Node CLI",
     description:
-      "Deterministic health scans for Angular codebases — CLI health score, categorized diagnostics, and an agent-ready report with an Oxlint + template ESLint stack.",
+      "Deterministic health scans for Angular codebases - CLI health score, categorized diagnostics, and an agent-ready report with an Oxlint + template ESLint stack.",
     link: "https://github.com/abiramcodes/angular-doctor",
+    docs: "https://ngdoctor.dev/",
     command: "npx @abiramcodes/angular-doctor@latest",
   },
   {
@@ -71,11 +82,26 @@ const projects: Project[] = [
             </svg>
           </a>
           <span class="text-xs text-accent font-medium">{project.tech}</span>
-          <p class="text-sm text-secondary-dark leading-relaxed">
+          <p class="text-sm text-secondary-dark leading-relaxed text-balance">
             {project.description}
           </p>
-          {project.command && (
-            <button type="button" data-copy={project.command} aria-label={`Copy install command: ${project.command}`} class="mt-auto pt-1 text-left text-xs font-mono text-accent bg-background-dark border border-line rounded-md px-2 py-1.5 overflow-x-auto whitespace-nowrap cursor-pointer hover:border-accent transition">{project.command}</button>
+          {(project.command || project.docs) && (
+            <div class="mt-auto pt-1 flex items-center gap-2">
+              {project.command && (
+                <button type="button" data-copy={project.command} aria-label={`Copy install command: ${project.command}`} class="flex-1 min-w-0 text-left text-xs font-mono text-accent bg-background-dark border border-line rounded-md px-2 py-1.5 overflow-x-auto whitespace-nowrap cursor-pointer hover:border-accent transition">{project.command}</button>
+              )}
+              {project.docs && (
+                <a
+                  href={project.docs}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Read ${project.name} docs`}
+                  class="text-xs font-medium text-accent hover:underline underline-offset-4 transition whitespace-nowrap"
+                >
+                  Docs &rarr;
+                </a>
+              )}
+            </div>
           )}
         </article>
       ))}
