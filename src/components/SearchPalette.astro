@@ -1,0 +1,370 @@
+---
+// ⌘K command palette. Markup ships as a ~1KB shell; the index and
+// interactions live in the bundled script. Native <dialog popover>
+// provides top-layer, Esc, light-dismiss, and focus handling.
+---
+
+<dialog id="search-palette" popover="auto" aria-labelledby="search-title">
+  <h2 id="search-title" class="sr-only">Search</h2>
+  <div class="palette-top">
+    <svg
+      class="w-4 h-4 shrink-0 opacity-40"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      aria-hidden="true"
+    >
+      <circle cx="11" cy="11" r="7" />
+      <path stroke-linecap="round" d="m20 20-3.8-3.8" />
+    </svg>
+    <input
+      id="palette-input"
+      type="search"
+      placeholder="Search pages, projects, actions..."
+      aria-label="Search the site"
+      role="combobox"
+      aria-expanded="true"
+      aria-controls="palette-results"
+      aria-autocomplete="list"
+      autocomplete="off"
+      spellcheck="false"
+      autofocus
+    />
+    <button
+      type="button"
+      class="palette-close"
+      popovertarget="search-palette"
+      popovertargetaction="hide"
+      aria-label="Close search"
+    >
+      <svg
+        class="w-3.5 h-3.5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+      >
+        <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
+  </div>
+  <div id="palette-results" role="listbox" aria-label="Search results"></div>
+  <footer class="palette-foot">
+    <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+    <span><kbd>↵</kbd> select</span>
+    <span><kbd>esc</kbd> close</span>
+    <span id="palette-count" class="sr-only" aria-live="polite"></span>
+  </footer>
+</dialog>
+
+<script>
+  type EntryKind = "page" | "external" | "link" | "copy" | "action";
+
+  interface Entry {
+    label: string;
+    group: string;
+    kind: EntryKind;
+    href?: string;
+    copy?: string;
+    run?: "theme";
+    hint?: string;
+    keywords?: string;
+    icon?: string;
+    download?: boolean;
+  }
+
+  const ENTRIES: Entry[] = [
+    // Pages
+    { label: "Home", group: "Pages", kind: "page", href: "/", keywords: "hero intro abiram" },
+    { label: "Projects", group: "Pages", kind: "page", href: "/projects", keywords: "tools work apps demos" },
+    { label: "Open Source", group: "Pages", kind: "page", href: "/open-source", keywords: "oss contributions prs merged" },
+    { label: "Skills", group: "Pages", kind: "page", href: "/skills", keywords: "stack angular react ai tooling" },
+    { label: "Experience", group: "Pages", kind: "page", href: "/experience", keywords: "work roles deloitte tcs" },
+
+    // Projects
+    { label: "ng-point", hint: "repo", group: "Projects", kind: "external", href: "https://github.com/abiramcodes/ng-point", keywords: "alt click llm agent context dev-mode library angular" },
+    { label: "ng-point docs", hint: "docs", group: "Projects", kind: "external", href: "https://abiramcodes.github.io/ng-point/", keywords: "ng-point documentation landing" },
+    { label: "angular-doctor", hint: "repo", group: "Projects", kind: "external", href: "https://github.com/abiramcodes/angular-doctor", keywords: "health scan score diagnostics cli lint" },
+    { label: "angular-doctor docs", hint: "docs", group: "Projects", kind: "external", href: "https://ngdoctor.dev/", keywords: "angular-doctor documentation rules" },
+    { label: "md-Pdf-converter", hint: "repo", group: "Projects", kind: "external", href: "https://github.com/abiramcodes/MD-PDF", keywords: "markdown pdf nestjs puppeteer" },
+    { label: "dynamic-forms-demo", hint: "repo", group: "Projects", kind: "external", href: "https://github.com/abiramcodes/dynamic-forms-demo", keywords: "ng india chennai meetup talk demo forms" },
+    { label: "mini-url", hint: "repo", group: "Projects", kind: "external", href: "https://github.com/abiramcodes/mini-url-frontEnd", keywords: "url shortener coding challenge" },
+
+    // Actions
+    { label: "Copy: npm i -D @abiramcodes/ng-point", hint: "copy", group: "Actions", kind: "copy", copy: "npm i -D @abiramcodes/ng-point", keywords: "install ng-point npm package" },
+    { label: "Copy: npx @abiramcodes/angular-doctor@latest", hint: "copy", group: "Actions", kind: "copy", copy: "npx @abiramcodes/angular-doctor@latest", keywords: "install angular doctor npx run scan" },
+    { label: "Download resume", hint: "pdf", group: "Actions", kind: "link", href: "/Abirama_Kannan_FE_Engineer.pdf", icon: "download", download: true, keywords: "cv curriculum vitae" },
+    { label: "Email akbhere20@gmail.com", group: "Actions", kind: "link", href: "mailto:akbhere20@gmail.com", icon: "mail", keywords: "contact get in touch" },
+    { label: "Toggle theme", hint: "dark / light", group: "Actions", kind: "action", run: "theme", icon: "theme" },
+
+    // Open source (contributions live on /open-source)
+    { label: "pangular-inspector", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "devtools signals di routes chrome extension" },
+    { label: "spartan-ng", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "spartan full stack angular ui" },
+    { label: "ng-primitives", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "headless accessible primitives" },
+    { label: "ng-icons", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "icon library" },
+    { label: "freeCodeCamp", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "curriculum learn" },
+    { label: "carbon-components-angular", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "ibm design system" },
+
+    // External
+    { label: "GitHub - abiramcodes", hint: "profile", group: "External", kind: "external", href: "https://github.com/abiramcodes" },
+    { label: "LinkedIn - Abirama Kannan", hint: "profile", group: "External", kind: "external", href: "https://www.linkedin.com/in/abirama-kannan-baskar" },
+    { label: "X - @abiramcodes", hint: "profile", group: "External", kind: "external", href: "https://x.com/abiramcodes" },
+  ];
+
+  const KIND_ICON: Record<EntryKind, string> = {
+    page: "M5 12h14M13 6l6 6-6 6",
+    external: "M7 17L17 7M17 7H7M17 7v10",
+    link: "M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM22 6l-10 7L2 6",
+    copy: "M4 17l6-6-6-6M12 19h8",
+    action: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",
+  };
+  const EXTRA_ICONS: Record<string, string> = {
+    download: "M12 3v12M7 10l5 5 5-5M5 21h14",
+    mail: "M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM22 6l-10 7L2 6",
+    theme: KIND_ICON.action,
+  };
+
+  const DEFAULTS = ENTRIES.filter((e) => e.group === "Pages" || e.group === "Actions");
+
+  const dialog = document.getElementById("search-palette") as HTMLDialogElement;
+  const input = document.getElementById("palette-input") as HTMLInputElement;
+  const results = document.getElementById("palette-results")!;
+  const count = document.getElementById("palette-count")!;
+
+  let current: Entry[] = [];
+  let active = 0;
+
+  const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  function filter(query: string): Entry[] {
+    const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+    if (!terms.length) return DEFAULTS;
+    const scored: { entry: Entry; idx: number; score: number }[] = [];
+    ENTRIES.forEach((entry, idx) => {
+      const label = entry.label.toLowerCase();
+      const hay = `${entry.label} ${entry.keywords ?? ""} ${entry.group}`.toLowerCase();
+      let best = 0;
+      for (const t of terms) {
+        let s = 0;
+        if (label.startsWith(t)) s = 3;
+        else if (new RegExp(`(^|[^a-z])${escapeRe(t)}`).test(label)) s = 2;
+        else if (hay.includes(t)) s = 1;
+        if (s === 0) return; // AND semantics: one missing term kills the match
+        best = Math.max(best, s);
+      }
+      if (best > 0) scored.push({ entry, idx, score: best });
+    });
+    scored.sort((a, b) => b.score - a.score || a.idx - b.idx);
+    return scored.slice(0, 12).map((s) => s.entry);
+  }
+
+  // Builds the label with <mark> around every matched term, using DOM
+  // APIs so user-typed text is never parsed as HTML.
+  function appendLabel(parent: HTMLElement, label: string, terms: string[]) {
+    if (!terms.length) {
+      parent.textContent = label;
+      return;
+    }
+    const lower = label.toLowerCase();
+    let i = 0;
+    while (i < label.length) {
+      let at = -1;
+      let len = 0;
+      for (const t of terms) {
+        const found = lower.indexOf(t, i);
+        if (found !== -1 && (at === -1 || found < at)) {
+          at = found;
+          len = t.length;
+        }
+      }
+      if (at === -1) {
+        parent.append(label.slice(i));
+        break;
+      }
+      if (at > i) parent.append(label.slice(i, at));
+      const mark = document.createElement("mark");
+      mark.textContent = label.slice(at, at + len);
+      parent.append(mark);
+      i = at + len;
+    }
+  }
+
+  function rowFor(entry: Entry, i: number, terms: string[]): HTMLElement {
+    let row: HTMLElement;
+    if (entry.kind === "copy" || entry.run) {
+      row = document.createElement("button");
+      row.type = "button";
+    } else {
+      const a = document.createElement("a");
+      a.href = entry.href!;
+      if (entry.kind === "external") {
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+      }
+      if (entry.download) a.setAttribute("download", "");
+      row = a;
+    }
+    row.className = "palette-row";
+    row.id = `palette-opt-${i}`;
+    row.setAttribute("role", "option");
+    row.setAttribute("aria-selected", "false");
+    row.dataset.index = String(i);
+
+    const icon = document.createElement("span");
+    icon.className = "palette-icon";
+    icon.setAttribute("aria-hidden", "true");
+    const path = EXTRA_ICONS[entry.icon ?? ""] ?? KIND_ICON[entry.kind];
+    icon.innerHTML = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="${path}" /></svg>`;
+
+    const label = document.createElement("span");
+    label.className = "palette-label";
+    appendLabel(label, entry.label, terms);
+
+    row.append(icon, label);
+    if (entry.hint) {
+      const hint = document.createElement("span");
+      hint.className = "palette-hint";
+      hint.textContent = entry.hint;
+      row.append(hint);
+    }
+    return row;
+  }
+
+  function render(entries: Entry[], terms: string[]) {
+    results.replaceChildren();
+    let lastGroup = "";
+    entries.forEach((entry, i) => {
+      if (entry.group !== lastGroup) {
+        lastGroup = entry.group;
+        const head = document.createElement("div");
+        head.className = "palette-group";
+        head.setAttribute("role", "presentation");
+        head.textContent = entry.group;
+        results.append(head);
+      }
+      results.append(rowFor(entry, i, terms));
+    });
+    if (!entries.length) {
+      const empty = document.createElement("div");
+      empty.className = "palette-empty";
+      empty.setAttribute("role", "presentation");
+      empty.textContent = "No results.";
+      results.append(empty);
+    }
+    count.textContent = entries.length ? `${entries.length} results` : "No results";
+  }
+
+  function setActive(i: number) {
+    active = i;
+    const rows = results.querySelectorAll<HTMLElement>(".palette-row");
+    rows.forEach((row, idx) => {
+      const on = idx === active;
+      row.setAttribute("aria-selected", on ? "true" : "false");
+      if (on) {
+        input.setAttribute("aria-activedescendant", row.id);
+        row.scrollIntoView({ block: "nearest" });
+      }
+    });
+    if (!rows.length) input.removeAttribute("aria-activedescendant");
+  }
+
+  function move(delta: number) {
+    const n = results.querySelectorAll(".palette-row").length;
+    if (!n) return;
+    setActive((active + delta + n) % n);
+  }
+
+  function refresh() {
+    const terms = input.value.toLowerCase().split(/\s+/).filter(Boolean);
+    current = filter(input.value);
+    render(current, terms);
+    setActive(0);
+  }
+
+  async function copyText(text: string): Promise<boolean> {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      return true;
+    }
+  }
+
+  results.addEventListener("click", async (e) => {
+    const row = (e.target as Element).closest<HTMLElement>(".palette-row");
+    if (!row) return;
+    const entry = current[Number(row.dataset.index)];
+    if (!entry) return;
+
+    if (entry.run === "theme") {
+      document.getElementById("theme-toggle")?.click();
+      dialog.hidePopover();
+      return;
+    }
+    if (entry.copy) {
+      await copyText(entry.copy);
+      const label = row.querySelector<HTMLElement>(".palette-label");
+      const hint = row.querySelector<HTMLElement>(".palette-hint");
+      if (label) label.textContent = "Copied to clipboard";
+      if (hint) hint.textContent = "✓";
+      window.setTimeout(() => dialog.hidePopover(), 450);
+      return;
+    }
+    // Anchors navigate on their own; just dismiss the palette first
+    // so the page transition starts from a clean state.
+    dialog.hidePopover();
+  });
+
+  input.addEventListener("input", refresh);
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      move(1);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      move(-1);
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      results.querySelectorAll<HTMLElement>(".palette-row")[active]?.click();
+    }
+  });
+
+  // Reset to a fresh default state every time the palette opens.
+  dialog.addEventListener("toggle", () => {
+    if (dialog.matches(":popover-open")) {
+      input.value = "";
+      refresh();
+      input.focus();
+    }
+  });
+
+  // Global shortcuts: ⌘K / Ctrl+K toggles, "/" opens when not typing.
+  document.addEventListener("keydown", (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      dialog.matches(":popover-open") ? dialog.hidePopover() : dialog.showPopover();
+      return;
+    }
+    const target = e.target as Element | null;
+    const typing = target?.closest?.("input, textarea, [contenteditable]");
+    if (e.key === "/" && !typing && !dialog.matches(":popover-open")) {
+      e.preventDefault();
+      dialog.showPopover();
+    }
+  });
+
+  // Platform-correct hint on the header trigger.
+  const isMac = /Mac|iPhone|iPad/.test(navigator.userAgent);
+  document.querySelectorAll("[data-kbd-hint]").forEach((el) => {
+    el.textContent = isMac ? "⌘ K" : "Ctrl K";
+  });
+</script>

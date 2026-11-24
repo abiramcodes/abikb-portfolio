@@ -13,7 +13,7 @@ import AuthoredProjects from "../components/AuthoredProjects.astro";
         Frontend Engineer
       </p>
       <h1 class="font-display text-4xl sm:text-5xl leading-[1.1] tracking-[-0.02em] mt-4" data-reveal style="--index:1">
-        Hey, I'm Abiram.
+        Hey, I'm Abiram<span class="text-accent">.</span>
       </h1>
       <p class="mt-5 text-base sm:text-lg text-secondary-dark leading-relaxed max-w-xl" data-reveal style="--index:2; text-wrap: pretty;">
         Frontend engineer building micro frontends and migrating large Angular apps -
@@ -25,12 +25,14 @@ import AuthoredProjects from "../components/AuthoredProjects.astro";
           <a
             href="/Abirama_Kannan_FE_Engineer.pdf"
             download
+            data-magnetic
             class="text-sm font-medium px-4 py-2 rounded-md bg-foreground-dark text-background-dark hover:opacity-85 transition"
           >
             Download resume
           </a>
           <a
             href="/projects"
+            data-magnetic
             class="text-sm font-medium px-4 py-2 rounded-md border border-line bg-surface text-foreground-dark hover:border-accent transition"
           >
             View projects
@@ -40,11 +42,14 @@ import AuthoredProjects from "../components/AuthoredProjects.astro";
           <Social />
           <a
             href="mailto:akbhere20@gmail.com"
-            class="text-sm font-medium text-accent hover:underline underline-offset-4 transition"
+            class="text-sm font-medium text-accent link-draw transition"
           >
             Get in touch &rarr;
           </a>
         </div>
+        <p class="text-xs font-mono text-secondary-dark">
+          Author of 2 npm packages · 36+ merged OSS PRs · Speaker, ng-India Chennai '25
+        </p>
       </div>
 
     </div>

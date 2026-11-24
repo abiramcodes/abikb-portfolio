@@ -2,6 +2,7 @@
 import { Moon, Sun } from "@lucide/astro";
 import { SITE_TITLE } from "../consts";
 import Center from "./Center.astro";
+import SearchPalette from "./SearchPalette.astro";
 
 interface Props {
   title?: string;
@@ -27,23 +28,47 @@ const githubIcon =
     <div class="flex items-center gap-5">
       <!-- Desktop inline nav -->
       <nav class="hidden sm:flex items-center gap-6 text-sm">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/projects" class="nav-link">Projects</a>
-        <a href="/open-source" class="nav-link">Open Source</a>
-        <a href="/skills" class="nav-link">Skills</a>
-        <a href="/experience" class="nav-link">Experience</a>
+        <a href="/" class="nav-link link-draw">Home</a>
+        <a href="/projects" class="nav-link link-draw">Projects</a>
+        <a href="/open-source" class="nav-link link-draw">Open Source</a>
+        <a href="/skills" class="nav-link link-draw">Skills</a>
+        <a href="/experience" class="nav-link link-draw">Experience</a>
       </nav>
 
-      <button
-        id="theme-toggle"
-        type="button"
-        class="theme-toggle"
-        aria-label="Toggle color theme"
-        title="Toggle color theme"
-      >
-        <Moon class="theme-icon-moon" size={20} stroke-width={1.8} aria-hidden="true" />
-        <Sun class="theme-icon-sun" size={20} stroke-width={1.8} aria-hidden="true" />
-      </button>
+      <div class="flex items-center gap-2">
+        <button
+          type="button"
+          class="palette-trigger"
+          popovertarget="search-palette"
+          data-magnetic
+          aria-label="Open search"
+        >
+          <svg
+            class="w-4 h-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path stroke-linecap="round" d="m20 20-3.8-3.8" />
+          </svg>
+          <kbd data-kbd-hint class="hidden sm:inline">⌘ K</kbd>
+        </button>
+
+        <button
+          id="theme-toggle"
+          type="button"
+          data-magnetic
+          class="theme-toggle"
+          aria-label="Toggle color theme"
+          title="Toggle color theme"
+        >
+          <Moon class="theme-icon-moon" size={20} stroke-width={1.8} aria-hidden="true" />
+          <Sun class="theme-icon-sun" size={20} stroke-width={1.8} aria-hidden="true" />
+        </button>
+      </div>
     </div>
   </header>
 </Center>
@@ -53,37 +78,39 @@ const githubIcon =
   id="bottom-dock"
   class="sm:hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 flex items-center gap-0.5 px-1.5 py-1.5 rounded-full border border-line bg-surface/90 backdrop-blur-xl"
 >
-  <a href="/" class="dock-item" data-page="/">
+  <a href="/" class="dock-item" data-magnetic data-page="/">
     <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z" />
     </svg>
     <span>Home</span>
   </a>
-  <a href="/projects" class="dock-item" data-page="/projects">
+  <a href="/projects" class="dock-item" data-magnetic data-page="/projects">
     <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
     </svg>
     <span>Projects</span>
   </a>
-  <a href="/open-source" class="dock-item" data-page="/open-source">
+  <a href="/open-source" class="dock-item" data-magnetic data-page="/open-source">
     <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path fill-rule="evenodd" d={githubIcon} clip-rule="evenodd" />
     </svg>
     <span>OSS</span>
   </a>
-  <a href="/skills" class="dock-item" data-page="/skills">
+  <a href="/skills" class="dock-item" data-magnetic data-page="/skills">
     <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="m8 8-4 4 4 4m8-8 4 4-4 4" />
     </svg>
     <span>Skills</span>
   </a>
-  <a href="/experience" class="dock-item" data-page="/experience">
+  <a href="/experience" class="dock-item" data-magnetic data-page="/experience">
     <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m8 0H8m8 0a2 2 0 012 2v1M8 6a2 2 0 00-2 2v1" />
     </svg>
     <span>Work</span>
   </a>
 </nav>
+
+<SearchPalette />
 
 <script>
   function markActiveRoute() {
@@ -191,6 +218,28 @@ const githubIcon =
   }
   @media (hover: hover) and (pointer: fine) {
     .theme-toggle:hover {
+      color: var(--accent);
+    }
+  }
+
+  .palette-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    height: 2rem;
+    padding: 0 0.7rem;
+    border-radius: 9999px;
+    color: var(--muted-text);
+    border: 1px solid var(--line);
+    background: var(--surface);
+    cursor: pointer;
+  }
+  .palette-trigger kbd {
+    font-family: "Geist Mono", monospace;
+    font-size: 0.65rem;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .palette-trigger:hover {
       color: var(--accent);
     }
   }

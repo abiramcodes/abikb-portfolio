@@ -325,3 +325,362 @@ html .theme-toggle:active {
     transform: none;
   }
 }
+
+/* ── Cross-page view transitions ──
+   Opt-in only for motion-tolerant visitors; browsers without support
+   (and reduced-motion users) get standard instant navigation. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+::view-transition-old(root) {
+  animation: 200ms ease-in both fade-page-out;
+}
+
+::view-transition-new(root) {
+  animation: 300ms cubic-bezier(0.16, 1, 0.3, 1) both rise-page-in;
+}
+
+@keyframes fade-page-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes rise-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* ── Link underline draw-in ──
+   A 1px currentColor underline that draws from the left. Keyboard
+   focus gets the same feedback, so this is not hover-gated. */
+.link-draw {
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+}
+
+/* Doubled selector beats scoped component rules (nav, dock) so this
+   full transition list — not just the underline — applies everywhere. */
+.link-draw.link-draw {
+  transition:
+    color 200ms var(--ease-out),
+    background-size 200ms var(--ease-out);
+}
+
+.link-draw:hover,
+.link-draw:focus-visible {
+  background-size: 100% 1px;
+}
+
+/* ── The period cursor ──
+   html[data-custom-cursor] is set by JS only after confirming a
+   fine pointer and no reduced-motion preference; everyone else keeps
+   the native cursor at zero cost. */
+html[data-custom-cursor] body,
+html[data-custom-cursor] a,
+html[data-custom-cursor] button,
+html[data-custom-cursor] [role="button"],
+html[data-custom-cursor] summary {
+  cursor: none;
+}
+
+/* Editable surfaces keep the native caret cursor. */
+html[data-custom-cursor] input,
+html[data-custom-cursor] textarea,
+html[data-custom-cursor] [contenteditable] {
+  cursor: auto;
+}
+
+#cursor-dot,
+#cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0;
+}
+
+#cursor-dot {
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 9999px;
+  background: var(--accent);
+  transition:
+    opacity 200ms var(--ease-out),
+    scale 200ms var(--ease-out);
+}
+
+#cursor-ring {
+  width: 28px;
+  height: 28px;
+  margin: -14px 0 0 -14px;
+  border-radius: 9999px;
+  border: 1.5px solid var(--accent);
+  transition:
+    opacity 200ms var(--ease-out),
+    background-color 200ms var(--ease-out),
+    scale 450ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Spring-settled bloom; browsers without linear() support keep the
+     declaration above (the invalid value is ignored). */
+  transition:
+    opacity 200ms var(--ease-out),
+    background-color 200ms var(--ease-out),
+    scale 450ms linear(0, 0.4 8.3%, 0.86 16.7%, 1.06 25%, 1.02 33.3%, 1.005 45%, 1);
+}
+
+html.cursor-visible #cursor-dot {
+  opacity: 1;
+}
+
+html.cursor-visible #cursor-ring {
+  opacity: 0.6;
+}
+
+/* Interactive elements bloom the ring; the dot yields. */
+html.cursor-link #cursor-ring {
+  scale: 1.4;
+  opacity: 0.9;
+}
+
+html.cursor-link #cursor-dot {
+  scale: 0.55;
+}
+
+/* Copyable command chips fill softly — "click to copy". */
+html.cursor-copy #cursor-ring {
+  scale: 1.15;
+  background-color: var(--accent-bg);
+  opacity: 0.95;
+}
+
+html.cursor-copy #cursor-dot {
+  scale: 0;
+}
+
+/* Over editable text the native caret takes over. */
+html.cursor-text #cursor-dot,
+html.cursor-text #cursor-ring {
+  opacity: 0;
+}
+
+html.cursor-down #cursor-dot {
+  scale: 0.8;
+}
+
+html.cursor-hidden #cursor-dot,
+html.cursor-hidden #cursor-ring {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #cursor-dot,
+  #cursor-ring {
+    transition: none;
+  }
+}
+
+/* ── Magnetic elements ──
+   JS shifts [data-magnetic] toward the pointer via the independent
+   translate property, so it composes with :active scale transforms.
+   Doubled selector beats scoped component and layered utility
+   transitions, so magnetic elements keep every existing transition
+   (press scale, hover color, border, opacity) and gain translate. */
+[data-magnetic][data-magnetic] {
+  transition:
+    transform 160ms var(--ease-out),
+    color 200ms var(--ease-out),
+    background-color 200ms var(--ease-out),
+    border-color 200ms var(--ease-out),
+    opacity 160ms var(--ease-out),
+    translate 250ms var(--ease-out);
+}
+
+/* ── Scroll progress hairline ── */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  z-index: 20;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #scroll-progress {
+    display: none;
+  }
+}
+
+/* ── ⌘K search palette ──
+   A non-modal <dialog popover>: the UA keeps it display:none while
+   closed, so layout styles are scoped to :popover-open only. */
+#search-palette:popover-open {
+  display: flex;
+  flex-direction: column;
+}
+
+#search-palette {
+  position: fixed;
+  inset: 0;
+  margin: 8vh auto auto;
+  width: min(34rem, calc(100vw - 2rem));
+  max-height: min(32rem, 72vh);
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14);
+}
+
+#search-palette::backdrop {
+  background: color-mix(in srgb, var(--ink) 24%, transparent);
+  backdrop-filter: blur(2px);
+}
+
+.palette-top {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+  flex: none;
+}
+
+#palette-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--ink);
+  font: inherit;
+}
+
+#palette-input::placeholder {
+  color: var(--muted-text);
+}
+
+/* The input's blinking caret is the focus indicator; the shell adds
+   a quiet accent underline while it holds focus. */
+#palette-input:focus-visible {
+  outline: none;
+}
+
+.palette-close {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  color: var(--muted-text);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  cursor: pointer;
+  flex: none;
+}
+
+#palette-results {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.5rem;
+}
+
+.palette-group {
+  padding: 0.55rem 0.6rem 0.25rem;
+  font-family: "Geist Mono", monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-text);
+}
+
+.palette-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border-radius: 0.5rem;
+  color: var(--ink);
+  text-decoration: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.palette-row[aria-selected="true"] {
+  background: var(--surface-2);
+  color: var(--accent);
+}
+
+.palette-icon {
+  display: inline-flex;
+  flex: none;
+  opacity: 0.5;
+}
+
+.palette-row[aria-selected="true"] .palette-icon {
+  opacity: 1;
+}
+
+.palette-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.palette-label mark {
+  background: none;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.palette-hint {
+  flex: none;
+  font-family: "Geist Mono", monospace;
+  font-size: 0.65rem;
+  color: var(--muted-text);
+}
+
+.palette-empty {
+  padding: 1.5rem 1rem;
+  text-align: center;
+  color: var(--muted-text);
+}
+
+.palette-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding: 0.6rem 1rem;
+  border-top: 1px solid var(--line);
+  font-family: "Geist Mono", monospace;
+  font-size: 0.65rem;
+  color: var(--muted-text);
+  flex: none;
+}
+
+.palette-foot kbd {
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 0.25rem;
+  padding: 0 0.3rem;
+  background: var(--surface-2);
+  font-family: inherit;
+}
