@@ -60,20 +60,28 @@ const groups: SkillGroup[] = [
     {
       groups.map((group, i) => (
         <div
-          class="grid sm:grid-cols-[160px_1fr] gap-2 sm:gap-6 py-5 border-t border-line"
+          class="grid sm:grid-cols-[180px_1fr] gap-1 sm:gap-6 py-6 border-t border-line"
           data-reveal
           style={`--index:${i}`}
         >
-          <h3 class={`font-mono text-xs uppercase tracking-[0.08em] pt-1 ${group.primary ? "text-accent" : "text-secondary-dark"}`}>
+          <h3 class={`pt-1 font-medium ${group.primary ? "text-accent" : "text-secondary-dark"}`}>
             {group.label}
           </h3>
-          <div class="flex flex-wrap gap-1.5">
-            {group.items.map((skill) => (
-              <span class={`text-sm px-2.5 py-1 rounded-full border border-line ${group.primary ? "bg-accent-2bg text-accent-2 font-medium" : "bg-surface-2 text-foreground-dark"}`}>
-                {skill}
+          <p
+            class="leading-loose text-foreground-dark"
+            style="text-wrap: pretty;"
+          >
+            {group.items.map((skill, k) => (
+              <span>
+                <span class={group.primary ? "text-foreground-dark" : "text-secondary-dark"}>
+                  {skill}
+                </span>
+                {k < group.items.length - 1 && (
+                  <span class="text-accent-2 select-none" aria-hidden="true"> · </span>
+                )}
               </span>
             ))}
-          </div>
+          </p>
         </div>
       ))
     }

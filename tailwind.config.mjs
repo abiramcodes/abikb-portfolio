@@ -29,11 +29,10 @@ export default {
           2: "var(--accent-2)",
           "2bg": "var(--accent-2-bg)",
         },
-        clay: "var(--clay)",
       },
       fontFamily: {
-        sans: ["Geist Sans", "Helvetica Neue", "Arial", "sans-serif"],
-        display: ["Geist Mono", "ui-monospace", "SF Mono", "Menlo", "monospace"],
+        sans: ["Geist Mono", "ui-monospace", "SF Mono", "Menlo", "monospace"],
+        display: ["Space Mono", "Geist Mono", "ui-monospace", "monospace"],
         mono: ["Geist Mono", "ui-monospace", "SF Mono", "Menlo", "monospace"],
       },
       typography: (theme) => ({

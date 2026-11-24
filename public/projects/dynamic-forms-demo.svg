@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675">
+  <defs>
+    <radialGradient id="vig" cx="50%" cy="42%" r="72%">
+      <stop offset="58%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.5"/>
+    </radialGradient>
+    <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="1.5" fill="#000" opacity="0.16"/>
+    </pattern>
+    <g id="traces" fill="none" stroke-linejoin="round">
+      <path d="M360 166 H500 L560 226 H610"/>
+      <path d="M360 266 H480 L540 326 H610"/>
+      <path d="M360 366 H460 L520 426 H580 L610 396"/>
+      <path d="M630 290 L690 230 H820 L870 176 H880"/>
+    </g>
+  </defs>
+  <rect width="1200" height="675" fill="#141008"/>
+  <path stroke="#c98a3d" stroke-opacity="0.07" stroke-width="1" fill="none"
+    d="M75 0V675M150 0V675M225 0V675M300 0V675M375 0V675M450 0V675M525 0V675M600 0V675M675 0V675M750 0V675M825 0V675M900 0V675M975 0V675M1050 0V675M1125 0V675M0 75H1200M0 150H1200M0 225H1200M0 300H1200M0 375H1200M0 450H1200M0 525H1200M0 600H1200"/>
+  <use href="#traces" stroke="#c98a3d" stroke-opacity="0.14" stroke-width="8"/>
+  <use href="#traces" stroke="#c98a3d" stroke-opacity="0.6" stroke-width="2.5"/>
+  <!-- alternate dashed route: the unselected path -->
+  <path d="M630 310 L690 370 H820 L870 266 H880" fill="none" stroke="#c98a3d" stroke-opacity="0.35" stroke-width="2" stroke-dasharray="6 8"/>
+  <!-- form fields -->
+  <g fill="none" stroke="#a08c5f" stroke-opacity="0.55" stroke-width="2">
+    <rect x="120" y="140" width="240" height="52" rx="8"/>
+    <rect x="120" y="240" width="240" height="52" rx="8"/>
+    <rect x="120" y="340" width="240" height="52" rx="8"/>
+  </g>
+  <g stroke="#a08c5f" stroke-opacity="0.25" stroke-width="2" stroke-linecap="round">
+    <path d="M160 192 H330"/><path d="M160 292 H290"/><path d="M160 392 H310"/>
+  </g>
+  <rect x="152" y="158" width="5" height="18" fill="#ffb454"/>
+  <!-- toggle switches -->
+  <g fill="none" stroke="#a08c5f" stroke-opacity="0.55" stroke-width="2">
+    <rect x="880" y="150" width="70" height="32" rx="16"/>
+    <rect x="880" y="250" width="70" height="32" rx="16"/>
+  </g>
+  <circle cx="918" cy="166" r="11" fill="#ffb454"/>
+  <circle cx="902" cy="266" r="11" fill="none" stroke="#c98a3d" stroke-width="2"/>
+  <!-- junction node -->
+  <circle cx="620" cy="300" r="12" fill="#1d160c" stroke="#c98a3d" stroke-width="2.5"/>
+  <circle cx="620" cy="300" r="4" fill="#ffb454"/>
+  <!-- traveling pulse -->
+  <circle cx="430" cy="166" r="5" fill="#ffb454"/>
+  <circle cx="430" cy="166" r="11" fill="#ffb454" opacity="0.18"/>
+  <!-- vias -->
+  <g fill="none" stroke="#c98a3d" stroke-opacity="0.8" stroke-width="1.5">
+    <circle cx="1050" cy="480" r="5"/><circle cx="180" cy="560" r="5"/><circle cx="1080" cy="90" r="5"/>
+  </g>
+  <g fill="#141008">
+    <circle cx="1050" cy="480" r="1.8"/><circle cx="180" cy="560" r="1.8"/><circle cx="1080" cy="90" r="1.8"/>
+  </g>
+  <text x="150" y="124" fill="#a08c5f" fill-opacity="0.55" font-family="Geist Mono, monospace" font-size="16">FORMS</text>
+  <rect width="1200" height="675" fill="url(#scan)"/>
+  <rect width="1200" height="675" fill="url(#vig)"/>
+</svg>

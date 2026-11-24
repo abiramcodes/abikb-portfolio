@@ -32,32 +32,25 @@ const experiences: Experience[] = [
 ];
 ---
 
-<section class="w-full max-w-3xl mx-auto px-4 sm:px-0">
-  <h2 class="font-display text-4xl sm:text-5xl tracking-[-0.02em] mb-3">Experience</h2>
-  <p class="text-secondary-dark mb-10" data-reveal>Roles, migrations, and recognition since Dec 2021.</p>
-  <div class="space-y-10">
-    {
-      experiences.map((job) => (
-        <div class="relative pl-5 border-l border-line" data-reveal>
-          <div class="absolute -left-1.75 top-1 w-3 h-3 rounded-full bg-accent" />
-          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-4">
-            <div>
-              <h3 class="text-lg sm:text-xl font-semibold">
-                {job.role}
-              </h3>
-              <p class="text-sm text-accent font-medium">{job.company}</p>
-            </div>
-            <span class="text-sm whitespace-nowrap">
-              {job.duration}
-            </span>
+<section class="space-y-8">
+  {
+    experiences.map((job, i) => (
+      <div class="py-8 border-t border-line" data-reveal style={`--index:${i}`}>
+        <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-4">
+          <div>
+            <h3 class="text-lg sm:text-xl font-semibold text-foreground-dark">
+              {job.role}
+            </h3>
+            <p class="text-sm text-accent font-medium">{job.company}</p>
           </div>
-          <ul class="space-y-1.5 text-sm sm:text-base text-secondary-dark" style="text-wrap: balance;">
-            {job.highlights.map((h) => (
-              <li class="leading-relaxed" set:html={h} />
-            ))}
-          </ul>
+          <span class="text-sm text-secondary-dark whitespace-nowrap">{job.duration}</span>
         </div>
-      ))
-    }
-  </div>
+        <ul class="space-y-1.5 text-sm sm:text-base text-secondary-dark" style="text-wrap: balance;">
+          {job.highlights.map((h) => (
+            <li class="leading-relaxed" set:html={h} />
+          ))}
+        </ul>
+      </div>
+    ))
+  }
 </section>

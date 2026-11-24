@@ -45,26 +45,20 @@ const projects: Project[] = [
   <div class="grid gap-4 sm:grid-cols-2">
     {
       projects.map((p, i) => (
-        <div class="rounded-xl border border-line bg-surface p-5 flex flex-col gap-2" data-reveal style={`--index:${i}`}>
+        <div class="rounded-md border border-line bg-surface p-5 flex flex-col gap-2" data-reveal style={`--index:${i}`}>
           <div class="flex items-baseline justify-between gap-2">
             <h3 class="font-medium text-foreground-dark">{p.title}</h3>
             <span class="text-xs text-accent whitespace-nowrap">{p.scale}</span>
           </div>
           <p class="text-sm text-secondary-dark leading-relaxed text-balance">{p.description}</p>
           {p.stats && (
-            <div class="flex flex-wrap gap-1.5">
-              {p.stats.map((s) => (
-                <span class="text-xs font-mono px-2 py-0.5 rounded-full bg-accent-2bg text-accent-2">{s}</span>
-              ))}
-            </div>
+            <p class="text-xs text-accent-2">
+              {p.stats.join(" · ")}
+            </p>
           )}
-          <div class="flex flex-wrap gap-1.5 mt-auto pt-2">
-            {p.tech.map((t) => (
-              <span class="text-xs px-2 py-0.5 rounded bg-muted-dark text-secondary-dark">
-                {t}
-              </span>
-            ))}
-          </div>
+          <p class="mt-auto pt-2 text-xs text-secondary-dark" style="text-wrap: pretty;">
+            {p.tech.join(" · ")}
+          </p>
         </div>
       ))
     }

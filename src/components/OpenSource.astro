@@ -178,7 +178,7 @@ const metaByRepo: Record<string, RepoMeta> = Object.fromEntries(metaEntries);
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="font-mono text-xs px-2 py-1 rounded-full bg-surface-2 border border-line text-accent hover:border-accent transition"
+                class="font-mono text-xs px-2 py-1 rounded-sm bg-surface-2 border border-line text-accent hover:border-accent transition"
               >
                 {extractPrNumber(url)}
               </a>
@@ -190,7 +190,7 @@ const metaByRepo: Record<string, RepoMeta> = Object.fromEntries(metaEntries);
               <div
                 id={`repo-card-${i}`}
                 role="note"
-                class="hover-card absolute left-0 top-full z-20 mt-1 w-[min(20rem,80vw)] rounded-xl border border-line bg-surface p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
+                class="hover-card absolute left-0 top-full z-20 mt-1 w-[min(20rem,80vw)] rounded-md border border-line bg-surface p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
               >
                 <p class="text-sm text-secondary-dark leading-relaxed">{meta.description}</p>
                 <div class="flex flex-wrap gap-x-4 gap-y-1 mt-3 font-mono text-xs text-secondary-dark">

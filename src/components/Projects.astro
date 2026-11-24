@@ -1,6 +1,7 @@
 ---
 interface Project {
   name: string;
+  slug: string;
   tech: string;
   description: string;
   link: string;
@@ -11,6 +12,7 @@ interface Project {
 const projects: Project[] = [
   {
     name: "ng-point",
+    slug: "ng-point",
     tech: "Angular, TypeScript",
     description:
       "Dev-mode Angular library - Alt+Click any element in your running app to capture an LLM ready context block (component, file:line, template) for your AI coding agent. Redacted at capture; production builds never load it.",
@@ -20,6 +22,7 @@ const projects: Project[] = [
   },
   {
     name: "angular-doctor",
+    slug: "angular-doctor",
     tech: "Angular, Node CLI",
     description:
       "Deterministic health scans for Angular codebases - CLI health score, categorized diagnostics, and an agent-ready report with an Oxlint + template ESLint stack.",
@@ -29,6 +32,7 @@ const projects: Project[] = [
   },
   {
     name: "md-Pdf-converter",
+    slug: "md-pdf-converter",
     tech: "Angular, NestJS",
     description:
       "A web application that converts Markdown files to PDF format, built using Angular for the frontend and NestJS for the backend.",
@@ -36,6 +40,7 @@ const projects: Project[] = [
   },
   {
     name: "dynamic-forms-demo",
+    slug: "dynamic-forms-demo",
     tech: "Angular",
     description:
       "Demo application used in the ng India Chennai Meetup, 2025. Demonstrates dynamic components and forms.",
@@ -43,6 +48,7 @@ const projects: Project[] = [
   },
   {
     name: "mini-url",
+    slug: "mini-url",
     tech: "Angular",
     description:
       "A UI for generating shortened URLs, developed as part of coding challenges by John Crickett.",
@@ -58,7 +64,7 @@ const projects: Project[] = [
     {
       projects.map((project, i) => (
         <article
-          class="group flex flex-col gap-2 p-5 rounded-xl border border-line bg-surface hover:border-accent transition"
+          class="group flex flex-col rounded-md border border-line bg-surface hover:border-accent transition overflow-hidden"
           data-reveal
           style={`--index:${i}`}
         >
@@ -66,45 +72,66 @@ const projects: Project[] = [
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            class="flex items-baseline justify-between gap-2"
+            aria-label={`${project.name} repository`}
+            class="block border-b border-line"
           >
-            <h3 class="font-semibold text-foreground-dark group-hover:text-accent transition">
-              {project.name}
-            </h3>
-            <svg
-              class="w-4 h-4 shrink-0 opacity-30 group-hover:opacity-70 transition"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M7 17L17 7M17 7H7M17 7v10" />
-            </svg>
+            <img
+              src={`/projects/${project.slug}.svg`}
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+              decoding="async"
+              width="1200"
+              height="675"
+              class="w-full aspect-video object-cover group-hover:opacity-90 transition"
+            />
           </a>
-          <span class="text-xs text-accent font-medium">{project.tech}</span>
-          <p class="text-sm text-secondary-dark leading-relaxed text-balance">
-            {project.description}
-          </p>
-          {(project.command || project.docs) && (
-            <div class="mt-auto pt-1 flex items-center gap-2">
-              {project.command && (
-                <button type="button" data-copy={project.command} aria-label={`Copy install command: ${project.command}`} class="flex-1 min-w-0 text-left text-xs font-mono text-accent bg-background-dark border border-line rounded-md px-2 py-1.5 overflow-x-auto whitespace-nowrap cursor-pointer hover:border-accent transition">{project.command}</button>
-              )}
-              {project.docs && (
-                <a
-                  href={project.docs}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Read ${project.name} docs`}
-                  class="text-xs font-medium text-accent link-draw transition whitespace-nowrap"
-                >
-                  Docs &rarr;
-                </a>
-              )}
-            </div>
-          )}
+          <div class="p-5 flex flex-col gap-2 flex-1">
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-baseline justify-between gap-2"
+            >
+              <h3 class="font-semibold text-foreground-dark group-hover:text-accent transition">
+                {project.name}
+              </h3>
+              <svg
+                class="w-4 h-4 shrink-0 opacity-30 group-hover:opacity-70 transition"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M7 17L17 7M17 7H7M17 7v10" />
+              </svg>
+            </a>
+            <span class="text-xs text-accent font-medium">{project.tech}</span>
+            <p class="text-sm text-secondary-dark leading-relaxed text-balance">
+              {project.description}
+            </p>
+            {(project.command || project.docs) && (
+              <div class="mt-auto pt-1 flex items-center gap-2">
+                {project.command && (
+                  <button type="button" data-copy={project.command} aria-label={`Copy install command: ${project.command}`} class="flex-1 min-w-0 text-left text-xs font-mono text-accent bg-background-dark border border-line rounded-sm px-2 py-1.5 overflow-x-auto whitespace-nowrap cursor-pointer hover:border-accent transition">{project.command}</button>
+                )}
+                {project.docs && (
+                  <a
+                    href={project.docs}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Read ${project.name} docs`}
+                    class="text-xs font-medium text-accent link-draw transition whitespace-nowrap"
+                  >
+                    Docs &rarr;
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
         </article>
-      ))}
+      ))
+    }
   </div>
 </section>
 

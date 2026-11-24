@@ -14,64 +14,66 @@ const githubIcon =
   "M12.006 2a9.847 9.847 0 0 0-6.484 2.44 10.32 10.32 0 0 0-3.393 6.17 10.48 10.48 0 0 0 1.317 6.955 10.045 10.045 0 0 0 5.4 4.418c.504.095.683-.223.683-.494 0-.245-.01-1.052-.014-1.908-2.78.62-3.366-1.21-3.366-1.21a2.711 2.711 0 0 0-1.11-1.5c-.907-.637.07-.621.07-.621.317.044.62.163.885.346.266.183.487.426.647.71.135.253.318.476.538.655a2.079 2.079 0 0 0 2.37.196c.045-.52.27-1.006.635-1.37-2.219-.259-4.554-1.138-4.554-5.07a4.022 4.022 0 0 1 1.031-2.75 3.77 3.77 0 0 1 .096-2.713s.839-.275 2.749 1.05a9.26 9.26 0 0 1 5.004 0c1.906-1.325 2.74-1.05 2.74-1.05.37.858.406 1.828.101 2.713a4.017 4.017 0 0 1 1.029 2.75c0 3.939-2.339 4.805-4.564 5.058a2.471 2.471 0 0 1 .679 1.897c0 1.372-.012 2.477-.012 2.814 0 .272.18.592.687.492a10.05 10.05 0 0 0 5.388-4.421 10.473 10.473 0 0 0 1.313-6.948 10.32 10.32 0 0 0-3.39-6.165A9.847 9.847 0 0 0 12.007 2Z";
 ---
 
-<Center>
-  <header
-    class="w-full max-w-3xl mx-auto flex items-center justify-between min-w-0 mt-4 px-4 sm:px-0"
-  >
-    <a
-      href="/"
-      class="font-display text-3xl text-foreground-dark truncate"
+<header class="site-header">
+  <Center>
+    <div
+      class="w-full max-w-3xl mx-auto flex items-center justify-between min-w-0 py-4 px-4 sm:px-0"
     >
-      {title}<span class="text-accent">.</span>
-    </a>
+      <a
+        href="/"
+        class="font-display text-xl sm:text-2xl font-bold tracking-tight text-foreground-dark truncate"
+      >
+        {title}<span class="text-accent">_</span>
+      </a>
 
-    <div class="flex items-center gap-5">
-      <!-- Desktop inline nav -->
-      <nav class="hidden sm:flex items-center gap-6 text-sm">
-        <a href="/" class="nav-link link-draw">Home</a>
-        <a href="/projects" class="nav-link link-draw">Projects</a>
-        <a href="/open-source" class="nav-link link-draw">Open Source</a>
-        <a href="/skills" class="nav-link link-draw">Skills</a>
-        <a href="/experience" class="nav-link link-draw">Experience</a>
-      </nav>
+      <div class="flex items-center gap-5">
+        <!-- Desktop inline nav -->
+        <nav class="hidden sm:flex items-center gap-6 text-sm">
+          <a href="/" class="nav-link link-draw">Home</a>
+          <a href="/projects" class="nav-link link-draw">Projects</a>
+          <a href="/open-source" class="nav-link link-draw">Open Source</a>
+          <a href="/skills" class="nav-link link-draw">Skills</a>
+          <a href="/experience" class="nav-link link-draw">Experience</a>
+        </nav>
 
-      <div class="flex items-center gap-2">
-        <button
-          type="button"
-          class="palette-trigger"
-          popovertarget="search-palette"
-          data-magnetic
-          aria-label="Open search"
-        >
-          <svg
-            class="w-4 h-4"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            aria-hidden="true"
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            class="palette-trigger"
+            popovertarget="search-palette"
+            data-magnetic
+            aria-label="Open search"
           >
-            <circle cx="11" cy="11" r="7" />
-            <path stroke-linecap="round" d="m20 20-3.8-3.8" />
-          </svg>
-          <kbd data-kbd-hint class="hidden sm:inline">⌘ K</kbd>
-        </button>
+            <svg
+              class="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path stroke-linecap="round" d="m20 20-3.8-3.8" />
+            </svg>
+            <kbd data-kbd-hint class="hidden sm:inline">⌘ K</kbd>
+          </button>
 
-        <button
-          id="theme-toggle"
-          type="button"
-          data-magnetic
-          class="theme-toggle"
-          aria-label="Toggle color theme"
-          title="Toggle color theme"
-        >
-          <Moon class="theme-icon-moon" size={20} stroke-width={1.8} aria-hidden="true" />
-          <Sun class="theme-icon-sun" size={20} stroke-width={1.8} aria-hidden="true" />
-        </button>
+          <button
+            id="theme-toggle"
+            type="button"
+            data-magnetic
+            class="theme-toggle"
+            aria-label="Toggle color theme"
+            title="Toggle color theme"
+          >
+            <Moon class="theme-icon-moon" size={20} stroke-width={1.8} aria-hidden="true" />
+            <Sun class="theme-icon-sun" size={20} stroke-width={1.8} aria-hidden="true" />
+          </button>
+        </div>
       </div>
     </div>
-  </header>
-</Center>
+  </Center>
+</header>
 
 <!-- Floating bottom dock (mobile) -->
 <nav
@@ -140,30 +142,22 @@ const githubIcon =
     syncFooter();
   }
 
-  // Theme toggle. Resolved theme = explicit attribute if present,
-  // otherwise the OS preference — a missing attribute must never be
-  // assumed to mean light, or the first click under a dark OS would
-  // "switch" to the already-visible dark and look broken.
+  // Theme toggle. The head script always sets an explicit attribute
+  // (stored choice wins, phosphor dark otherwise), so the resolved
+  // theme is simply the attribute — a missing attribute must never
+  // be assumed to mean light, or the first click under the default
+  // would "switch" to the already-visible dark and look broken.
   const rootEl = document.documentElement;
-  const systemQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  const themeColor = document.querySelector('meta[name="theme-color"]');
 
   function resolvedTheme(): string {
-    const attr = rootEl.getAttribute("data-theme");
-    if (attr === "dark" || attr === "light") return attr;
-    return systemQuery.matches ? "dark" : "light";
-  }
-
-  function storedTheme(): string | null {
-    try {
-      return localStorage.getItem("theme");
-    } catch (e) {
-      return null;
-    }
+    return rootEl.getAttribute("data-theme") === "light" ? "light" : "dark";
   }
 
   function applyTheme(target: string, animate: boolean) {
     if (animate) rootEl.classList.add("theme-anim");
     rootEl.setAttribute("data-theme", target);
+    themeColor?.setAttribute("content", target === "dark" ? "#141008" : "#f4f1e8");
     if (animate) window.setTimeout(() => rootEl.classList.remove("theme-anim"), 500);
   }
 
@@ -175,19 +169,11 @@ const githubIcon =
   toggle?.addEventListener("click", () => {
     const target = resolvedTheme() === "dark" ? "light" : "dark";
     try {
-      // Store only when diverging from the OS; matching it clears the
-      // override so the site follows the system again.
-      if (target === (systemQuery.matches ? "dark" : "light")) localStorage.removeItem("theme");
-      else localStorage.setItem("theme", target);
+      localStorage.setItem("theme", target);
     } catch (e) {
       /* storage unavailable: theme still applies for this page */
     }
     applyTheme(target, true);
-  });
-
-  // Follow live OS changes only while the user hasn't pinned a choice.
-  systemQuery.addEventListener("change", () => {
-    if (!storedTheme()) applyTheme(systemQuery.matches ? "dark" : "light", true);
   });
 </script>
 
@@ -235,8 +221,8 @@ const githubIcon =
     cursor: pointer;
   }
   .palette-trigger kbd {
-    font-family: "Geist Mono", monospace;
-    font-size: 0.65rem;
+    font-size: 13px;
+    line-height: 1;
   }
   @media (hover: hover) and (pointer: fine) {
     .palette-trigger:hover {
@@ -261,7 +247,7 @@ const githubIcon =
     gap: 0.3rem;
     padding: 0.45rem 0.6rem;
     border-radius: 9999px;
-    font-size: 0.65rem;
+    font-size: 13px;
     font-weight: 500;
     color: var(--muted-text);
     transition:

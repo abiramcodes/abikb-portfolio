@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675">
+  <defs>
+    <radialGradient id="vig" cx="50%" cy="42%" r="72%">
+      <stop offset="58%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.5"/>
+    </radialGradient>
+    <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="1.5" fill="#000" opacity="0.16"/>
+    </pattern>
+    <g id="traces" fill="none" stroke-linejoin="round">
+      <path d="M-10 300 H1210"/>
+      <path d="M-10 150 H300 L360 210 H640 L700 270 H980 L1040 330 H1210"/>
+      <path d="M-10 480 H240 L300 420 H560 L620 480 H900 L960 540 H1210"/>
+      <path d="M300 -10 V120 L360 180 H1210"/>
+      <path d="M-10 210 H160 L220 270 H1210"/>
+    </g>
+  </defs>
+  <rect width="1200" height="675" fill="#141008"/>
+  <path stroke="#c98a3d" stroke-opacity="0.07" stroke-width="1" fill="none"
+    d="M75 0V675M150 0V675M225 0V675M300 0V675M375 0V675M450 0V675M525 0V675M600 0V675M675 0V675M750 0V675M825 0V675M900 0V675M975 0V675M1050 0V675M1125 0V675M0 75H1200M0 150H1200M0 225H1200M0 300H1200M0 375H1200M0 450H1200M0 525H1200M0 600H1200"/>
+  <use href="#traces" stroke="#c98a3d" stroke-opacity="0.14" stroke-width="8"/>
+  <use href="#traces" stroke="#c98a3d" stroke-opacity="0.6" stroke-width="2.5"/>
+  <!-- pads -->
+  <g fill="#c98a3d" fill-opacity="0.8">
+    <circle cx="360" cy="210" r="5"/><circle cx="700" cy="270" r="5"/>
+    <circle cx="300" cy="420" r="5"/><circle cx="620" cy="480" r="5"/>
+    <circle cx="960" cy="540" r="5"/><circle cx="360" cy="180" r="5"/>
+    <circle cx="220" cy="270" r="5"/>
+  </g>
+  <!-- vias -->
+  <g fill="none" stroke="#c98a3d" stroke-opacity="0.8" stroke-width="1.5">
+    <circle cx="150" cy="80" r="5"/><circle cx="900" cy="560" r="5"/>
+    <circle cx="1050" cy="120" r="5"/><circle cx="420" cy="420" r="5"/>
+  </g>
+  <g fill="#141008">
+    <circle cx="150" cy="80" r="1.8"/><circle cx="900" cy="560" r="1.8"/>
+    <circle cx="1050" cy="120" r="1.8"/><circle cx="420" cy="420" r="1.8"/>
+  </g>
+  <!-- small chips -->
+  <g fill="none" stroke="#a08c5f" stroke-opacity="0.55" stroke-width="1.5">
+    <rect x="140" y="180" width="90" height="60"/>
+    <rect x="880" y="440" width="110" height="64"/>
+  </g>
+  <g stroke="#a08c5f" stroke-opacity="0.45" stroke-width="1.5">
+    <path d="M136 194 H140 M136 210 H140 M136 226 H140 M230 194 H234 M230 210 H234 M230 226 H234"/>
+    <path d="M876 452 H880 M876 472 H880 M876 492 H880 M990 452 H994 M990 472 H994 M990 492 H994"/>
+  </g>
+  <g fill="#a08c5f" fill-opacity="0.55" font-family="Geist Mono, monospace" font-size="16">
+    <text x="156" y="204">U3</text><text x="896" y="464">R2</text>
+  </g>
+  <!-- probe contact: energized segment -->
+  <path d="M690 300 H830" fill="none" stroke="#ffb454" stroke-opacity="0.28" stroke-width="10"/>
+  <path d="M700 300 H820" fill="none" stroke="#ffb454" stroke-opacity="0.95" stroke-width="3"/>
+  <!-- burst sparks -->
+  <g stroke="#ffb454" stroke-opacity="0.9" stroke-width="2.5" stroke-linecap="round">
+    <path d="M806 284 L826 276"/><path d="M714 284 L694 276"/>
+    <path d="M806 316 L826 324"/><path d="M714 316 L694 324"/>
+    <path d="M760 254 V232"/><path d="M760 346 V368"/>
+  </g>
+  <!-- expanding rings -->
+  <circle cx="760" cy="300" r="54" fill="none" stroke="#ffb454" stroke-opacity="0.5" stroke-width="2"/>
+  <circle cx="760" cy="300" r="72" fill="none" stroke="#ffb454" stroke-opacity="0.22" stroke-width="1.5"/>
+  <!-- reticle -->
+  <circle cx="760" cy="300" r="36" fill="none" stroke="#ffb454" stroke-width="2"/>
+  <g stroke="#ffb454" stroke-width="2.5">
+    <path d="M760 248 V262"/><path d="M760 338 V352"/>
+    <path d="M708 300 H722"/><path d="M798 300 H812"/>
+  </g>
+  <circle cx="760" cy="300" r="4.5" fill="#ffb454"/>
+  <!-- traveling pulses -->
+  <g fill="#ffb454">
+    <circle cx="490" cy="300" r="5" opacity="0.95"/>
+    <circle cx="1020" cy="330" r="4" opacity="0.7"/>
+    <circle cx="180" cy="480" r="4" opacity="0.6"/>
+  </g>
+  <circle cx="490" cy="300" r="11" fill="#ffb454" opacity="0.18"/>
+  <rect width="1200" height="675" fill="url(#scan)"/>
+  <rect width="1200" height="675" fill="url(#vig)"/>
+</svg>

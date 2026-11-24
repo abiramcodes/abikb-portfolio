@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect width="100" height="100" rx="20" fill="#101214"/>
-  <text x="50" y="69" text-anchor="middle" font-family="Geist Mono, ui-monospace, monospace" font-weight="600" font-size="58" fill="#8cc084">A</text>
+  <rect width="100" height="100" rx="20" fill="#141008"/>
+  <text x="38" y="70" text-anchor="middle" font-family="Space Mono, Geist Mono, ui-monospace, monospace" font-weight="700" font-size="58" fill="#ffb454">A</text>
+  <rect x="58" y="56" width="14" height="14" fill="#ffb454"/>
 </svg>

@@ -51,7 +51,7 @@ const projects: AuthoredProject[] = [
     {
       projects.map((project, i) => (
         <article
-          class="group flex flex-col gap-2 p-5 rounded-xl border border-line bg-surface hover:border-accent transition"
+          class="group flex flex-col gap-2 p-5 rounded-md border border-line bg-surface hover:border-accent transition"
           data-reveal
           style={`--index:${i + 1}`}
         >
@@ -82,7 +82,7 @@ const projects: AuthoredProject[] = [
               type="button"
               data-copy={project.command}
               aria-label={`Copy install command: ${project.command}`}
-              class="flex-1 min-w-0 text-left text-xs font-mono text-accent bg-background-dark border border-line rounded-md px-2 py-1.5 overflow-x-auto whitespace-nowrap cursor-pointer hover:border-accent transition"
+              class="flex-1 min-w-0 text-left text-xs font-mono text-accent bg-background-dark border border-line rounded-sm px-2 py-1.5 overflow-x-auto whitespace-nowrap cursor-pointer hover:border-accent transition"
             >
               {project.command}
             </button>

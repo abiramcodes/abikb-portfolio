@@ -9,8 +9,8 @@ interface Props {
 }
 
 const {
-  title = "Abiram | Portfolio",
-  description = "Abiram — Frontend developer building clean, performant web applications with Angular, React, and modern web technologies.",
+  title = "Abiram | Frontend engineer",
+  description = "Abiram, frontend engineer building micro frontends and modern Angular, React, and Astro applications. Tools, open source, and experience.",
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
@@ -35,9 +35,8 @@ const personSchema = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fcfcfa" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101214" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#141008" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -55,20 +54,19 @@ const personSchema = {
     <title>{title}</title>
     <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
     <script is:inline>
-      // Resolve the theme before first paint: stored choice wins,
-      // otherwise follow the OS. Also flag JS so reveal states only
-      // hide content when they can be revealed again.
+      // Resolve the theme before first paint: a stored choice wins,
+      // otherwise the phosphor screen is the default identity. Also
+      // flag JS so reveal states only hide content when they can be
+      // revealed again.
       (function () {
         var d = document.documentElement;
         d.classList.add("js");
         try {
           var stored = localStorage.getItem("theme");
-          var dark = stored
-            ? stored === "dark"
-            : window.matchMedia("(prefers-color-scheme: dark)").matches;
+          var dark = stored ? stored === "dark" : true;
           d.setAttribute("data-theme", dark ? "dark" : "light");
         } catch (e) {
-          d.setAttribute("data-theme", "light");
+          d.setAttribute("data-theme", "dark");
         }
       })();
     </script>
@@ -77,7 +75,7 @@ const personSchema = {
     class="font-sans bg-background-dark text-foreground-dark flex flex-col min-h-screen text-sm sm:text-base antialiased"
   >
     <Header />
-    <main class="pt-10 flex-1 flex flex-col">
+    <main class="flex-1 flex flex-col">
       <slot />
     </main>
     <Footer />
@@ -131,10 +129,11 @@ const personSchema = {
       const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
       const noMotion = window.matchMedia("(prefers-reduced-motion: no-preference)");
 
-      // The period cursor — the wordmark's green dot becomes the
-      // pointer; a ring chases it and blooms over interactive elements.
-      // Touch and reduced-motion visitors keep the native cursor,
-      // untouched, and this block never runs for them.
+      // The probe cursor — the wordmark's amber block becomes the
+      // pointer; a crosshair reticle chases it and blooms over
+      // interactive elements. Touch and reduced-motion visitors keep
+      // the native cursor, untouched, and this block never runs for
+      // them.
       if (finePointer.matches && noMotion.matches) {
         const root = document.documentElement;
         root.setAttribute("data-custom-cursor", "");

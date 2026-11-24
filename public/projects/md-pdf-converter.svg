@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675">
+  <defs>
+    <radialGradient id="vig" cx="50%" cy="42%" r="72%">
+      <stop offset="58%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.5"/>
+    </radialGradient>
+    <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="1.5" fill="#000" opacity="0.16"/>
+    </pattern>
+    <g id="traces" fill="none" stroke-linejoin="round">
+      <path d="M-10 590 H150 L210 530 H340 L400 590 H460 L520 530"/>
+      <path d="M760 300 H900 L960 360 H1210"/>
+      <path d="M-10 90 H380 L440 150 H1210"/>
+      <path d="M-10 380 H200 L260 320 H1210"/>
+    </g>
+  </defs>
+  <rect width="1200" height="675" fill="#141008"/>
+  <path stroke="#c98a3d" stroke-opacity="0.07" stroke-width="1" fill="none"
+    d="M75 0V675M150 0V675M225 0V675M300 0V675M375 0V675M450 0V675M525 0V675M600 0V675M675 0V675M750 0V675M825 0V675M900 0V675M975 0V675M1050 0V675M1125 0V675M0 75H1200M0 150H1200M0 225H1200M0 300H1200M0 375H1200M0 450H1200M0 525H1200M0 600H1200"/>
+  <use href="#traces" stroke="#c98a3d" stroke-opacity="0.14" stroke-width="8"/>
+  <use href="#traces" stroke="#c98a3d" stroke-opacity="0.6" stroke-width="2.5"/>
+  <!-- document module with folded corner -->
+  <path d="M520 150 H690 L760 220 V550 H520 Z" fill="#1d160c" stroke="#a08c5f" stroke-opacity="0.55" stroke-width="1.5"/>
+  <path d="M690 150 V220 H760" fill="none" stroke="#a08c5f" stroke-opacity="0.55" stroke-width="1.5"/>
+  <!-- fold lines -->
+  <path d="M520 330 H760 M520 430 H760" fill="none" stroke="#a08c5f" stroke-opacity="0.25" stroke-width="1" stroke-dasharray="4 8"/>
+  <!-- text lines on the page -->
+  <g stroke="#a08c5f" stroke-opacity="0.4" stroke-width="3" stroke-linecap="round">
+    <path d="M560 260 H680"/><path d="M560 288 H640"/><path d="M560 362 H700"/><path d="M560 390 H620"/>
+  </g>
+  <text x="560" y="180" fill="#a08c5f" fill-opacity="0.55" font-family="Geist Mono, monospace" font-size="16">U7</text>
+  <!-- input chevrons -->
+  <g stroke="#ffb454" stroke-opacity="0.85" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M330 522 l12 8 -12 8"/>
+    <path d="M410 582 l12 8 -12 8"/>
+  </g>
+  <!-- pulse entering the module -->
+  <circle cx="512" cy="538" r="5.5" fill="#ffb454"/>
+  <circle cx="512" cy="538" r="12" fill="#ffb454" opacity="0.18"/>
+  <!-- output pulse -->
+  <circle cx="1080" cy="360" r="4.5" fill="#ffb454" opacity="0.8"/>
+  <circle cx="1080" cy="360" r="10" fill="#ffb454" opacity="0.14"/>
+  <!-- pads + vias -->
+  <g fill="#c98a3d" fill-opacity="0.8">
+    <circle cx="210" cy="530" r="5"/><circle cx="400" cy="590" r="5"/>
+    <circle cx="960" cy="360" r="5"/><circle cx="440" cy="150" r="5"/><circle cx="260" cy="320" r="5"/>
+  </g>
+  <g fill="none" stroke="#c98a3d" stroke-opacity="0.8" stroke-width="1.5">
+    <circle cx="140" cy="200" r="5"/><circle cx="1000" cy="480" r="5"/><circle cx="860" cy="90" r="5"/>
+  </g>
+  <g fill="#141008">
+    <circle cx="140" cy="200" r="1.8"/><circle cx="1000" cy="480" r="1.8"/><circle cx="860" cy="90" r="1.8"/>
+  </g>
+  <rect width="1200" height="675" fill="url(#scan)"/>
+  <rect width="1200" height="675" fill="url(#vig)"/>
+</svg>
