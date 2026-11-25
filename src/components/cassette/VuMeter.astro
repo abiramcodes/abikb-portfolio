@@ -1,0 +1,73 @@
+---
+interface Props {
+  /** "lock" or "exp": fixes the element ids the tuner drives. */
+  id: "lock" | "exp";
+  label: string;
+  /** Resting needle angle between -42deg and 42deg. */
+  needleDeg?: number;
+  /** Accessible equivalent of the needle position. */
+  srText: string;
+}
+
+const { id, label, needleDeg = 42, srText } = Astro.props;
+---
+
+<div class="meter relative overflow-hidden" style="height: 104px;">
+  <svg viewBox="0 0 120 76" class="meter-face absolute inset-x-2 top-1" aria-hidden="true">
+    <path d="M10 66a52 52 0 0 1 100 0" class="hw-svg-dim" stroke-width="2" />
+    <path d="M86 24a52 52 0 0 1 24 42" fill="none" stroke="#D94F1E" stroke-width="4" />
+    <g class="hw-svg-dim" stroke-width="2">
+      <line x1="14" y1="62" x2="22" y2="56" />
+      <line x1="60" y1="14" x2="60" y2="24" />
+      <line x1="106" y1="62" x2="98" y2="56" />
+    </g>
+  </svg>
+  <div
+    class="needle"
+    id={id === "exp" ? "af-needle-exp" : "af-needle-lock"}
+    style={`--needle: ${needleDeg.toFixed(1)}deg;`}
+    aria-hidden="true"
+  ></div>
+  <div class="pivot" aria-hidden="true"></div>
+  <p class="meter-label absolute inset-x-0 bottom-1 text-center t-sm font-bold text-muted m-0">
+    {label}
+  </p>
+  <span class="sr-only" id={id === "exp" ? "af-exp-sr" : "af-lock-sr"}>{srText}</span>
+</div>
+
+<style>
+  .meter {
+    background: linear-gradient(180deg, var(--meter-hi), var(--meter-lo));
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    box-shadow: inset 0 2px 8px var(--panel-shade);
+  }
+  .meter-face {
+    left: 8px;
+    right: 8px;
+    width: calc(100% - 16px);
+    height: 76px;
+  }
+  .needle {
+    position: absolute;
+    left: calc(50% - 2px);
+    bottom: 24px;
+    width: 4px;
+    height: 58px;
+    border-radius: 2px;
+    background: var(--accent-strong);
+    transform-origin: 50% 100%;
+    transform: rotate(var(--needle, -42deg));
+    transition: transform 220ms var(--ease);
+  }
+  .pivot {
+    position: absolute;
+    left: calc(50% - 7px);
+    bottom: 18px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--key-face-2);
+    border: 2px solid var(--cap-lo);
+  }
+</style>

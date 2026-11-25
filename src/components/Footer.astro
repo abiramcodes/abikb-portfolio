@@ -4,26 +4,26 @@ import { getSiteYear } from "../utils/experience.ts";
 const year = getSiteYear();
 ---
 
-<footer
-  class="py-6 text-center text-sm sm:text-base text-secondary-dark"
->
-  <div
-    class="w-full max-w-3xl mx-auto flex flex-col md:flex-row gap-2 md:justify-between items-center px-4 sm:px-0 border-t border-line pt-6"
-  >
-    <span>
-      &copy; <span data-year>{year}</span> Abiram.
-    </span>
-    <span>
-      Built with
-      <a
-        href="https://github.com/abiramcodes/abikb-portfolio"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="text-accent hover:brightness-125 transition ml-2"
-      >
-        Astro + Tailwind
-      </a>
-    </span>
+<footer class="mt-16 border-t border-bench-line bg-bench-2 pb-[84px] sm:pb-0">
+  <div class="mx-auto w-full max-w-[76rem] px-4 sm:px-6 py-6">
+    <div class="hw-vent max-w-[220px] mb-5" aria-hidden="true"></div>
+    <div class="flex flex-col sm:flex-row gap-2 sm:items-baseline sm:justify-between">
+      <p class="t-sm text-bench-muted">
+        &copy; <span data-year>{year}</span> Abiram.
+        <span class="mono text-bench-dim">Frontend console, made for the web</span>
+      </p>
+      <p class="t-sm text-bench-muted">
+        Built with
+        <a
+          href="https://github.com/abiramcodes/abikb-portfolio"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-bold text-leda underline decoration-1 underline-offset-4 hover:text-bench-text transition-colors duration-150"
+        >
+          Astro + Tailwind
+        </a>
+      </p>
+    </div>
   </div>
 </footer>
 

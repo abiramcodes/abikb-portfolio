@@ -1,158 +1,121 @@
 ---
-interface Project {
-  name: string;
-  slug: string;
-  tech: string;
-  description: string;
-  link: string;
-  docs?: string;
-  command?: string;
-}
+import { SIDE_A } from "../data/projects";
+import TransportKey from "./cassette/TransportKey.astro";
 
-const projects: Project[] = [
-  {
-    name: "ng-point",
-    slug: "ng-point",
-    tech: "Angular, TypeScript",
-    description:
-      "Dev-mode Angular library - Alt+Click any element in your running app to capture an LLM ready context block (component, file:line, template) for your AI coding agent. Redacted at capture; production builds never load it.",
-    link: "https://github.com/abiramcodes/ng-point",
-    docs: "https://abiramcodes.github.io/ng-point/",
-    command: "npm i -D @abiramcodes/ng-point",
-  },
-  {
-    name: "angular-doctor",
-    slug: "angular-doctor",
-    tech: "Angular, Node CLI",
-    description:
-      "Deterministic health scans for Angular codebases - CLI health score, categorized diagnostics, and an agent-ready report with an Oxlint + template ESLint stack.",
-    link: "https://github.com/abiramcodes/angular-doctor",
-    docs: "https://ngdoctor.dev/",
-    command: "npx @abiramcodes/angular-doctor@latest",
-  },
-  {
-    name: "md-Pdf-converter",
-    slug: "md-pdf-converter",
-    tech: "Angular, NestJS",
-    description:
-      "A web application that converts Markdown files to PDF format, built using Angular for the frontend and NestJS for the backend.",
-    link: "https://github.com/abiramcodes/MD-PDF",
-  },
-  {
-    name: "dynamic-forms-demo",
-    slug: "dynamic-forms-demo",
-    tech: "Angular",
-    description:
-      "Demo application used in the ng India Chennai Meetup, 2025. Demonstrates dynamic components and forms.",
-    link: "https://github.com/abiramcodes/dynamic-forms-demo",
-  },
-  {
-    name: "mini-url",
-    slug: "mini-url",
-    tech: "Angular",
-    description:
-      "A UI for generating shortened URLs, developed as part of coding challenges by John Crickett.",
-    link: "https://github.com/abiramcodes/mini-url-frontEnd",
-  },
-];
+// The /projects library: full tape cases for the authored tools,
+// a rack for the remaining personal work. Side B client work is
+// rendered by WorkProjects.astro below this section.
+const featured = SIDE_A.filter((p) => p.command);
+const rack = SIDE_A.filter((p) => !p.command);
 ---
 
-<section class="w-full max-w-3xl mx-auto px-4 sm:px-0">
-  <h2 class="font-display text-4xl sm:text-5xl tracking-[-0.02em] mb-3">Projects</h2>
-  <p class="text-secondary-dark mb-8" data-reveal>Tools and demos, built in the open.</p>
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<section class="w-full" aria-labelledby="library-h">
+  <h2 id="library-h" class="t-head font-black tracking-tight m-0">Projects</h2>
+  <p class="t-body text-muted m-0 mt-1.5">Tools and demos, built in the open.</p>
+
+  <div class="flex flex-col gap-4 mt-6">
     {
-      projects.map((project, i) => (
+      featured.map((tool, i) => (
         <article
-          class="group flex flex-col rounded-md border border-line bg-surface hover:border-accent transition overflow-hidden"
-          data-reveal
-          style={`--index:${i}`}
+          class="hw-panel p-5 sm:p-6 sm:flex sm:items-center sm:gap-6 min-w-0"
+          id={tool.id}
         >
-          <a
-            href={project.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${project.name} repository`}
-            class="block border-b border-line"
+          <svg
+            class="w-[132px] sm:w-[160px] h-auto shrink-0"
+            viewBox="0 0 160 60"
+            aria-hidden="true"
           >
-            <img
-              src={`/projects/${project.slug}.svg`}
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-              decoding="async"
-              width="1200"
-              height="675"
-              class="w-full aspect-video object-cover group-hover:opacity-90 transition"
-            />
-          </a>
-          <div class="p-5 flex flex-col gap-2 flex-1">
+            <rect x="2" y="4" width="156" height="52" rx="6" class="hw-svg-deck" />
+            <rect x="14" y="14" width="86" height="32" rx="4" class="hw-svg-frame" />
+            <g class="hw-svg-metal" stroke-width="2">
+              <circle cx="36" cy="30" r="9" />
+              <circle cx="78" cy="30" r="9" />
+              <path d="M36 24v12M30 30h12M78 24v12M72 30h12" />
+            </g>
+            <circle cx="36" cy="30" r="2.4" class="hw-svg-metal-fill" />
+            <circle cx="78" cy="30" r="2.4" class="hw-svg-metal-fill" />
+            {i === 0 ? (
+              <g stroke="#D94F1E" stroke-width="2" fill="none">
+                <circle cx="130" cy="30" r="10" />
+                <path d="M130 15v5M130 40v5M115 30h5M140 30h5" />
+              </g>
+            ) : (
+              <path d="M110 30h10l3-7 4 14 3-7h20" stroke="#D94F1E" stroke-width="2" fill="none" />
+            )}
+          </svg>
+          <div class="flex flex-col min-w-0 mt-4 sm:mt-0">
+            <h3 class="t-head font-black tracking-tight m-0" style="overflow-wrap: anywhere;">
+              {tool.name}
+            </h3>
+            <p class="mono t-sm text-muted m-0 mt-1">{tool.tech.join(", ")}</p>
+            <p class="t-body text-muted leading-relaxed m-0 mt-3" style="text-wrap: pretty;">
+              {tool.description}
+            </p>
+            <div class="mt-4">
+              <span class="t-sm font-bold text-muted block mb-1.5">Install command</span>
+              <code
+                class="mono t-sm block rounded px-3 py-2.5 overflow-x-auto whitespace-nowrap m-0"
+                style="background: var(--smoked); color: var(--led-side-a);"
+              >
+                {tool.command}
+              </code>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-3">
+              <TransportKey copy={tool.command}>
+                Copy command
+              </TransportKey>
+              {tool.docs && (
+                <a class="hw-key" href={tool.docs} target="_blank" rel="noopener noreferrer">
+                  Docs
+                </a>
+              )}
+              {tool.github && (
+                <a class="hw-key" href={tool.github} target="_blank" rel="noopener noreferrer">
+                  GitHub
+                </a>
+              )}
+            </div>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+  <div class="grid gap-4 mt-4 sm:grid-cols-3">
+    {
+      rack.map((p) => (
+        <article class="hw-panel p-4 flex flex-col min-w-0" id={p.id}>
+          <img
+            src={`/projects/${p.slug}.svg`}
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+            width="1200"
+            height="675"
+            class="w-full aspect-video object-cover rounded-md border border-line"
+          />
+          <h3 class="t-body font-black m-0 mt-4" style="overflow-wrap: anywhere;">
+            {p.name}
+          </h3>
+          <p class="mono t-sm text-muted m-0 mt-1">{p.tech.join(", ")}</p>
+          <p class="t-sm text-muted leading-relaxed m-0 mt-2" style="text-wrap: pretty;">
+            {p.description}
+          </p>
+          {p.github && (
             <a
-              href={project.link}
+              class="hw-key mt-auto self-start mt-4"
+              href={p.github}
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-baseline justify-between gap-2"
             >
-              <h3 class="font-semibold text-foreground-dark group-hover:text-accent transition">
-                {project.name}
-              </h3>
-              <svg
-                class="w-4 h-4 shrink-0 opacity-30 group-hover:opacity-70 transition"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path d="M7 17L17 7M17 7H7M17 7v10" />
-              </svg>
+              GitHub
             </a>
-            <span class="text-xs text-accent font-medium">{project.tech}</span>
-            <p class="text-sm text-secondary-dark leading-relaxed text-balance">
-              {project.description}
-            </p>
-            {(project.command || project.docs) && (
-              <div class="mt-auto pt-1 flex items-center gap-2">
-                {project.command && (
-                  <button type="button" data-copy={project.command} aria-label={`Copy install command: ${project.command}`} class="flex-1 min-w-0 text-left text-xs font-mono text-accent bg-background-dark border border-line rounded-sm px-2 py-1.5 overflow-x-auto whitespace-nowrap cursor-pointer hover:border-accent transition">{project.command}</button>
-                )}
-                {project.docs && (
-                  <a
-                    href={project.docs}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Read ${project.name} docs`}
-                    class="text-xs font-medium text-accent link-draw transition whitespace-nowrap"
-                  >
-                    Docs &rarr;
-                  </a>
-                )}
-              </div>
-            )}
-          </div>
+          )}
         </article>
       ))
     }
   </div>
 </section>
 
-<script>
-  document.querySelectorAll("[data-copy]").forEach((el) => {
-    el.addEventListener("click", async () => {
-      const text = el.getAttribute("data-copy");
-      if (!text) return;
-      try {
-        await navigator.clipboard.writeText(text);
-      } catch {
-        const ta = document.createElement("textarea");
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        ta.remove();
-      }
-      const label = el.textContent;
-      el.textContent = "Copied!";
-      window.setTimeout(() => { el.textContent = label; }, 1200);
-    });
-  });
-</script>
+<script src="../scripts/copy-command.ts"></script>

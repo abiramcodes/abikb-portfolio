@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abiram, Design Explorer: Cassette Futurism vs Kolam Blueprint vs Menu Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Baloo+Thambi+2:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#101010; color:#ededed; font-family:"Archivo",system-ui,sans-serif; }
+  a { color:inherit; }
+  button { font:inherit; }
+  .bar { position:sticky; top:0; z-index:60; background:#0b0b0b; border-bottom:1px solid #2a2a2a; }
+  .bar-in { max-width:1320px; margin:0 auto; padding:16px 20px 14px; }
+  .bar-top { display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 18px; }
+  .bar h1 { font-size:21px; font-weight:900; letter-spacing:-0.03em; }
+  .bar h1 span { color:#c9a227; }
+  .bar .lede { font-size:14px; line-height:1.55; color:#a8a8a8; }
+  .bar-row { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-top:14px; }
+  .seg { display:inline-flex; border:1px solid #3d3d3d; border-radius:8px; overflow:hidden; }
+  .seg button { appearance:none; border:0; border-right:1px solid #3d3d3d; background:#191919; color:#cfcfcf; font-size:14px; font-weight:700; padding:11px 16px; cursor:pointer; }
+  .seg button:last-child { border-right:0; }
+  .seg button small { display:block; font-size:12px; font-weight:500; color:#8f8f8f; margin-top:2px; }
+  .seg button[aria-selected="true"] { background:#f4f4f4; color:#0b0b0b; }
+  .seg button[aria-selected="true"] small { color:#4d4d4d; }
+  .seg button:focus-visible, .vp:focus-visible { outline:2px solid #c9a227; outline-offset:2px; }
+  .vps { display:inline-flex; border:1px solid #3d3d3d; border-radius:8px; overflow:hidden; }
+  .vp { appearance:none; border:0; background:transparent; color:#a8a8a8; font-size:13px; font-weight:700; padding:9px 13px; cursor:pointer; }
+  .vp[aria-pressed="true"] { background:#2b2b2b; color:#fff; }
+  .hint { font-size:13px; color:#7d7d7d; margin-top:10px; }
+  .hint kbd { border:1px solid #3d3d3d; border-bottom-width:2px; border-radius:4px; padding:0 5px; background:#1c1c1c; font-family:"IBM Plex Mono",monospace; font-size:12px; color:#e5e5e5; }
+  .stage { max-width:1320px; margin:0 auto; padding:22px 20px 8px; }
+  .frame { margin:0 auto; width:100%; background:#fff; border:1px solid #333; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,.55); transition:max-width 240ms cubic-bezier(0.22,1,0.36,1); }
+  .frame.mobile { max-width:390px; }
+  .design { display:none; }
+  .design.active { display:block; }
+  .info { max-width:1320px; margin:0 auto; padding:18px 20px 12px; }
+  .info-card { border-top:2px solid #f4f4f4; padding-top:18px; }
+  .info-card h2 { font-size:26px; font-weight:900; letter-spacing:-0.02em; }
+  .info-card .why { margin-top:8px; font-size:15px; line-height:1.65; color:#c6c6c6; max-width:70ch; }
+  .info-card .try { margin-top:12px; font-size:14px; line-height:1.7; color:#e8e8e8; }
+  .info-card .try b { color:#c9a227; }
+  .meta { display:flex; flex-wrap:wrap; gap:6px 26px; margin-top:12px; font-size:14px; color:#9a9a9a; }
+  .meta b { color:#f0f0f0; }
+  .foot { max-width:1320px; margin:0 auto; padding:8px 20px 52px; font-size:14px; line-height:1.7; color:#8a8a8a; }
+  .foot code { font-family:"IBM Plex Mono",monospace; font-size:13px; color:#e0e0e0; background:#1e1e1e; padding:1px 6px; border-radius:4px; }
+  .pv-nav { display:flex; align-items:center; justify-content:space-between; gap:18px; }
+  .cmd { font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition:none !important; animation:none !important; } }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="bar-in">
+    <div class="bar-top">
+      <h1>ABIRAM <span>/</span> THREE DIRECTIONS</h1>
+      <p class="lede">Your real homepage, three ways. Pick one, I build it for real in Astro.</p>
+    </div>
+    <div class="bar-row">
+      <div class="seg" role="tablist" aria-label="Design directions">
+        <button role="tab" data-go="cassette" aria-selected="true">1. Cassette Futurism<small>Beige console, working dial</small></button>
+        <button role="tab" data-go="kolam" aria-selected="false">2. Kolam x Blueprint<small>Drawing sheets, one looping line</small></button>
+        <button role="tab" data-go="menu" aria-selected="false">3. Menu Board<small>Parotta Smash hero</small></button>
+      </div>
+      <div class="vps" aria-label="Preview width">
+        <button class="vp" data-vp="desktop" aria-pressed="true">Desktop</button>
+        <button class="vp" data-vp="mobile" aria-pressed="false">Mobile 390</button>
+      </div>
+    </div>
+    <p class="hint">Keys <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> switch designs. Design 1: drag the dial and flip switches. Design 2: move your cursor over the sheet. Design 3: smash the parotta, or skip straight to the menu.</p>
+  </div>
+</header>
+
+<main class="stage">
+  <div class="frame" id="frame">
+<!-- 1. CASSETTE FUTURISM -->
+<style>
+  .frame { container-type:inline-size; }
+  .cf { --plastic:#D8CFB4; --plastic-2:#C9BC98; --panel:#E8E0C8; --panel-2:#DCD1AE; --ink:#2B2921; --mut:#5C5541; --char:#211E17; --led:#FFB454; --accent:#C7502B; --line:#A99C78; --t-head:26px; --t-body:15px; --t-sm:13px; background:#211F1A; color:var(--ink); font-family:"Archivo",system-ui,sans-serif; padding:clamp(12px,3cqw,34px); }
+  .cf[data-led="green"] { --led:#7CE495; }
+  .cf .chassis { position:relative; max-width:1160px; margin:0 auto; background:linear-gradient(180deg,#E2D9BE, var(--plastic) 42%, #CFC3A2); border:1px solid #8F8465; border-radius:18px; box-shadow:inset 0 2px 0 rgba(255,252,238,.75), inset 0 -10px 22px rgba(86,75,48,.22), 0 20px 44px rgba(0,0,0,.4); padding:clamp(18px,3.4cqw,36px); }
+  .cf .screw { position:absolute; width:15px; height:15px; border-radius:50%; background:radial-gradient(circle at 35% 30%, #D8D2C0, #8B8574 58%, #5F5A4C); box-shadow:inset 0 1px 2px rgba(255,255,255,.7), 0 1px 2px rgba(40,36,24,.5); }
+  .cf .screw::after { content:""; position:absolute; left:2px; right:2px; top:6px; height:2px; background:#4C483E; transform:rotate(38deg); }
+  .cf .screw.tl { top:12px; left:12px; } .cf .screw.tr { top:12px; right:12px; } .cf .screw.bl { bottom:12px; left:12px; } .cf .screw.br { bottom:12px; right:12px; }
+  .cf .panel { background:linear-gradient(180deg,var(--panel), var(--panel-2)); border:1px solid var(--line); border-radius:10px; box-shadow:inset 0 1px 0 rgba(255,252,238,.8), inset 0 -6px 14px rgba(96,84,52,.14); }
+  .cf .face-top { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(300px,.85fr); gap:22px; align-items:stretch; }
+  .cf .model { font-family:"IBM Plex Mono",monospace; font-size:var(--t-sm); font-weight:600; letter-spacing:.08em; color:var(--mut); }
+  .cf .model strong { color:var(--ink); }
+  .cf h2.name { font-size:clamp(3.6rem,9cqw,7.6rem); font-weight:900; line-height:.88; letter-spacing:-0.045em; margin-top:10px; text-shadow:0 2px 0 rgba(255,252,238,.55); }
+  .cf .role { font-size:var(--t-body); line-height:1.6; color:var(--mut); max-width:65ch; margin-top:14px; }
+  .cf .role b { color:var(--ink); }
+  .cf .resume-key { margin-top:18px; }
+  .cf .ledbox { background:linear-gradient(180deg,#2A261D,var(--char)); border:1px solid #100E0A; border-radius:8px; box-shadow:inset 0 3px 12px rgba(0,0,0,.75), inset 0 -1px 0 rgba(255,244,205,.14); color:var(--led); font-family:"IBM Plex Mono",monospace; padding:18px; display:flex; flex-direction:column; justify-content:space-between; gap:18px; min-height:190px; transition:color 200ms cubic-bezier(0.22,1,0.36,1); }
+  .cf .led-line { display:flex; align-items:baseline; justify-content:space-between; gap:14px; font-size:var(--t-sm); }
+  .cf .led-name { font-size:var(--t-head); font-weight:600; letter-spacing:.06em; line-height:1.1; overflow-wrap:anywhere; text-shadow:0 0 10px currentColor; }
+  .cf .led-sub { font-size:var(--t-sm); letter-spacing:.05em; opacity:.92; }
+  .cf .led-big { font-size:var(--t-head); font-weight:600; font-variant-numeric:tabular-nums; text-shadow:0 0 10px currentColor; }
+  .cf[data-power="off"] .ledbox { color:#5A5442; }
+  .cf[data-power="off"] .led-name, .cf[data-power="off"] .led-big { text-shadow:none; }
+  .cf .lamp { display:inline-block; width:11px; height:11px; border-radius:50%; background:#574E38; box-shadow:inset 0 1px 2px rgba(0,0,0,.6); vertical-align:-1px; }
+  .cf .lamp.on { background:var(--accent); box-shadow:0 0 10px rgba(199,80,43,.85), inset 0 1px 1px rgba(255,255,255,.5); }
+  .cf[data-power="off"] .lamp.on { background:#574E38; box-shadow:inset 0 1px 2px rgba(0,0,0,.6); }
+  .cf .deck { display:grid; grid-template-columns:minmax(260px,.95fr) minmax(0,1.2fr) minmax(270px,.9fr); gap:18px; margin-top:20px; align-items:stretch; }
+  .cf .tape { background:linear-gradient(180deg,#353129,#24211B); border:1px solid #171410; border-radius:12px; box-shadow:inset 0 3px 14px rgba(0,0,0,.7); padding:16px; color:#D9D0B8; }
+  .cf .tape p { font-family:"IBM Plex Mono",monospace; font-size:var(--t-sm); display:flex; justify-content:space-between; gap:12px; }
+  .cf .tape svg { width:100%; height:auto; margin-top:8px; }
+  .cf .tlist { margin-top:16px; border-top:1px solid #4A4436; padding-top:12px; display:grid; gap:8px; }
+  .cf .tlist h4 { font-family:"IBM Plex Mono",monospace; font-size:var(--t-sm); font-weight:600; color:#A79B7A; }
+  .cf .trow { font-family:"IBM Plex Mono",monospace; font-size:var(--t-sm); display:flex; justify-content:space-between; gap:10px; color:#8F8465; transition:color 180ms cubic-bezier(0.22,1,0.36,1); }
+  .cf .trow.on { color:var(--led); }
+  .cf[data-power="off"] .trow.on { color:#6C6550; }
+  .cf .reel { transform-box:fill-box; transform-origin:center; }
+  .cf[data-power="on"][data-play="on"] .reel { animation:cf-reel 3.4s linear infinite; }
+  .cf .spinning .reel { animation:cf-reel .7s cubic-bezier(0.22,1,0.36,1); }
+  @keyframes cf-reel { to { transform:rotate(360deg); } }
+  .cf .readout { padding:20px; display:flex; flex-direction:column; }
+  .cf .readout h3 { font-size:var(--t-head); font-weight:900; letter-spacing:-0.02em; line-height:1.05; overflow-wrap:anywhere; }
+  .cf .readout .stack { font-family:"IBM Plex Mono",monospace; font-size:var(--t-sm); color:var(--mut); margin-top:6px; }
+  .cf .readout .desc { font-size:var(--t-body); line-height:1.65; color:var(--mut); margin-top:12px; }
+  .cf .readout .desc b { color:var(--ink); }
+  .cf .cmdline { margin-top:auto; padding-top:16px; }
+  .cf .cmdline span { display:block; font-size:var(--t-sm); font-weight:700; color:var(--mut); margin-bottom:6px; }
+  .cf .cmdline code { display:block; background:var(--char); color:var(--led); font-family:"IBM Plex Mono",monospace; font-size:var(--t-sm); padding:11px 12px; border-radius:5px; overflow-x:auto; white-space:nowrap; transition:color 200ms cubic-bezier(0.22,1,0.36,1); }
+  .cf[data-power="off"] .cmdline code { color:#6C6550; }
+  .cf .keys { display:flex; flex-wrap:wrap; gap:9px; margin-top:14px; }
+  .cf .key { appearance:none; display:inline-flex; align-items:center; justify-content:center; min-height:42px; padding:9px 14px; border:1px solid #171410; border-radius:6px; background:linear-gradient(180deg,#454138,#2E2B24); color:#F4EDD6; font-size:var(--t-sm); font-weight:800; text-decoration:none; cursor:pointer; box-shadow:0 4px 0 #14120E, inset 0 1px 0 rgba(255,255,255,.22); transition:transform 160ms cubic-bezier(0.22,1,0.36,1), box-shadow 160ms cubic-bezier(0.22,1,0.36,1), background-color 160ms cubic-bezier(0.22,1,0.36,1); }
+  .cf .key.primary { background:linear-gradient(180deg,#DE6338,var(--accent)); }
+  .cf .key:active { transform:translateY(3px); box-shadow:0 1px 0 #14120E, inset 0 1px 0 rgba(255,255,255,.2); }
+  .cf .key:focus-visible, .cf .detent:focus-visible, .cf .sw:focus-visible, .cf .dial:focus-visible { outline:3px solid var(--accent); outline-offset:3px; }
+  .cf .key[hidden] { display:none; }
+  .cf .controls { padding:18px; display:flex; flex-direction:column; gap:14px; }
+  .cf .ctl-label { font-size:var(--t-sm); font-weight:800; color:var(--mut); display:flex; justify-content:space-between; gap:12px; }
+  .cf .ctl-label output { font-family:"IBM Plex Mono",monospace; color:var(--ink); font-weight:600; }
+  .cf .dial-stage { position:relative; width:min(238px,100%); aspect-ratio:1; margin:0 auto; }
+  .cf .dial-stage .ticks { position:absolute; inset:0; width:100%; height:100%; }
+  .cf .dial { position:absolute; inset:27px; appearance:none; border:1px solid #171410; border-radius:50%; background:repeating-conic-gradient(from 0deg,#4B473C 0deg 6deg,#333027 6deg 12deg); box-shadow:0 10px 20px rgba(35,30,18,.4), inset 0 3px 6px rgba(255,255,255,.22), inset 0 -10px 18px rgba(0,0,0,.45); cursor:grab; touch-action:none; transition:transform 200ms cubic-bezier(0.22,1,0.36,1); }
+  .cf .dial:active { cursor:grabbing; }
+  .cf .dial.dragging { transition:none; }
+  .cf .dial .cap { position:absolute; inset:31%; border-radius:50%; background:radial-gradient(circle at 36% 30%,#F0E7CB,#CDBF9B 62%,#A99B76); border:1px solid #6E6448; box-shadow:inset 0 2px 4px rgba(255,255,255,.65), 0 3px 8px rgba(0,0,0,.35); }
+  .cf .dial .pointer { position:absolute; left:calc(50% - 3px); top:8px; width:6px; height:42px; border-radius:3px; background:var(--accent); box-shadow:0 1px 3px rgba(0,0,0,.45); }
+  .cf .detents { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
+  .cf .detent { appearance:none; border:1px solid #7D7356; border-radius:5px; background:linear-gradient(180deg,#EFE7CC,#D8CCAB); color:var(--mut); font-family:"IBM Plex Mono",monospace; font-size:var(--t-sm); font-weight:600; min-height:40px; padding:6px 2px; cursor:pointer; box-shadow:0 3px 0 #8A7F5F; transition:transform 160ms cubic-bezier(0.22,1,0.36,1), box-shadow 160ms cubic-bezier(0.22,1,0.36,1), color 160ms cubic-bezier(0.22,1,0.36,1), background-color 160ms cubic-bezier(0.22,1,0.36,1); }
+  .cf .detent[aria-checked="true"] { color:var(--ink); background:linear-gradient(180deg,#D8CCAB,#CBBE97); transform:translateY(2px); box-shadow:0 1px 0 #8A7F5F, inset 0 3px 0 var(--accent); }
+  .cf .meters { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .cf .meter { position:relative; height:108px; overflow:hidden; background:linear-gradient(180deg,#F2E9CB,#E4D8B2); border:1px solid #8F8465; border-radius:7px; box-shadow:inset 0 2px 8px rgba(90,78,44,.25); }
+  .cf .meter svg { position:absolute; inset:4px 6px auto; width:calc(100% - 12px); height:76px; }
+  .cf .needle { position:absolute; left:calc(50% - 2px); bottom:24px; width:4px; height:58px; border-radius:2px; background:#B33A22; transform-origin:50% 100%; transform:rotate(var(--needle,-42deg)); transition:transform 220ms cubic-bezier(0.22,1,0.36,1); }
+  .cf .pivot { position:absolute; left:calc(50% - 7px); bottom:18px; width:14px; height:14px; border-radius:50%; background:#2E2B24; border:2px solid #8B8574; }
+  .cf .meter-label { position:absolute; left:0; right:0; bottom:5px; text-align:center; font-size:var(--t-sm); font-weight:700; color:var(--mut); }
+  .cf .switches { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .cf .sw { appearance:none; border:1px solid #7D7356; border-radius:8px; background:linear-gradient(180deg,#CFC6AC,#B9AE8E); color:var(--ink); padding:10px 6px 9px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:7px; box-shadow:inset 0 1px 0 rgba(255,252,238,.6); }
+  .cf .sw .slot { position:relative; width:28px; height:54px; border-radius:15px; background:#25221B; box-shadow:inset 0 3px 8px rgba(0,0,0,.8); }
+  .cf .sw .lever { position:absolute; left:4px; top:4px; width:20px; height:27px; border-radius:5px; background:linear-gradient(180deg,#5A5546,#2E2B24); box-shadow:inset 0 1px 0 rgba(255,255,255,.3), 0 2px 4px rgba(0,0,0,.5); transform:translateY(19px); transition:transform 180ms cubic-bezier(0.22,1,0.36,1); }
+  .cf .sw[aria-checked="true"] .lever { transform:translateY(0); }
+  .cf .sw .sw-name { font-size:var(--t-sm); font-weight:800; line-height:1.2; }
+  .cf .sw .sw-state { font-family:"IBM Plex Mono",monospace; font-size:var(--t-sm); color:var(--mut); }
+  .cf .modules { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,.9fr); gap:18px; margin-top:20px; }
+  .cf .mod { padding:22px; }
+  .cf .mod h3 { font-size:var(--t-head); font-weight:900; letter-spacing:-0.02em; line-height:1.05; }
+  .cf .mod .sub { font-size:var(--t-body); line-height:1.6; color:var(--mut); margin-top:8px; }
+  .cf .log-row { border-top:1px solid var(--line); padding:16px 0 4px; margin-top:14px; }
+  .cf .log-head { display:flex; flex-wrap:wrap; justify-content:space-between; gap:6px 16px; align-items:baseline; }
+  .cf .log-head strong { font-size:var(--t-body); }
+  .cf .log-head .co { color:var(--accent); font-weight:800; font-size:var(--t-body); }
+  .cf .log-head time { font-family:"IBM Plex Mono",monospace; font-size:var(--t-sm); color:var(--mut); font-variant-numeric:tabular-nums; }
+  .cf .log-row ul { font-size:var(--t-body); line-height:1.65; color:var(--mut); padding-left:18px; margin-top:8px; }
+  .cf .spec-row { display:grid; grid-template-columns:132px 1fr; gap:14px; border-top:1px solid var(--line); padding:13px 0; margin-top:10px; }
+  .cf .spec-row dt { font-size:var(--t-sm); font-weight:800; }
+  .cf .spec-row dd { font-size:var(--t-body); line-height:1.6; color:var(--mut); }
+  .cf .output { margin-top:18px; padding:22px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px 24px; }
+  .cf .output h3 { font-size:var(--t-head); font-weight:900; letter-spacing:-0.02em; }
+  .cf .output p { font-size:var(--t-body); line-height:1.6; color:var(--mut); margin-top:6px; max-width:65ch; }
+  .cf .vent { height:18px; margin-top:20px; border-radius:4px; background:repeating-linear-gradient(90deg, rgba(70,62,42,.55) 0 26px, transparent 26px 38px); opacity:.55; }
+  @container (max-width:980px) { .cf .face-top { grid-template-columns:1fr; } .cf .deck { grid-template-columns:1fr 1fr; } .cf .controls { grid-column:1/-1; } .cf .modules { grid-template-columns:1fr; } }
+  @container (max-width:660px) { .cf .chassis { padding-top:34px; } .cf .deck { grid-template-columns:1fr; } .cf .spec-row { grid-template-columns:1fr; gap:4px; } .cf .ledbox { min-height:160px; } }
+</style>
+<section class="design cf active" id="d-cassette" data-power="on" data-play="off" data-led="amber" aria-label="Cassette Futurism design">
+  <div class="chassis" id="cf-chassis">
+    <span class="screw tl" aria-hidden="true"></span><span class="screw tr" aria-hidden="true"></span><span class="screw bl" aria-hidden="true"></span><span class="screw br" aria-hidden="true"></span>
+    <div class="face-top">
+      <div>
+        <p class="model">Model <strong>AF-82</strong> · Frontend console · Made for the web, imagined in 1982</p>
+        <h2 class="name">ABIRAM</h2>
+        <p class="role"><b>Frontend engineer building micro frontends and migrating large Angular applications</b>, with React, Astro, and open tooling where they fit better.</p>
+        <a class="key primary resume-key" href="./public/Abirama_Kannan_FE_Engineer.pdf" download>Download resume</a>
+      </div>
+      <div class="ledbox" aria-label="Console readout">
+        <div>
+          <div class="led-line"><span><span class="lamp on" id="cf-power-lamp" aria-hidden="true"></span> <span id="cf-led-state">Power on</span></span><span id="cf-led-clock">--:--</span></div>
+          <p class="led-name" id="cf-led-name" style="margin-top:14px">ng-point</p>
+          <p class="led-sub" id="cf-led-sub" style="margin-top:6px">Track 1 of 5 · Angular, TypeScript</p>
+        </div>
+        <div class="led-line"><span>Experience</span><span class="led-big"><span id="cf-exp">4.0</span> yrs</span></div>
+      </div>
+    </div>
+
+    <div class="deck">
+      <div class="tape" aria-hidden="true">
+        <p><span>Side A</span><span>Shipped tools</span><span id="cf-counter">001</span></p>
+        <svg viewBox="0 0 340 190" role="presentation">
+          <rect x="8" y="14" width="324" height="142" rx="12" fill="#171410" stroke="#4A4436"/>
+          <g class="reel" stroke="#D9D0B8" stroke-width="4" fill="none"><circle cx="96" cy="84" r="41"/><circle cx="96" cy="84" r="9" fill="#D9D0B8" stroke="none"/><path d="M96 47v74M59 84h74M70 58l52 52M122 58L70 110"/></g>
+          <g class="reel" stroke="#D9D0B8" stroke-width="4" fill="none"><circle cx="244" cy="84" r="41"/><circle cx="244" cy="84" r="9" fill="#D9D0B8" stroke="none"/><path d="M244 47v74M207 84h74M218 58l52 52M270 58l-52 52"/></g>
+          <path d="M96 125c48 16 100 16 148 0" stroke="#8A7F5F" stroke-width="5" fill="none"/>
+          <rect x="62" y="164" width="216" height="10" rx="5" fill="#3A362C"/>
+        </svg>
+        <p><span>CrO2 · 90 min</span><span>Dolby off, defects zero</span></p>
+        <div class="tlist">
+          <h4>Track listing, Side A</h4>
+          <p class="trow on" data-cf-row="0"><span>1 · ng-point</span><span>Angular</span></p>
+          <p class="trow" data-cf-row="1"><span>2 · angular-doctor</span><span>CLI</span></p>
+          <p class="trow" data-cf-row="2"><span>3 · md-Pdf-converter</span><span>NestJS</span></p>
+          <p class="trow" data-cf-row="3"><span>4 · dynamic-forms-demo</span><span>Meetup</span></p>
+          <p class="trow" data-cf-row="4"><span>5 · mini-url</span><span>Angular</span></p>
+        </div>
+      </div>
+
+      <div class="panel readout" aria-live="polite">
+        <h3 id="cf-proj-title">ng-point</h3>
+        <p class="stack" id="cf-proj-stack">Angular, TypeScript</p>
+        <p class="desc" id="cf-proj-desc"><b>Point at the screen, capture the context.</b> Alt+Click any element in a running Angular app to capture an LLM-ready context block for your AI coding agent. Redacted at capture, never in production bundles.</p>
+        <div class="cmdline" id="cf-cmd-wrap"><span>Install command, click the key to copy</span><code id="cf-cmd">npm i -D @abiramcodes/ng-point</code></div>
+        <div class="keys">
+          <button type="button" class="key primary" id="cf-copy" data-copy="npm i -D @abiramcodes/ng-point">Copy command</button>
+          <a class="key" id="cf-github" href="https://github.com/abiramcodes/ng-point" target="_blank" rel="noopener">GitHub</a>
+          <a class="key" id="cf-docs" href="https://abiramcodes.github.io/ng-point/" target="_blank" rel="noopener">Docs</a>
+        </div>
+      </div>
+
+      <div class="panel controls">
+        <p class="ctl-label"><span>Project selector</span><output id="cf-track-out" for="cf-dial">Track 1 / 5</output></p>
+        <div class="dial-stage">
+          <svg class="ticks" viewBox="0 0 240 240" aria-hidden="true"><g stroke="#5C5541" stroke-width="3" stroke-linecap="round"><line x1="52" y1="188" x2="41" y2="199"/><line x1="31" y1="83" x2="17" y2="77"/><line x1="120" y1="24" x2="120" y2="8"/><line x1="209" y1="83" x2="223" y2="77"/><line x1="188" y1="188" x2="199" y2="199"/></g><g font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600" fill="#5C5541"><text x="30" y="222">1</text><text x="6" y="66">2</text><text x="131" y="18">3</text><text x="226" y="66">4</text><text x="202" y="222">5</text></g></svg>
+          <button type="button" class="dial" id="cf-dial" aria-label="Project selector dial. Drag to tune, or use left and right arrow keys." aria-describedby="cf-dial-help"><span class="pointer" aria-hidden="true"></span><span class="cap" aria-hidden="true"></span></button>
+        </div>
+        <p class="ctl-label" id="cf-dial-help"><span>Drag, click, or use arrow keys</span><span id="cf-lock-word">Locked</span></p>
+        <div class="detents" role="radiogroup" aria-label="Choose a project">
+          <button type="button" class="detent" role="radio" aria-checked="true" data-cf-track="0">Point</button>
+          <button type="button" class="detent" role="radio" aria-checked="false" data-cf-track="1">Doctor</button>
+          <button type="button" class="detent" role="radio" aria-checked="false" data-cf-track="2">PDF</button>
+          <button type="button" class="detent" role="radio" aria-checked="false" data-cf-track="3">Forms</button>
+          <button type="button" class="detent" role="radio" aria-checked="false" data-cf-track="4">Mini</button>
+        </div>
+        <div class="meters" aria-hidden="true">
+          <div class="meter"><svg viewBox="0 0 120 76"><path d="M10 66a52 52 0 0 1 100 0" fill="none" stroke="#5C5541" stroke-width="2"/><path d="M86 24a52 52 0 0 1 24 42" fill="none" stroke="#B33A22" stroke-width="4"/><g stroke="#5C5541" stroke-width="2"><line x1="14" y1="62" x2="22" y2="56"/><line x1="60" y1="14" x2="60" y2="24"/><line x1="106" y1="62" x2="98" y2="56"/></g></svg><div class="needle" id="cf-needle-lock"></div><div class="pivot"></div><p class="meter-label">Tuning lock</p></div>
+          <div class="meter"><svg viewBox="0 0 120 76"><path d="M10 66a52 52 0 0 1 100 0" fill="none" stroke="#5C5541" stroke-width="2"/><path d="M86 24a52 52 0 0 1 24 42" fill="none" stroke="#B33A22" stroke-width="4"/><g stroke="#5C5541" stroke-width="2"><line x1="14" y1="62" x2="22" y2="56"/><line x1="60" y1="14" x2="60" y2="24"/><line x1="106" y1="62" x2="98" y2="56"/></g></svg><div class="needle" id="cf-needle-exp"></div><div class="pivot"></div><p class="meter-label">Experience</p></div>
+        </div>
+        <div class="switches">
+          <button type="button" class="sw" id="cf-sw-power" role="switch" aria-checked="true"><span class="slot" aria-hidden="true"><span class="lever"></span></span><span class="sw-name">Power</span><span class="sw-state">On</span></button>
+          <button type="button" class="sw" id="cf-sw-play" role="switch" aria-checked="false"><span class="slot" aria-hidden="true"><span class="lever"></span></span><span class="sw-name">Play tracks</span><span class="sw-state">Off</span></button>
+          <button type="button" class="sw" id="cf-sw-led" role="switch" aria-checked="false"><span class="slot" aria-hidden="true"><span class="lever"></span></span><span class="sw-name">Green LED</span><span class="sw-state">Amber</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modules">
+      <section class="panel mod" aria-labelledby="cf-log-h">
+        <h3 id="cf-log-h">Service log</h3>
+        <p class="sub">Field history, stamped in order. The work is platform migrations done without breaking the machine.</p>
+        <article class="log-row">
+          <div class="log-head"><span><strong>Frontend Consultant</strong> <span class="co">Deloitte USI</span></span><time>Jun 2025 to present</time></div>
+          <ul>
+            <li>Architected a Shell + Remote micro frontend platform (Angular, React 19, Native Federation, Nginx), leading a team of 4. Applause Award for delivery.</li>
+            <li>Led the Angular 17 to 20 migration with zero defects, smaller builds, and better runtime performance.</li>
+            <li>Migrated PrimeNG to Optimus UI and Angular 21 to 22 with Signal APIs across 8 repos, using AI agents. Test coverage at 85% with Jest and Karma.</li>
+          </ul>
+        </article>
+
+        <article class="log-row">
+          <div class="log-head"><span><strong>Frontend Developer</strong> <span class="co">Tata Consultancy Services</span></span><time>Dec 2021 to Jun 2025</time></div>
+          <ul>
+            <li>Shipped 5+ modules with accessibility compliance and fixed 100+ bugs, with GitHub Actions CI/CD on Azure.</li>
+            <li>Cut redundant API calls by 50% with NgRx and page load times by 40% with virtual scrolling.</li>
+            <li>Migrated Angular 13 (Modular) to Angular 17 (Standalone) with a smaller build. Test coverage at 80% with Jest.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="panel mod" aria-labelledby="cf-spec-h">
+        <h3 id="cf-spec-h">Specification plate</h3>
+        <p class="sub">Rated for daily operation. Full ratings live on the Skills page of the real site.</p>
+        <dl>
+          <div class="spec-row"><dt>Frontend</dt><dd>Angular 20+, React 19+, TypeScript, Astro, micro frontends, HTML, CSS and SCSS.</dd></div>
+          <div class="spec-row"><dt>Libraries and tools</dt><dd>Native Federation and Module Federation, NgRx, RxJS, TanStack Query, Table and Form, Zod, TailwindCSS, Rspack, Angular Material, Optimus UI.</dd></div>
+          <div class="spec-row"><dt>AI tooling</dt><dd>Claude Code, GitHub Copilot, and agent-assisted migrations across multi-repo estates.</dd></div>
+          <div class="spec-row"><dt>External input</dt><dd>20+ open-source PRs across Carbon Components Angular, Spartan NG, ng-primitives, and freeCodeCamp. Speaker at ng India Chennai Meetup on dynamic components and forms.</dd></div>
+        </dl>
+      </section>
+    </div>
+
+    <section class="panel output" aria-labelledby="cf-out-h">
+      <div>
+        <h3 id="cf-out-h">Output jacks</h3>
+        <p>Patch straight through. Off the clock the operator plays cricket and chess, and trains at the gym.</p>
+      </div>
+      <div class="keys" style="margin-top:0">
+        <a class="key primary" href="mailto:akbhere20@gmail.com">Email</a>
+        <a class="key" href="https://www.github.com/abiramcodes" target="_blank" rel="noopener">GitHub</a>
+        <a class="key" href="https://www.linkedin.com/in/abirama-kannan-baskar" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="key" href="https://x.com/abiramcodes" target="_blank" rel="noopener">X</a>
+      </div>
+    </section>
+    <div class="vent" aria-hidden="true"></div>
+  </div>
+</section>
+<!-- 2. KOLAM x BLUEPRINT -->
+<style>
+  .ko { --bp:#122A4F; --bp2:#0C1E3A; --chalk:#EAF1FF; --dim:#A9BFEB; --cy:#8FD8FF; --ln:#5673B0; --ln2:#DCE8FF; position:relative; background-color:var(--bp); background-image:radial-gradient(circle, rgba(234,241,255,.30) 1.3px, transparent 1.5px), linear-gradient(rgba(234,241,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(234,241,255,.05) 1px, transparent 1px); background-size:28px 28px, 140px 140px, 140px 140px; color:var(--chalk); font-family:"Archivo",system-ui,sans-serif; overflow:hidden; }
+  .ko .mono { font-family:"IBM Plex Mono",monospace; }
+  .ko canvas.trace { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:6; }
+  .ko .loader { position:absolute; top:0; left:0; right:0; height:min(86vh,700px); z-index:20; background:var(--bp2); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; transition:opacity 320ms cubic-bezier(0.22,1,0.36,1); }
+  .ko .loader.done { opacity:0; pointer-events:none; }
+  .ko .loader p { font-family:"IBM Plex Mono",monospace; font-size:13px; letter-spacing:0.14em; color:var(--dim); }
+  .ko .in { position:relative; z-index:2; max-width:1180px; margin:0 auto; padding:0 26px 60px; }
+  .ko .dhead { display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px 22px; border-bottom:1px solid var(--ln2); padding:16px 0 12px; font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--dim); }
+  .ko .dhead b { color:var(--chalk); font-size:16px; letter-spacing:0.06em; }
+  .ko .dhead nav { display:flex; gap:18px; }
+  .ko .dhead nav a { color:var(--dim); text-decoration:none; }
+  .ko .dhead nav a.on { color:var(--chalk); text-decoration:underline; text-underline-offset:4px; }
+  .ko h2.hero { font-size:clamp(3.6rem,11cqw,9.5rem); font-weight:900; line-height:0.9; letter-spacing:-0.04em; padding-top:40px; }
+  .ko h2.hero .out { color:transparent; -webkit-text-stroke:1.5px var(--chalk); }
+  .ko .hero-sub { font-size:16px; line-height:1.6; color:var(--dim); max-width:60ch; margin-top:20px; }
+  .ko .hero-sub b { color:var(--chalk); }
+  .ko .dim { display:flex; align-items:center; gap:12px; font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--cy); margin:22px 0; }
+  .ko .dim .ln { flex:1; border-top:1px solid var(--cy); }
+  .ko .stage { border:1px solid var(--ln2); background:rgba(12,30,58,.72); }
+  .ko .stage-head { display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px 18px; border-bottom:1px solid var(--ln); padding:12px 16px; font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--dim); }
+  .ko .stage-head b { color:var(--chalk); }
+  .ko .kbtns { display:flex; flex-wrap:wrap; gap:8px; }
+  .ko .kbtn { appearance:none; border:1px solid var(--ln2); background:transparent; color:var(--chalk); font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:600; padding:7px 12px; cursor:pointer; }
+  .ko .kbtn:hover { background:rgba(234,241,255,.12); }
+  .ko .kbtn:focus-visible { outline:2px solid var(--cy); outline-offset:2px; }
+  .ko .kolam-wrap { display:grid; place-items:center; padding:10px; }
+  .ko .kolam-wrap svg { width:min(520px,92%); height:auto; }
+  .ko .params { border-top:1px solid var(--ln); padding:12px 16px; font-family:"IBM Plex Mono",monospace; font-size:13px; line-height:1.8; color:var(--dim); }
+  .ko .params b { color:var(--cy); }
+  .ko .hintline { font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--cy); margin-top:14px; }
+  .ko h3.sec { font-size:clamp(1.9rem,4.4cqw,3.2rem); font-weight:900; letter-spacing:-0.03em; margin-top:56px; }
+  .ko .secsub { font-size:15px; line-height:1.65; color:var(--dim); max-width:65ch; margin-top:8px; }
+  .ko .sch { margin-top:20px; border:1px solid var(--ln2); background:rgba(12,30,58,.72); padding:8px; overflow-x:auto; }
+  .ko .sch svg { min-width:640px; width:100%; height:auto; display:block; }
+  .ko .sheet { margin-top:26px; border:1.5px solid var(--ln2); outline:1px solid var(--ln); outline-offset:5px; background:rgba(12,30,58,.78); padding:26px; }
+  .ko .sheet .shead { display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px 16px; font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--dim); border-bottom:1px solid var(--ln); padding-bottom:12px; }
+  .ko .sheet h4 { font-size:clamp(2rem,5cqw,3.6rem); font-weight:900; letter-spacing:-0.03em; line-height:1; margin-top:18px; }
+  .ko .sheet h4 a { text-decoration:none; }
+  .ko .sheet .desc { font-size:15px; line-height:1.65; color:var(--dim); max-width:65ch; margin-top:12px; }
+  .ko .sheet .desc b { color:var(--chalk); }
+  .ko .spec { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:8px; }
+  .ko button.cmd { border:1px solid var(--cy); background:rgba(143,216,255,.08); color:var(--chalk); font-size:13px; padding:10px 14px; cursor:pointer; }
+  .ko button.cmd:focus-visible { outline:2px solid var(--cy); outline-offset:2px; }
+  .ko .docs { font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--cy); }
+  .ko .tblock { display:grid; grid-template-columns:repeat(4,1fr); border:1px solid var(--ln2); margin-top:22px; }
+  .ko .tblock div { border-right:1px solid var(--ln); padding:10px 12px; }
+  .ko .tblock div:last-child { border-right:0; }
+  .ko .tblock .k { font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--dim); display:block; }
+  .ko .tblock .v { font-size:14px; font-weight:700; display:block; margin-top:3px; }
+  @container (max-width:700px) { .ko .tblock { grid-template-columns:1fr 1fr; } .ko .tblock div { border-bottom:1px solid var(--ln); } }
+  .ko table { width:100%; border-collapse:collapse; margin-top:18px; font-size:14px; }
+  .ko th, .ko td { border:1px solid var(--ln); padding:11px 12px; text-align:left; vertical-align:top; line-height:1.55; }
+  .ko th { font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--cy); font-weight:600; }
+  .ko td { color:var(--dim); } .ko td b { color:var(--chalk); }
+  .ko .contact { margin-top:22px; border:1px solid var(--ln2); padding:24px; background:rgba(12,30,58,.78); }
+  .ko .contact .mail { font-size:clamp(1.25rem,3cqw,1.9rem); font-weight:900; }
+  .ko .contact .mail a { text-decoration:none; border-bottom:2px solid var(--cy); }
+  .ko .contact p { font-size:14px; line-height:1.7; color:var(--dim); margin-top:10px; }
+  .ko .drawpath { stroke-dasharray:1; stroke-dashoffset:1; }
+  .ko .playing .drawpath { animation:kodraw 1400ms cubic-bezier(0.22,1,0.36,1) forwards; }
+  @keyframes kodraw { to { stroke-dashoffset:0; } }
+</style>
+<section class="design ko" id="d-kolam" aria-label="Kolam Blueprint design">
+  <div class="loader" id="ko-loader" aria-hidden="true">
+    <svg id="ko-loader-svg" viewBox="0 0 300 300" width="220" height="220" fill="none" aria-hidden="true"></svg>
+    <p>DRAWING KOLAM, ONE LINE</p>
+  </div>
+  <canvas class="trace" id="ko-cursor" aria-hidden="true"></canvas>
+  <div class="in">
+    <div class="dhead">
+      <span><b>ABIRAM</b> &nbsp;DWG NO. AB-2026-01</span>
+      <nav aria-label="Portfolio"><a class="on" href="#kolam">Sheets</a><a href="#kolam">Schematic</a><a href="#kolam">Revisions</a><a href="#kolam">Contact</a></nav>
+      <span>SCALE: NTS &nbsp;UNITS: PX</span>
+    </div>
+
+    <h2 class="hero">ABIRAM<br><span class="out">FRONTEND</span><br>ENGINEER</h2>
+    <p class="hero-sub"><b>Drawn like a system, built like one too.</b> Micro frontend platforms and Angular migrations at Deloitte USI, plus open Angular tooling. Every sheet below is a shipped thing, dimensioned.</p>
+    <div class="dim" aria-hidden="true"><span>&lt;</span><span class="ln"></span><span>MICRO FRONTENDS, MIGRATIONS, TOOLS</span><span class="ln"></span><span>&gt;</span></div>
+
+    <div class="stage" id="ko-stage">
+      <div class="stage-head">
+        <span><b>FIG. 01, GENERATIVE KOLAM</b> &nbsp;Single line, pen never lifts</span>
+        <span class="kbtns">
+          <button type="button" class="kbtn" id="ko-regen">New seed</button>
+          <button type="button" class="kbtn" id="ko-replay">Replay loader</button>
+        </span>
+      </div>
+      <div class="kolam-wrap"><svg id="ko-svg" viewBox="0 0 300 300" fill="none" role="img" aria-label="Generative kolam drawn as one looping line around a grid of dots"></svg></div>
+      <p class="params" id="ko-params">PULLI GRID <b>5 x 5</b> &nbsp;PETALS <b>12</b> &nbsp;SEED <b>07</b> &nbsp;RULE <b>r(t) = R(0.72 + 0.28 cos(pt + phase)), closed loop</b><br>Interview version: a kolam is a program. Dots first, one rule, symmetry does the rest. Same thinking as a design system.</p>
+    </div>
+    <p class="hintline">Move your cursor anywhere on this blue sheet. It leaves a looping line around the pulli dots, then fades.</p>
+
+    <h3 class="sec">Schematic: the platform at Deloitte</h3>
+    <p class="secsub">Shell + Remote micro frontend platform, drawn the way it is wired. The cyan line is the kolam move: one continuous loop visiting every node, no loose ends.</p>
+    <div class="sch">
+      <svg viewBox="0 0 1000 390" role="img" aria-label="Schematic of Shell host connected by one looping line to Angular and React remotes and a shared federation layer">
+        <g font-family="IBM Plex Mono, monospace" font-size="14" fill="#A9BFEB">
+          <rect x="40" y="140" width="240" height="115" fill="rgba(12,30,58,.85)" stroke="#DCE8FF" stroke-width="1.5"/>
+          <rect x="615" y="28" width="315" height="100" fill="rgba(12,30,58,.85)" stroke="#DCE8FF" stroke-width="1.5"/>
+          <rect x="615" y="168" width="315" height="100" fill="rgba(12,30,58,.85)" stroke="#DCE8FF" stroke-width="1.5"/>
+          <rect x="325" y="292" width="350" height="72" fill="rgba(12,30,58,.85)" stroke="#DCE8FF" stroke-width="1.5"/>
+          <path class="drawpath" pathLength="1" d="M280,197 C400,96 490,78 615,78 C668,78 668,218 615,218 C566,218 548,292 500,292 C424,292 344,242 280,197 Z" stroke="#8FD8FF" stroke-width="2" fill="none"/>
+          <g fill="none" stroke="#8FD8FF" stroke-width="1.5"><circle cx="280" cy="197" r="12"/><circle cx="615" cy="78" r="12"/><circle cx="615" cy="218" r="12"/><circle cx="500" cy="292" r="11"/></g>
+          <g fill="#EAF1FF"><circle cx="280" cy="197" r="3.5"/><circle cx="615" cy="78" r="3.5"/><circle cx="615" cy="218" r="3.5"/><circle cx="500" cy="292" r="3.5"/></g>
+          <text x="60" y="172" fill="#EAF1FF" font-size="19" font-weight="600">SHELL, HOST</text>
+          <text x="60" y="196">Angular, Nginx</text><text x="60" y="218">Team of 4, Applause Award</text>
+          <text x="635" y="60" fill="#EAF1FF" font-size="19" font-weight="600">REMOTE, ANGULAR</text>
+          <text x="635" y="84">17 to 20, zero defects</text><text x="635" y="106">PrimeNG to Optimus UI</text>
+          <text x="635" y="200" fill="#EAF1FF" font-size="19" font-weight="600">REMOTE, REACT 19</text>
+          <text x="635" y="224">New surfaces where React fits</text><text x="635" y="246">Federated into the shell</text>
+          <text x="345" y="320" fill="#EAF1FF" font-size="16" font-weight="600">SHARED, NATIVE FEDERATION</text>
+          <text x="345" y="343">Angular 21 to 22, Signal APIs, 8 repos</text>
+          <text x="360" y="52" fill="#8FD8FF">ONE LINE, EVERY NODE</text>
+          <line x1="40" y1="278" x2="280" y2="278" stroke="#8FD8FF" stroke-width="1"/><text x="112" y="272" fill="#8FD8FF">HOST</text>
+          <line x1="615" y1="148" x2="930" y2="148" stroke="#8FD8FF" stroke-width="1"/><text x="710" y="142" fill="#8FD8FF">REMOTES</text>
+        </g>
+      </svg>
+    </div>
+    <h3 class="sec">Project sheets</h3>
+    <p class="secsub">Each tool gets a sheet, a title block, and the dimensions that actually matter. Command copies on click.</p>
+
+    <article class="sheet">
+      <div class="shead"><span>SHEET 01 / 05</span><span>DEV-MODE LIBRARY</span><span>STATUS: SHIPPED ON NPM</span></div>
+      <h4><a href="https://github.com/abiramcodes/ng-point" target="_blank" rel="noopener">ng-point</a></h4>
+      <div class="dim" aria-hidden="true"><span>&lt;</span><span class="ln"></span><span>ALT+CLICK TO CONTEXT BLOCK</span><span class="ln"></span><span>&gt;</span></div>
+      <p class="desc"><b>Point at the bug, hand your agent the drawing.</b> Alt+Click any element in a running Angular app to capture component, file:line, and template as an LLM-ready context block. Redacted at capture.</p>
+      <div class="dim" aria-hidden="true"><span>&lt;</span><span class="ln"></span><span>PRODUCTION BUNDLE FOOTPRINT: NEVER LOADED</span><span class="ln"></span><span>&gt;</span></div>
+      <div class="spec"><button type="button" class="cmd" data-copy="npm i -D @abiramcodes/ng-point">npm i -D @abiramcodes/ng-point</button><a class="docs" href="https://abiramcodes.github.io/ng-point/" target="_blank" rel="noopener">Docs</a></div>
+      <div class="tblock"><div><span class="k">Project</span><span class="v">ng-point</span></div><div><span class="k">Stack</span><span class="v">Angular, TypeScript</span></div><div><span class="k">Drawn by</span><span class="v">Abiram</span></div><div><span class="k">Sheet</span><span class="v">01 / 05</span></div></div>
+    </article>
+
+    <article class="sheet">
+      <div class="shead"><span>SHEET 02 / 05</span><span>CLI, HEALTH SCAN</span><span>STATUS: SHIPPED ON NPM</span></div>
+      <h4><a href="https://github.com/abiramcodes/angular-doctor" target="_blank" rel="noopener">angular-doctor</a></h4>
+      <div class="dim" aria-hidden="true"><span>&lt;</span><span class="ln"></span><span>ONE COMMAND TO FULL REPORT</span><span class="ln"></span><span>&gt;</span></div>
+      <p class="desc"><b>A check-up with measurements, not vibes.</b> Deterministic health scans for Angular codebases: health score, categorized diagnostics, and an agent-ready report (Oxlint + template ESLint). Zero config.</p>
+      <div class="dim" aria-hidden="true"><span>&lt;</span><span class="ln"></span><span>CONFIG REQUIRED: ZERO</span><span class="ln"></span><span>&gt;</span></div>
+      <div class="spec"><button type="button" class="cmd" data-copy="npx @abiramcodes/angular-doctor@latest">npx @abiramcodes/angular-doctor@latest</button><a class="docs" href="https://ngdoctor.dev/" target="_blank" rel="noopener">ngdoctor.dev</a></div>
+      <div class="tblock"><div><span class="k">Project</span><span class="v">angular-doctor</span></div><div><span class="k">Stack</span><span class="v">Angular, Node CLI</span></div><div><span class="k">Drawn by</span><span class="v">Abiram</span></div><div><span class="k">Sheet</span><span class="v">02 / 05</span></div></div>
+    </article>
+
+    <table aria-label="Remaining drawing sheets">
+      <thead><tr><th>Sheet</th><th>Title</th><th>Description</th><th>Stack</th></tr></thead>
+      <tbody>
+        <tr><td><b>03 / 05</b></td><td><b>md-Pdf-converter</b></td><td>Converts Markdown files to PDF, Angular frontend with a NestJS backend.</td><td>Angular, NestJS</td></tr>
+        <tr><td><b>04 / 05</b></td><td><b>dynamic-forms-demo</b></td><td>Dynamic components and forms, ng India Chennai Meetup, 2025.</td><td>Angular</td></tr>
+        <tr><td><b>05 / 05</b></td><td><b>mini-url</b></td><td>A UI for generating shortened URLs, from coding challenges by John Crickett.</td><td>Angular</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sec">Revision history</h3>
+    <p class="secsub">Experience, kept the way drawings keep it: every revision dated, every change described.</p>
+    <table aria-label="Experience as revision history">
+      <thead><tr><th>Rev</th><th>Date</th><th>Role</th><th>Change description</th></tr></thead>
+      <tbody>
+        <tr><td><b>B</b></td><td>Jun 2025, Present</td><td><b>Frontend Consultant, Deloitte USI</b></td><td>Shell + Remote platform (Angular, React 19, Native Federation, Nginx), team of 4, Applause Award. Angular 17 to 20 with zero defects. PrimeNG to Optimus UI and Angular 21 to 22 with Signal APIs across 8 repos. 85% coverage, Jest and Karma.</td></tr>
+        <tr><td><b>A</b></td><td>Dec 2021, Jun 2025</td><td><b>Frontend Developer, TCS</b></td><td>5+ accessible modules, 100+ bugs fixed, GitHub Actions on Azure. API calls down 50% with NgRx, loads 40% faster with virtual scrolling. Angular 13 (Modular) to 17 (Standalone). 80% coverage, Jest.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="contact">
+      <p class="mail"><a href="mailto:akbhere20@gmail.com">akbhere20@gmail.com</a></p>
+      <p>GitHub and X: @abiramcodes. Open source: 20+ merged PRs across Carbon Components Angular, Spartan NG, ng-primitives, and freeCodeCamp. General notes: all dimensions in shipped work, do not scale from talk, verify in the repos.</p>
+    </div>
+  </div>
+</section>
+<!-- 3. MENU BOARD + PAROTTA SMASH -->
+<style>
+  .mb { --paper:#F7F0DA; --paper-2:#EFE2BE; --ink:#1E1B14; --mut:#5B5340; --chili:#B8321F; --leaf:#1E6B3A; --leaf-dark:#174F2C; --turmeric:#C98F04; --line:#C9BB92; --t-head:30px; --t-body:15px; --t-sm:13px; background:#26231D; color:var(--ink); font-family:"Archivo",system-ui,sans-serif; padding:clamp(12px,3cqw,34px); }
+  .mb .board { max-width:1060px; margin:0 auto; background-color:var(--paper); background-image:radial-gradient(rgba(30,27,20,.05) 1px, transparent 1.3px); background-size:22px 22px; border:2px solid var(--ink); box-shadow:0 0 0 5px var(--paper), 0 0 0 7px var(--chili), 0 22px 44px rgba(0,0,0,.45); padding:clamp(20px,4cqw,44px); }
+  .mb .mast { text-align:center; border-bottom:4px solid var(--ink); padding-bottom:18px; position:relative; }
+  .mb .mast::after { content:""; display:block; border-bottom:1px solid var(--ink); margin-top:4px; }
+  .mb .vanakkam { font-family:"Baloo Thambi 2","Archivo",sans-serif; font-size:var(--t-body); font-weight:700; color:var(--leaf); }
+  .mb h2.name { font-family:"Baloo Thambi 2","Archivo",sans-serif; font-size:clamp(3.8rem,11cqw,8.4rem); font-weight:800; line-height:.92; letter-spacing:-0.01em; margin-top:6px; }
+  .mb h2.name .red { color:var(--chili); }
+  .mb .role { font-size:var(--t-body); line-height:1.6; color:var(--mut); max-width:65ch; margin:12px auto 0; }
+  .mb .role b { color:var(--ink); }
+  .mb .boardnav { display:flex; flex-wrap:wrap; justify-content:center; gap:6px 22px; padding:12px 0 2px; font-size:var(--t-sm); font-weight:700; }
+  .mb .boardnav a { text-decoration:none; color:var(--mut); border-bottom:2px solid transparent; padding-bottom:2px; transition:color 160ms cubic-bezier(0.22,1,0.36,1), border-color 160ms cubic-bezier(0.22,1,0.36,1); }
+  .mb .boardnav a:hover { color:var(--chili); border-bottom-color:var(--chili); }
+  .mb .stage { margin-top:20px; background:linear-gradient(180deg,var(--leaf),var(--leaf-dark)); border:2px solid var(--ink); padding:18px 16px 20px; text-align:center; }
+  .mb .stage-title { font-family:"Baloo Thambi 2","Archivo",sans-serif; font-size:var(--t-head); font-weight:800; line-height:1.05; color:#FBF6E3; }
+  .mb .stage-title .ta { color:#F3C969; }
+  .mb .stage-sub { font-size:var(--t-sm); line-height:1.6; color:#DDEBD2; margin-top:6px; }
+  .mb .coil-btn { appearance:none; display:block; width:min(460px,100%); margin:10px auto 4px; background:transparent; border:0; padding:0; cursor:pointer; }
+  .mb .coil-btn:focus-visible, .mb .btn:focus-visible, .mb .dish-head:focus-visible, .mb .fbtn:focus-visible { outline:3px solid var(--turmeric); outline-offset:3px; }
+  .mb .coil-btn svg { width:100%; height:auto; display:block; overflow:visible; }
+  .mb .coil, .mb .layer { transform-box:fill-box; transform-origin:center; transition:transform 340ms cubic-bezier(0.22,1,0.36,1), opacity 240ms cubic-bezier(0.22,1,0.36,1); }
+  .mb .coil { transform:scale(.74,.74); }
+  .mb.smashed .coil { transform:scale(1.08,.68); }
+  .mb.smashed .l1 { transform:translate(-26px,-8px) rotate(-5deg); }
+  .mb.smashed .l2 { transform:translate(24px,-10px) rotate(4deg); }
+  .mb.smashed .l3 { transform:translate(-18px,10px) rotate(3deg); }
+  .mb.smashed .l4 { transform:translate(18px,8px) rotate(-4deg); }
+  .mb.smashed .l5 { transform:translate(0,3px) scale(1.06,.85); }
+  .mb .stage-btns { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:8px; }
+  .mb .btn { appearance:none; display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:10px 18px; border:2px solid var(--ink); background:var(--chili); color:#FFF8E6; font-size:var(--t-sm); font-weight:800; text-decoration:none; cursor:pointer; box-shadow:3px 3px 0 var(--ink); transition:transform 160ms cubic-bezier(0.22,1,0.36,1), box-shadow 160ms cubic-bezier(0.22,1,0.36,1), background-color 160ms cubic-bezier(0.22,1,0.36,1); }
+  .mb .btn.plain { background:var(--paper); color:var(--ink); }
+  .mb .btn.leaf { background:var(--leaf); color:#FFF8E6; }
+  .mb .btn:active { transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink); }
+  .mb .btn[hidden] { display:none; }
+  .mb .first { max-width:680px; margin:16px auto 0; background:var(--paper); border:2px solid var(--ink); padding:16px 18px; text-align:left; opacity:0; transform:translateY(10px); transition:opacity 240ms cubic-bezier(0.22,1,0.36,1), transform 240ms cubic-bezier(0.22,1,0.36,1); }
+  .mb .first.show { opacity:1; transform:none; }
+  .mb .first h3 { font-family:"Baloo Thambi 2","Archivo",sans-serif; font-size:var(--t-head); font-weight:800; line-height:1.05; }
+  .mb .first p { font-size:var(--t-body); line-height:1.65; color:var(--mut); margin-top:8px; }
+  .mb .first .keys { display:flex; flex-wrap:wrap; gap:9px; margin-top:12px; }
+  .mb .open-note { font-size:var(--t-sm); color:#DDEBD2; margin-top:12px; }
+</style>
+<style>
+  .mb section.blk { margin-top:38px; }
+  .mb h3.blk-h { font-family:"Baloo Thambi 2","Archivo",sans-serif; font-size:var(--t-head); font-weight:800; line-height:1.08; letter-spacing:0; display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px; }
+  .mb h3.blk-h .th { color:var(--chili); }
+  .mb h3.blk-h .ta { color:var(--leaf); }
+  .mb .rule { border-top:3px solid var(--ink); margin-top:10px; }
+  .mb .rule.thin { border-top-width:1px; margin-top:3px; }
+  .mb .blk-sub { font-size:var(--t-body); line-height:1.6; color:var(--mut); margin-top:10px; max-width:65ch; }
+  .mb .filters { display:inline-flex; flex-wrap:wrap; border:2px solid var(--ink); margin-top:16px; background:var(--paper); }
+  .mb .fbtn { appearance:none; border:0; border-right:2px solid var(--ink); background:transparent; color:var(--mut); font-size:var(--t-sm); font-weight:800; padding:10px 14px; cursor:pointer; transition:background-color 160ms cubic-bezier(0.22,1,0.36,1), color 160ms cubic-bezier(0.22,1,0.36,1); }
+  .mb .fbtn:last-child { border-right:0; }
+  .mb .fbtn[aria-checked="true"] { background:var(--ink); color:var(--paper); }
+  .mb .cat { font-family:"Baloo Thambi 2","Archivo",sans-serif; font-size:var(--t-body); font-weight:800; color:var(--leaf); margin-top:24px; display:flex; align-items:center; gap:12px; }
+  .mb .cat::after { content:""; flex:1; border-top:1px solid var(--line); }
+  .mb .cat .ta { color:var(--mut); font-weight:700; }
+  .mb .dish { border-bottom:1px solid var(--line); padding:12px 0 10px; }
+  .mb .dish[hidden], .mb .cat[hidden] { display:none; }
+  .mb .dish-head { appearance:none; width:100%; border:0; background:transparent; color:inherit; cursor:pointer; display:flex; align-items:baseline; gap:10px; text-align:left; padding:2px 0; }
+  .mb .dish-head .no { font-variant-numeric:tabular-nums; font-weight:800; color:var(--chili); font-size:var(--t-sm); min-width:26px; }
+  .mb .dish-head .dname { font-size:var(--t-body); font-weight:800; letter-spacing:-0.01em; }
+  .mb .leader { flex:1; min-width:24px; border-bottom:2px dotted #8A7D5C; transform:translateY(-4px); }
+  .mb .price { font-size:var(--t-sm); font-weight:800; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .mb .dish-head .plus { font-weight:900; color:var(--chili); font-size:var(--t-body); transition:transform 180ms cubic-bezier(0.22,1,0.36,1); }
+  .mb .dish-head[aria-expanded="true"] .plus { transform:rotate(45deg); }
+  .mb .dsub { font-size:var(--t-body); line-height:1.55; color:var(--mut); margin:4px 0 0 36px; max-width:65ch; }
+  .mb .detail { margin:10px 0 6px 36px; background:var(--paper-2); border:1px solid var(--line); padding:14px 16px; }
+  .mb .detail p { font-size:var(--t-body); line-height:1.65; color:var(--mut); }
+  .mb .detail p b { color:var(--ink); }
+  .mb .detail .tech { font-size:var(--t-sm); font-weight:700; color:var(--leaf); margin-top:8px; }
+  .mb .detail .keys { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .mb .detail .cmd { display:block; margin-top:10px; background:var(--ink); color:#F7EBC0; font-family:"Archivo",sans-serif; font-weight:600; font-size:var(--t-sm); font-variant-numeric:tabular-nums; padding:10px 12px; overflow-x:auto; white-space:nowrap; }
+  .mb .mini { appearance:none; display:inline-flex; align-items:center; min-height:38px; padding:7px 12px; border:2px solid var(--ink); background:var(--paper); color:var(--ink); font-size:var(--t-sm); font-weight:800; text-decoration:none; cursor:pointer; box-shadow:2px 2px 0 var(--ink); transition:transform 160ms cubic-bezier(0.22,1,0.36,1), box-shadow 160ms cubic-bezier(0.22,1,0.36,1); }
+  .mb .mini.hot { background:var(--chili); color:#FFF8E6; }
+  .mb .mini:active { transform:translate(1px,1px); box-shadow:1px 1px 0 var(--ink); }
+  .mb .empty { font-size:var(--t-body); color:var(--mut); border:1px dashed var(--line); padding:16px; margin-top:14px; text-align:center; }
+  .mb .spice-row, .mb .side-row, .mb .exp-row { display:flex; align-items:baseline; gap:10px; padding:10px 0; border-bottom:1px solid var(--line); }
+  .mb .spice-row .sname, .mb .side-row .sname, .mb .exp-row .sname { font-size:var(--t-body); font-weight:800; }
+  .mb .spice-row .sname span, .mb .exp-row .sname span { display:block; font-weight:500; color:var(--mut); font-size:var(--t-body); }
+  .mb .chilis { display:inline-flex; gap:3px; white-space:nowrap; }
+  .mb .chilis svg { width:19px; height:19px; }
+  .mb .chilis .on { fill:var(--chili); stroke:var(--chili); }
+  .mb .chilis .off { fill:none; stroke:#B4A67F; }
+  .mb .kaaram { font-size:var(--t-sm); font-weight:800; color:var(--chili); white-space:nowrap; }
+  .mb .side-row a.sname { text-decoration:none; }
+  .mb .side-row a.sname:hover { color:var(--chili); text-decoration:underline; }
+  .mb .side-desc { font-size:var(--t-body); line-height:1.55; color:var(--mut); margin:2px 0 8px; max-width:65ch; }
+  .mb .bill { background:#FFFDF4; border:2px solid var(--ink); margin-top:16px; padding:18px; box-shadow:4px 4px 0 rgba(30,27,20,.18); }
+  .mb .bill-row { display:flex; align-items:baseline; gap:10px; padding:8px 0; border-bottom:1px dashed var(--line); font-size:var(--t-body); }
+  .mb .bill-row:last-of-type { border-bottom:0; }
+  .mb .bill-row a { font-weight:800; text-decoration:none; }
+  .mb .bill-row a:hover { color:var(--chili); text-decoration:underline; }
+  .mb .bill-total { display:flex; justify-content:space-between; gap:12px; border-top:3px solid var(--ink); margin-top:10px; padding-top:12px; font-size:var(--t-body); font-weight:900; }
+  .mb .bill-total .free { color:var(--leaf); }
+  .mb .tanglish { font-size:var(--t-sm); color:var(--mut); margin-top:10px; }
+  .mb .spec404 { margin-top:22px; border:1px dashed var(--mut); padding:14px 16px; text-align:center; }
+  .mb .spec404 .big { font-family:"Baloo Thambi 2","Archivo",sans-serif; font-size:var(--t-head); font-weight:800; color:var(--chili); }
+  .mb .spec404 p { font-size:var(--t-body); color:var(--mut); margin-top:4px; }
+  .mb .proof { font-size:var(--t-sm); color:var(--mut); margin-top:16px; text-align:center; }
+  .mb .proof b { color:var(--turmeric); }
+  @container (max-width:680px) { .mb .dsub, .mb .detail { margin-left:0; } .mb .price { white-space:normal; text-align:right; } .mb .spice-row { flex-wrap:wrap; } }
+</style>
+<section class="design mb" id="d-menu" aria-label="Menu Board with Parotta Smash design">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="mb-chili" viewBox="0 0 24 24"><path d="M17.2 2.6c.9-1.1 2.3-1.4 3.4-.8-.5 1-.5 2.1.1 3 .5.8.3 1.8-.5 2.4C17.4 9.1 13.8 18.9 5.7 20.7c-1.7.4-2.6-.5-2-2C6.1 12.6 11.8 6.6 17.2 2.6Z" stroke-width="1.4" stroke-linejoin="round"/></symbol></svg>
+  <div class="board">
+    <header class="mast">
+      <p class="vanakkam"><span lang="ta">வணக்கம்</span> · Vanakkam, welcome</p>
+      <h2 class="name">ABIRA<span class="red">M</span></h2>
+      <p class="role"><b>Frontend engineer building micro frontends and migrating large Angular applications</b>, with React, Astro, and open tooling where they fit better.</p>
+      <nav class="boardnav" aria-label="Menu sections">
+        <a href="#mb-projects">Projects</a><a href="#mb-experience">Experience</a><a href="#mb-skills">Skills</a><a href="#mb-sides">Open source</a><a href="#mb-contact">Contact</a>
+      </nav>
+    </header>
+
+    <div class="stage" id="mb-stage">
+      <p class="stage-title">Parotta Smash <span class="ta" lang="ta">· பரோட்டா</span></p>
+      <p class="stage-sub">One coiled parotta, many layers. Give it a smash, or skip. The full menu below is open either way.</p>
+      <button type="button" class="coil-btn" id="mb-coil" aria-expanded="false" aria-controls="mb-first" aria-label="Smash the parotta to reveal the first special">
+        <svg viewBox="0 0 540 300" aria-hidden="true">
+          <ellipse cx="270" cy="154" rx="232" ry="118" fill="rgba(251,246,227,.10)" stroke="#FBF6E3" stroke-width="2" stroke-dasharray="10 8"/>
+          <g class="coil" fill="none" stroke-linecap="round">
+            <ellipse class="layer l1" cx="270" cy="150" rx="192" ry="88" stroke="#E8D5A0" stroke-width="18" stroke-dasharray="560 110"/>
+            <ellipse class="layer l2" cx="270" cy="150" rx="154" ry="68" stroke="#FBF6E3" stroke-width="16" stroke-dasharray="430 90" stroke-dashoffset="120"/>
+            <ellipse class="layer l3" cx="270" cy="150" rx="117" ry="49" stroke="#E8D5A0" stroke-width="15" stroke-dasharray="320 70" stroke-dashoffset="50"/>
+            <ellipse class="layer l4" cx="270" cy="150" rx="81" ry="33" stroke="#FBF6E3" stroke-width="13" stroke-dasharray="215 55" stroke-dashoffset="140"/>
+            <ellipse class="layer l5" cx="270" cy="150" rx="45" ry="18" stroke="#E8D5A0" stroke-width="11"/>
+            <circle cx="270" cy="150" r="7" fill="#E8A317" stroke="none"/>
+          </g>
+        </svg>
+      </button>
+      <div class="stage-btns">
+        <button type="button" class="btn" id="mb-smash">Smash the parotta</button>
+        <button type="button" class="btn plain" id="mb-skip">Skip, show it now</button>
+      </div>
+      <div class="first" id="mb-first" hidden>
+        <h3>First serving: ng-point</h3>
+        <p>Alt+Click any element in a running Angular app to capture an LLM-ready context block (component, file:line, template) for your AI coding agent. Redacted at capture; production builds never load it.</p>
+        <div class="keys">
+          <button type="button" class="mini hot" data-copy="npm i -D @abiramcodes/ng-point">Copy: npm i -D @abiramcodes/ng-point</button>
+          <a class="mini" href="https://abiramcodes.github.io/ng-point/" target="_blank" rel="noopener">Docs</a>
+          <a class="mini" href="https://github.com/abiramcodes/ng-point" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+      <p class="open-note">Menu open full day. Scroll pannunga, no waiting for the smash.</p>
+    </div>
+    <section class="blk" id="mb-projects" aria-labelledby="mb-projects-h">
+      <h3 class="blk-h" id="mb-projects-h"><span>Projects</span><span class="th">Today's Specials</span><span class="ta" lang="ta">இன்றைய சிறப்பு</span></h3>
+      <div class="rule"></div><div class="rule thin"></div>
+      <p class="blk-sub">Numbered like a hotel board. The price column is honest: it shows the main tech, not money. Tap any dish for the full serving.</p>
+      <div class="filters" role="radiogroup" aria-label="Filter projects by category">
+        <button type="button" class="fbtn" role="radio" aria-checked="true" data-mb-filter="all">Full menu</button>
+        <button type="button" class="fbtn" role="radio" aria-checked="false" data-mb-filter="specials">Specials</button>
+        <button type="button" class="fbtn" role="radio" aria-checked="false" data-mb-filter="meals">Meals</button>
+        <button type="button" class="fbtn" role="radio" aria-checked="false" data-mb-filter="tiffin">Tiffin</button>
+      </div>
+
+      <p class="cat" data-mb-cathead="specials">Specials, chef's best <span class="ta" lang="ta">சிறப்பு</span></p>
+      <article class="dish" data-mb-cat="specials">
+        <button type="button" class="dish-head" aria-expanded="true" aria-controls="mb-d1"><span class="no">01</span><span class="dname">ng-point</span><span class="leader" aria-hidden="true"></span><span class="price">Angular · TypeScript</span><span class="plus" aria-hidden="true">+</span></button>
+        <p class="dsub">Dev-mode Angular library for AI coding agents.</p>
+        <div class="detail" id="mb-d1"><p><b>Point at the screen, capture the context.</b> Alt+Click any element in a running Angular app to capture an LLM-ready context block (component, file:line, template). Redacted at capture; production builds never load it.</p><code class="cmd">npm i -D @abiramcodes/ng-point</code><div class="keys"><button type="button" class="mini hot" data-copy="npm i -D @abiramcodes/ng-point">Copy command</button><a class="mini" href="https://abiramcodes.github.io/ng-point/" target="_blank" rel="noopener">Docs</a><a class="mini" href="https://github.com/abiramcodes/ng-point" target="_blank" rel="noopener">GitHub</a></div></div>
+      </article>
+      <article class="dish" data-mb-cat="specials">
+        <button type="button" class="dish-head" aria-expanded="false" aria-controls="mb-d2"><span class="no">02</span><span class="dname">angular-doctor</span><span class="leader" aria-hidden="true"></span><span class="price">Angular · Node CLI</span><span class="plus" aria-hidden="true">+</span></button>
+        <p class="dsub">Deterministic health scans for Angular codebases.</p>
+        <div class="detail" id="mb-d2" hidden><p><b>Know the health of the estate before you touch it.</b> A CLI health score, categorized diagnostics, and an agent-ready report with an Oxlint and template ESLint stack. One command, zero config.</p><code class="cmd">npx @abiramcodes/angular-doctor@latest</code><div class="keys"><button type="button" class="mini hot" data-copy="npx @abiramcodes/angular-doctor@latest">Copy command</button><a class="mini" href="https://ngdoctor.dev/" target="_blank" rel="noopener">Docs</a><a class="mini" href="https://github.com/abiramcodes/angular-doctor" target="_blank" rel="noopener">GitHub</a></div></div>
+      </article>
+
+      <p class="cat" data-mb-cathead="meals">Meals, full plates <span class="ta" lang="ta">சாப்பாடு</span></p>
+      <article class="dish" data-mb-cat="meals">
+        <button type="button" class="dish-head" aria-expanded="false" aria-controls="mb-d3"><span class="no">03</span><span class="dname">Micro Frontend Platform</span><span class="leader" aria-hidden="true"></span><span class="price">Angular 22 · React 19</span><span class="plus" aria-hidden="true">+</span></button>
+        <p class="dsub">Shell + Remote platform at Deloitte USI, multi-app.</p>
+        <div class="detail" id="mb-d3" hidden><p>Architected a Shell + Remote micro frontend platform with seamless routing, leading a team of 4 developers. Received an Applause Award for delivery.</p><p class="tech">Angular 22 · Native Federation · React 19 · Module Federation · Nginx · Ingress</p></div>
+      </article>
+      <article class="dish" data-mb-cat="meals">
+        <button type="button" class="dish-head" aria-expanded="false" aria-controls="mb-d4"><span class="no">04</span><span class="dname">Large-Scale UI Migration</span><span class="leader" aria-hidden="true"></span><span class="price">Angular 22 · Optimus UI</span><span class="plus" aria-hidden="true">+</span></button>
+        <p class="dsub">PrimeNG to Optimus UI, across 8 micro frontend repos.</p>
+        <div class="detail" id="mb-d4" hidden><p>Migrated PrimeNG to Optimus UI and Angular 21 to 22 with Signal APIs across 8 micro frontend repos, leveraging AI agents for speed.</p><p class="tech">Angular 22 · Optimus UI · Claude Code · Copilot</p></div>
+      </article>
+      <article class="dish" data-mb-cat="meals">
+        <button type="button" class="dish-head" aria-expanded="false" aria-controls="mb-d5"><span class="no">05</span><span class="dname">Framework Modernization</span><span class="leader" aria-hidden="true"></span><span class="price">Angular 20</span><span class="plus" aria-hidden="true">+</span></button>
+        <p class="dsub">Angular 17 to 20 migration, enterprise app, zero defects.</p>
+        <div class="detail" id="mb-d5" hidden><p>Led the Angular 17 to 20 migration with zero defects, earning an Applause Award. Reduced build size and improved runtime performance.</p><p class="tech">Angular 20 · Jest · Karma · Standalone APIs</p></div>
+      </article>
+      <article class="dish" data-mb-cat="meals">
+        <button type="button" class="dish-head" aria-expanded="false" aria-controls="mb-d6"><span class="no">06</span><span class="dname">State-Driven Dashboard</span><span class="leader" aria-hidden="true"></span><span class="price">Angular · NgRx</span><span class="plus" aria-hidden="true">+</span></button>
+        <p class="dsub">Complex workflows, 5+ modules, on Azure.</p>
+        <div class="detail" id="mb-d6" hidden><p>Built complex UI workflows with NgRx state management, reducing redundant API calls by 50% and page load times by 40%.</p><p class="tech">Angular 15+ · NgRx · Angular Material · Azure</p></div>
+      </article>
+      <article class="dish" data-mb-cat="meals">
+        <button type="button" class="dish-head" aria-expanded="false" aria-controls="mb-d7"><span class="no">07</span><span class="dname">md-Pdf-converter</span><span class="leader" aria-hidden="true"></span><span class="price">Angular · NestJS</span><span class="plus" aria-hidden="true">+</span></button>
+        <p class="dsub">Markdown to PDF, full-stack serving.</p>
+        <div class="detail" id="mb-d7" hidden><p>A web application that converts Markdown files to PDF format, built using Angular for the frontend and NestJS for the backend.</p><div class="keys"><a class="mini" href="https://github.com/abiramcodes/MD-PDF" target="_blank" rel="noopener">GitHub</a></div></div>
+      </article>
+      <p class="cat" data-mb-cathead="tiffin">Tiffin, small and quick <span class="ta" lang="ta">டிபன்</span></p>
+      <article class="dish" data-mb-cat="tiffin">
+        <button type="button" class="dish-head" aria-expanded="false" aria-controls="mb-d8"><span class="no">08</span><span class="dname">dynamic-forms-demo</span><span class="leader" aria-hidden="true"></span><span class="price">Angular</span><span class="plus" aria-hidden="true">+</span></button>
+        <p class="dsub">Dynamic components and forms, meetup demo.</p>
+        <div class="detail" id="mb-d8" hidden><p>Demo application used in the ng India Chennai Meetup, 2025. Demonstrates dynamic components and forms.</p><div class="keys"><a class="mini" href="https://github.com/abiramcodes/dynamic-forms-demo" target="_blank" rel="noopener">GitHub</a></div></div>
+      </article>
+      <article class="dish" data-mb-cat="tiffin">
+        <button type="button" class="dish-head" aria-expanded="false" aria-controls="mb-d9"><span class="no">09</span><span class="dname">mini-url</span><span class="leader" aria-hidden="true"></span><span class="price">Angular</span><span class="plus" aria-hidden="true">+</span></button>
+        <p class="dsub">Shortened URLs, served small.</p>
+        <div class="detail" id="mb-d9" hidden><p>A UI for generating shortened URLs, developed as part of coding challenges by John Crickett.</p><div class="keys"><a class="mini" href="https://github.com/abiramcodes/mini-url-frontEnd" target="_blank" rel="noopener">GitHub</a></div></div>
+      </article>
+      <p class="empty" id="mb-empty" hidden>Item over, boss. Pick another category.</p>
+    </section>
+
+    <section class="blk" id="mb-experience" aria-labelledby="mb-exp-h">
+      <h3 class="blk-h" id="mb-exp-h"><span>Experience</span><span class="th">Kitchen Service</span><span class="ta" lang="ta">அனுபவம்</span></h3>
+      <div class="rule"></div><div class="rule thin"></div>
+      <div class="exp-row" style="margin-top:8px"><span class="sname">Frontend Consultant, Deloitte USI<span>Shell + Remote platform, team of 4 · Angular 17 to 20, zero defects · 85% coverage with Jest and Karma</span></span><span class="leader" aria-hidden="true"></span><span class="price">Jun 2025 to present</span></div>
+      <div class="exp-row"><span class="sname">Frontend Developer, Tata Consultancy Services<span>5+ accessible modules, 100+ bugs fixed · API calls down 50%, loads 40% faster · Angular 13 to 17</span></span><span class="leader" aria-hidden="true"></span><span class="price">Dec 2021 to Jun 2025</span></div>
+    </section>
+
+    <section class="blk" id="mb-skills" aria-labelledby="mb-skills-h">
+      <h3 class="blk-h" id="mb-skills-h"><span>Skills</span><span class="th">Spice Level</span><span class="ta" lang="ta">கார அளவு</span></h3>
+      <div class="rule"></div><div class="rule thin"></div>
+      <p class="blk-sub">No bars here. One chilli means working knowledge, five chillies means daily driver, extra kaaram. Full list lives on the Skills page.</p>
+      <div class="spice-row" style="margin-top:8px"><span class="sname">Angular 20+<span>Daily driver, leads migrations</span></span><span class="leader" aria-hidden="true"></span><span class="chilis" data-mb-level="5">5/5</span><span class="kaaram">Extra kaaram</span></div>
+      <div class="spice-row"><span class="sname">TypeScript<span>Across Angular, React, and tooling</span></span><span class="leader" aria-hidden="true"></span><span class="chilis" data-mb-level="4">4/5</span><span class="kaaram">Hot</span></div>
+      <div class="spice-row"><span class="sname">Micro frontends<span>Native Federation, Module Federation</span></span><span class="leader" aria-hidden="true"></span><span class="chilis" data-mb-level="4">4/5</span><span class="kaaram">Hot</span></div>
+      <div class="spice-row"><span class="sname">NgRx and RxJS<span>State and streams for dashboards</span></span><span class="leader" aria-hidden="true"></span><span class="chilis" data-mb-level="4">4/5</span><span class="kaaram">Hot</span></div>
+      <div class="spice-row"><span class="sname">React 19+<span>Federated surfaces in the platform</span></span><span class="leader" aria-hidden="true"></span><span class="chilis" data-mb-level="3">3/5</span><span class="kaaram">Medium</span></div>
+      <div class="spice-row"><span class="sname">Astro and TailwindCSS<span>This site and content-heavy builds</span></span><span class="leader" aria-hidden="true"></span><span class="chilis" data-mb-level="3">3/5</span><span class="kaaram">Medium</span></div>
+      <div class="spice-row"><span class="sname">Testing, Jest and Karma<span>80 to 85% coverage in role</span></span><span class="leader" aria-hidden="true"></span><span class="chilis" data-mb-level="3">3/5</span><span class="kaaram">Medium</span></div>
+    </section>
+    <section class="blk" id="mb-sides" aria-labelledby="mb-sides-h">
+      <h3 class="blk-h" id="mb-sides-h"><span>Open Source</span><span class="th">Sides</span><span class="ta" lang="ta">திறந்த மூலம்</span></h3>
+      <div class="rule"></div><div class="rule thin"></div>
+      <p class="blk-sub">Small helpings served alongside the mains. The price column counts merged pull requests on record.</p>
+      <div style="margin-top:8px">
+        <div class="side-row"><a class="sname" href="https://github.com/carbon-design-system/carbon-components-angular" target="_blank" rel="noopener">carbon-components-angular</a><span class="leader" aria-hidden="true"></span><span class="price">7 PRs</span></div>
+        <p class="side-desc">An Angular implementation of the Carbon Design System for IBM.</p>
+        <div class="side-row"><a class="sname" href="https://github.com/pangular-inspector/devtools" target="_blank" rel="noopener">pangular-inspector</a><span class="leader" aria-hidden="true"></span><span class="price">5 PRs</span></div>
+        <p class="side-desc">Angular DevTools: inspect components, signals, DI, and routes.</p>
+        <div class="side-row"><a class="sname" href="https://github.com/spartan-ng/spartan" target="_blank" rel="noopener">spartan ng</a><span class="leader" aria-hidden="true"></span><span class="price">3 PRs</span></div>
+        <p class="side-desc">Tools powering Angular full-stack development.</p>
+        <div class="side-row"><a class="sname" href="https://github.com/ng-icons/ng-icons" target="_blank" rel="noopener">ng-icons</a><span class="leader" aria-hidden="true"></span><span class="price">3 PRs</span></div>
+        <p class="side-desc">An icon library for Angular.</p>
+        <div class="side-row"><a class="sname" href="https://github.com/ng-primitives/ng-primitives" target="_blank" rel="noopener">ng-primitives</a><span class="leader" aria-hidden="true"></span><span class="price">1 PR</span></div>
+        <p class="side-desc">Headless, composable primitives for accessible Angular UI.</p>
+        <div class="side-row"><a class="sname" href="https://github.com/freeCodeCamp/freeCodeCamp" target="_blank" rel="noopener">freeCodeCamp</a><span class="leader" aria-hidden="true"></span><span class="price">1 PR</span></div>
+        <p class="side-desc">Open-source codebase and curriculum for learning to code.</p>
+        <div class="side-row"><span class="sname">Talk: Dynamic Components and Forms</span><span class="leader" aria-hidden="true"></span><span class="price">Chennai, 2025</span></div>
+        <p class="side-desc">ng India Chennai Meetup. Building flexible UIs with dynamic components and forms in Angular.</p>
+      </div>
+    </section>
+
+    <section class="blk" id="mb-contact" aria-labelledby="mb-contact-h">
+      <h3 class="blk-h" id="mb-contact-h"><span>Contact</span><span class="th">Place Your Order</span><span class="ta" lang="ta">தொடர்பு</span></h3>
+      <div class="rule"></div><div class="rule thin"></div>
+      <div class="bill" role="group" aria-label="Contact bill">
+        <div class="bill-row"><a href="mailto:akbhere20@gmail.com">Email</a><span class="leader" aria-hidden="true"></span><span class="price">akbhere20@gmail.com</span></div>
+        <div class="bill-row"><a href="./public/Abirama_Kannan_FE_Engineer.pdf" download>Resume</a><span class="leader" aria-hidden="true"></span><span class="price">PDF, takeaway</span></div>
+        <div class="bill-row"><a href="https://www.github.com/abiramcodes" target="_blank" rel="noopener">GitHub</a><span class="leader" aria-hidden="true"></span><span class="price">@abiramcodes</span></div>
+        <div class="bill-row"><a href="https://www.linkedin.com/in/abirama-kannan-baskar" target="_blank" rel="noopener">LinkedIn</a><span class="leader" aria-hidden="true"></span><span class="price">Abirama Kannan Baskar</span></div>
+        <div class="bill-row"><a href="https://x.com/abiramcodes" target="_blank" rel="noopener">X</a><span class="leader" aria-hidden="true"></span><span class="price">@abiramcodes</span></div>
+        <div class="bill-total"><span>Total</span><span class="free">One good conversation</span></div>
+        <p class="tanglish">Bill ready, boss. No service charge. Off the clock: cricket, chess, and the gym.</p>
+      </div>
+      <div class="spec404">
+        <p class="big">404</p>
+        <p>Error page specimen: Parotta over, try another page.</p>
+      </div>
+      <p class="proof">Tamil on this board is short and simple on purpose. <b>Please get a native speaker to proofread it</b> before this ships for real.</p>
+    </section>
+  </div>
+</section>
+  </div>
+</main>
+
+<section class="info" aria-live="polite"><div class="info-card" id="info"></div></section>
+<p class="foot">Throwaway explorer at <code>design-options.html</code>. Your live Astro site is untouched. Next step: reply <code>build 1</code>, <code>build 2</code>, or <code>build 3</code>.</p>
+<script>
+  var ORDER = ["cassette", "kolam", "menu"];
+  var INFO = {
+    cassette: {
+      t: "1. Cassette Futurism, model AF-82",
+      why: "Your homepage as beige hardware from a 1982 vision of now: molded plastic panels with corner screws, a smoked cassette window, amber LED readouts showing the tuned project and your live years of experience, analog meters, and chunky keys. Every control works, because Gemini discipline says the hardware has to be the interface, not decoration. Two type families only, three body sizes, one primary key per section.",
+      tryit: "<b>Try it:</b> drag the big selector dial and watch the tuning lock meter while the LED retunes through all five projects, or tap the detent keys under it. Flip Power off and on, switch the LED to green, then flip Play tracks and let the reels cycle the work for you. Copy a command with its chunky key, then check Mobile 390.",
+      best: "Developers, tool users, anyone who remembers hardware",
+      effort: "Medium in Astro: one console component, one dial interaction, tokenised plastic and LED colours"
+    },
+    kolam: {
+      t: "2. Kolam x Blueprint",
+      why: "A technical drawing on indigo: pulli dots behind everything, projects as sheets with title blocks and dimension callouts, experience as a revision table, and your Shell + Remote platform as a schematic joined by one kolam line. The kolam in Fig. 01 is generated, not pasted: change the seed and the rule redraws it.",
+      tryit: "<b>Try it:</b> move your cursor across the blue sheet to draw the looping line, hit New seed a few times, then Replay loader. Scroll to the schematic and follow the cyan line from node to node.",
+      best: "Angular community, talks, technical interviews",
+      effort: "Medium in Astro: one SVG generator, one cursor canvas, careful reduced-motion fallbacks"
+    },
+    menu: {
+      t: "3. Menu Board + Parotta Smash",
+      why: "A Chennai hotel menu board on cream paper: ink rules and dot leaders, chili red and banana-leaf green, turmeric kept rare. Plain labels always come first (Projects, Skills, Open Source, Contact) with the themed name and short Tamil beside them, so nobody has to decode the theme. Headings use Baloo Thambi 2, a sign-painter style face with real Tamil glyphs; menu text stays in readable Archivo at three sizes. No veg or non-veg dots, because there is no honest mapping for code; the category filter does that job instead.",
+      tryit: "<b>Try it:</b> smash the coiled parotta on the green stage (or use Skip, the menu below works either way), filter Full menu to Specials, Meals, and Tiffin, tap dishes 02 and 04 open and shut, read the chilli scale, and finish at the bill. Reduced-motion visitors get the first serving instantly with no smash needed.",
+      best: "Everyone, especially anyone who has eaten off a banana leaf",
+      effort: "Low to medium in Astro: menu components first, spice rows, bill contact, smash hero last"
+    }
+  };
+  function show(id) {
+    ORDER.forEach(function (k) {
+      var el = document.getElementById("d-" + k);
+      if (el) el.classList.toggle("active", k === id);
+    });
+    document.querySelectorAll("[data-go]").forEach(function (b) {
+      b.setAttribute("aria-selected", b.getAttribute("data-go") === id ? "true" : "false");
+    });
+    var d = INFO[id];
+    if (d) {
+      document.getElementById("info").innerHTML =
+        "<h2>" + d.t + "</h2><p class='why'>" + d.why + "</p>" +
+        "<p class='try'>" + d.tryit + "</p>" +
+        "<div class='meta'><span>Best for: <b>" + d.best + "</b></span><span>Build effort: <b>" + d.effort + "</b></span></div>";
+    }
+    try { history.replaceState(null, "", "#" + id); } catch (e) {}
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (id === "kolam" && typeof playKolamLoader === "function") playKolamLoader();
+  }
+  document.querySelectorAll("[data-go]").forEach(function (b) {
+    b.addEventListener("click", function () { show(b.getAttribute("data-go")); });
+  });
+  document.querySelectorAll(".vp").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".vp").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+      b.setAttribute("aria-pressed", "true");
+      document.getElementById("frame").classList.toggle("mobile", b.getAttribute("data-vp") === "mobile");
+      if (typeof sizeKolamCanvas === "function") setTimeout(sizeKolamCanvas, 280);
+    });
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.target && e.target.id === "cf-dial") return;
+    if (e.key === "1") show("cassette");
+    if (e.key === "2") show("kolam");
+    if (e.key === "3") show("menu");
+  });
+
+  /* Cassette Futurism: a hardware console that really works */
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  var CF_TRACKS = [
+    { name: "ng-point", stack: "Angular, TypeScript", desc: "<b>Point at the screen, capture the context.</b> Alt+Click any element in a running Angular app to capture an LLM-ready context block (component, file:line, template) for your AI coding agent. Redacted at capture, never in production bundles.", cmd: "npm i -D @abiramcodes/ng-point", github: "https://github.com/abiramcodes/ng-point", docs: "https://abiramcodes.github.io/ng-point/" },
+    { name: "angular-doctor", stack: "Angular, Node CLI", desc: "<b>Know the health of the estate before you touch it.</b> Deterministic scans give a CLI health score, categorized diagnostics, and an agent-ready report with an Oxlint and template ESLint stack. One command, zero config.", cmd: "npx @abiramcodes/angular-doctor@latest", github: "https://github.com/abiramcodes/angular-doctor", docs: "https://ngdoctor.dev/" },
+    { name: "md-Pdf-converter", stack: "Angular, NestJS", desc: "<b>Markdown in, PDF out.</b> A web application that converts Markdown files to PDF format, built with Angular for the frontend and NestJS for the backend.", cmd: "", github: "https://github.com/abiramcodes/MD-PDF", docs: "" },
+    { name: "dynamic-forms-demo", stack: "Angular", desc: "<b>Forms that assemble themselves, live on stage.</b> Demo application for the ng India Chennai Meetup, 2025, demonstrating dynamic components and forms.", cmd: "", github: "https://github.com/abiramcodes/dynamic-forms-demo", docs: "" },
+    { name: "mini-url", stack: "Angular", desc: "<b>Long links in, short links out.</b> A UI for generating shortened URLs, built as part of the coding challenges by John Crickett.", cmd: "", github: "https://github.com/abiramcodes/mini-url-frontEnd", docs: "" }
+  ];
+  var cfSection = document.getElementById("d-cassette");
+  var cfIndex = 0;
+  var CF_ANGLES = [-135, -67.5, 0, 67.5, 135];
+  var cfPlayTimer = null;
+  function cfEl(id) { return document.getElementById(id); }
+  function cfSetLock(lock01) {
+    var n = cfEl("cf-needle-lock");
+    if (n) n.style.setProperty("--needle", (-42 + 84 * Math.max(0, Math.min(1, lock01))).toFixed(1) + "deg");
+    var w = cfEl("cf-lock-word");
+    if (w) w.textContent = lock01 > 0.98 ? "Locked" : "Tuning";
+  }
+  function cfSpinReels() {
+    if (!cfSection) return;
+    cfSection.classList.remove("spinning");
+    void cfSection.offsetWidth;
+    cfSection.classList.add("spinning");
+    setTimeout(function () { cfSection.classList.remove("spinning"); }, 760);
+  }
+  function cfSelect(i, spin) {
+    if (!cfSection) return;
+    cfIndex = Math.max(0, Math.min(CF_TRACKS.length - 1, i));
+    var t = CF_TRACKS[cfIndex];
+    var dial = cfEl("cf-dial");
+    if (dial) dial.style.transform = "rotate(" + CF_ANGLES[cfIndex] + "deg)";
+    document.querySelectorAll("[data-cf-track]").forEach(function (b) {
+      b.setAttribute("aria-checked", Number(b.getAttribute("data-cf-track")) === cfIndex ? "true" : "false");
+    });
+    document.querySelectorAll("[data-cf-row]").forEach(function (r) {
+      r.classList.toggle("on", Number(r.getAttribute("data-cf-row")) === cfIndex);
+    });
+    cfEl("cf-led-name").textContent = t.name;
+    cfEl("cf-led-sub").textContent = "Track " + (cfIndex + 1) + " of 5 · " + t.stack;
+    cfEl("cf-counter").textContent = "00" + (cfIndex + 1);
+    cfEl("cf-track-out").textContent = "Track " + (cfIndex + 1) + " / 5";
+    cfEl("cf-proj-title").textContent = t.name;
+    cfEl("cf-proj-stack").textContent = t.stack;
+    cfEl("cf-proj-desc").innerHTML = t.desc;
+    var wrap = cfEl("cf-cmd-wrap"), copy = cfEl("cf-copy"), docs = cfEl("cf-docs");
+    if (wrap) wrap.hidden = !t.cmd;
+    if (t.cmd) cfEl("cf-cmd").textContent = t.cmd;
+    if (copy) { copy.hidden = !t.cmd; if (t.cmd) copy.setAttribute("data-copy", t.cmd); }
+    cfEl("cf-github").href = t.github;
+    if (docs) { docs.hidden = !t.docs; if (t.docs) docs.href = t.docs; }
+    cfSetLock(1);
+    if (spin !== false) cfSpinReels();
+  }
+  function cfSetSwitch(btn, on, stateText) {
+    if (!btn) return;
+    btn.setAttribute("aria-checked", on ? "true" : "false");
+    var s = btn.querySelector(".sw-state");
+    if (s) s.textContent = stateText;
+  }
+  function cfStopPlay() {
+    if (cfPlayTimer) { clearInterval(cfPlayTimer); cfPlayTimer = null; }
+    if (cfSection) cfSection.setAttribute("data-play", "off");
+    cfSetSwitch(cfEl("cf-sw-play"), false, "Off");
+  }
+  function cfUserSelect(i) { cfStopPlay(); cfSelect(i, true); }
+  /* Detent keys and keyboard tuning */
+  document.querySelectorAll("[data-cf-track]").forEach(function (b) {
+    b.addEventListener("click", function () { cfUserSelect(Number(b.getAttribute("data-cf-track"))); });
+  });
+  var cfDial = cfEl("cf-dial");
+  if (cfDial) {
+    cfDial.addEventListener("keydown", function (e) {
+      var next = null;
+      if (e.key === "ArrowRight" || e.key === "ArrowUp") next = cfIndex + 1;
+      if (e.key === "ArrowLeft" || e.key === "ArrowDown") next = cfIndex - 1;
+      if (e.key === "Home") next = 0;
+      if (e.key === "End") next = CF_TRACKS.length - 1;
+      if (next !== null) { e.preventDefault(); cfUserSelect(Math.max(0, Math.min(CF_TRACKS.length - 1, next))); }
+    });
+    var cfDragging = false, cfDragMoved = 0, cfLastDeg = CF_ANGLES[0];
+    function cfPointerDeg(e) {
+      var r = cfDial.getBoundingClientRect();
+      var dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
+      return Math.max(-135, Math.min(135, Math.atan2(dx, -dy) * 180 / Math.PI));
+    }
+    cfDial.addEventListener("pointerdown", function (e) {
+      cfDragging = true; cfDragMoved = 0;
+      cfDial.classList.add("dragging");
+      if (cfDial.setPointerCapture) { try { cfDial.setPointerCapture(e.pointerId); } catch (err) {} }
+      cfLastDeg = cfPointerDeg(e);
+    });
+    cfDial.addEventListener("pointermove", function (e) {
+      if (!cfDragging) return;
+      var deg = cfPointerDeg(e);
+      cfDragMoved = Math.max(cfDragMoved, Math.abs(deg - CF_ANGLES[cfIndex]));
+      cfLastDeg = deg;
+      cfDial.style.transform = "rotate(" + deg + "deg)";
+      var nearest = 0, best = 1e9, i, d;
+      for (i = 0; i < CF_ANGLES.length; i++) { d = Math.abs(deg - CF_ANGLES[i]); if (d < best) { best = d; nearest = i; } }
+      cfSetLock(1 - best / 33.75);
+      cfDial.dataset.nearest = String(nearest);
+    });
+    function cfEndDrag() {
+      if (!cfDragging) return;
+      cfDragging = false;
+      cfDial.classList.remove("dragging");
+      if (cfDragMoved < 6) cfUserSelect((cfIndex + 1) % CF_TRACKS.length);
+      else cfUserSelect(Number(cfDial.dataset.nearest || cfIndex));
+    }
+    cfDial.addEventListener("pointerup", cfEndDrag);
+    cfDial.addEventListener("pointercancel", cfEndDrag);
+  }
+  /* Toggle switches: power, play sequence, LED colour */
+  function cfSwitchOn(btn) { return btn && btn.getAttribute("aria-checked") === "true"; }
+  function cfApplyPower(on) {
+    cfSection.setAttribute("data-power", on ? "on" : "off");
+    cfSetSwitch(cfEl("cf-sw-power"), on, on ? "On" : "Off");
+    cfEl("cf-led-state").textContent = on ? "Power on" : "Power off";
+    if (!on) cfStopPlay();
+  }
+  var cfPowerBtn = cfEl("cf-sw-power");
+  if (cfPowerBtn) cfPowerBtn.addEventListener("click", function () { cfApplyPower(!cfSwitchOn(cfPowerBtn)); });
+  var cfPlayBtn = cfEl("cf-sw-play");
+  if (cfPlayBtn) cfPlayBtn.addEventListener("click", function () {
+    if (cfSwitchOn(cfPlayBtn)) { cfStopPlay(); return; }
+    if (cfSection.getAttribute("data-power") !== "on") cfApplyPower(true);
+    cfSection.setAttribute("data-play", "on");
+    cfSetSwitch(cfPlayBtn, true, "Playing");
+    cfPlayTimer = setInterval(function () { cfSelect((cfIndex + 1) % CF_TRACKS.length, true); }, 3800);
+  });
+  var cfLedBtn = cfEl("cf-sw-led");
+  if (cfLedBtn) cfLedBtn.addEventListener("click", function () {
+    var green = !cfSwitchOn(cfLedBtn);
+    cfSection.setAttribute("data-led", green ? "green" : "amber");
+    cfSetSwitch(cfLedBtn, green, green ? "Green" : "Amber");
+  });
+  /* Live readouts: clock and years since Dec 2021 */
+  function cfTickReadouts() {
+    var now = new Date();
+    var clock = cfEl("cf-led-clock");
+    if (clock) clock.textContent = pad2(now.getHours()) + ":" + pad2(now.getMinutes());
+    var months = (now.getFullYear() - 2021) * 12 + (now.getMonth() - 11);
+    var years = Math.max(0, months / 12);
+    var exp = cfEl("cf-exp");
+    if (exp) exp.textContent = years.toFixed(1);
+    var needle = cfEl("cf-needle-exp");
+    if (needle) needle.style.setProperty("--needle", (-42 + 84 * Math.min(years, 6) / 6).toFixed(1) + "deg");
+  }
+  cfSelect(0, false);
+  cfTickReadouts();
+  setInterval(cfTickReadouts, 20000);
+</script>
+<script>
+  /* Kolam: generative single-line drawing */
+  var koSeed = 7;
+  var SVGNS = "http://www.w3.org/2000/svg";
+  var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function koParams(seed) {
+    var petals = [12, 8, 16, 10, 14][Math.abs(seed) % 5];
+    return { petals: petals, phase: (seed * 0.61) % (Math.PI * 2) };
+  }
+  function kolamPath(cx, cy, R, petals, phase, wobble) {
+    var pts = [], steps = 260, i, t, r;
+    for (i = 0; i <= steps; i++) {
+      t = (i / steps) * Math.PI * 2;
+      r = R * (0.72 + wobble * Math.cos(petals * t + phase));
+      pts.push((i === 0 ? "M" : "L") + (cx + r * Math.cos(t)).toFixed(1) + "," + (cy + r * Math.sin(t)).toFixed(1));
+    }
+    return pts.join(" ") + " Z";
+  }
+  function buildKolam(svg, seed) {
+    if (!svg) return;
+    var p = koParams(seed);
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var g, c, path, x, y;
+    g = document.createElementNS(SVGNS, "g");
+    for (x = 0; x < 5; x++) for (y = 0; y < 5; y++) {
+      c = document.createElementNS(SVGNS, "circle");
+      c.setAttribute("cx", 78 + x * 36); c.setAttribute("cy", 78 + y * 36);
+      c.setAttribute("r", "2.4"); c.setAttribute("fill", "#EAF1FF"); c.setAttribute("opacity", "0.85");
+      g.appendChild(c);
+    }
+    svg.appendChild(g);
+    [[kolamPath(150, 150, 122, p.petals, p.phase, 0.28), "#EAF1FF", "2.2", "1"],
+     [kolamPath(150, 150, 68, p.petals, p.phase + Math.PI / p.petals, 0.30), "#8FD8FF", "1.6", "0.9"],
+     [kolamPath(150, 150, 92, 4, -p.phase, 0.16), "#EAF1FF", "1", "0.45"]].forEach(function (spec) {
+      path = document.createElementNS(SVGNS, "path");
+      path.setAttribute("d", spec[0]);
+      path.setAttribute("stroke", spec[1]); path.setAttribute("stroke-width", spec[2]);
+      path.setAttribute("opacity", spec[3]); path.setAttribute("fill", "none");
+      path.setAttribute("pathLength", "1"); path.setAttribute("class", "drawpath");
+      svg.appendChild(path);
+    });
+    return p;
+  }
+  function settleKolamPaths() {
+    document.querySelectorAll(".ko .drawpath").forEach(function (p) { p.style.strokeDashoffset = "0"; });
+  }
+  function renderKolam() {
+    var p = buildKolam(document.getElementById("ko-svg"), koSeed);
+    buildKolam(document.getElementById("ko-loader-svg"), koSeed);
+    var el = document.getElementById("ko-params");
+    if (el && p) el.innerHTML = "PULLI GRID <b>5 x 5</b> &nbsp;PETALS <b>" + p.petals + "</b> &nbsp;SEED <b>" + pad2(koSeed) + "</b> &nbsp;RULE <b>r(t) = R(0.72 + wobble cos(pt + phase)), closed loop</b><br>Interview version: a kolam is a program. Dots first, one rule, symmetry does the rest. Same thinking as a design system.";
+    if (reducedMotion) settleKolamPaths();
+  }
+  function restartDraw() {
+    var sec = document.getElementById("d-kolam");
+    if (!sec) return;
+    if (reducedMotion) { settleKolamPaths(); return; }
+    document.querySelectorAll(".ko .drawpath").forEach(function (p) { p.style.removeProperty("stroke-dashoffset"); });
+    sec.classList.remove("playing");
+    void sec.offsetWidth;
+    sec.classList.add("playing");
+    setTimeout(settleKolamPaths, 1500);
+  }
+  function playKolamLoader() {
+    var loader = document.getElementById("ko-loader");
+    sizeKolamCanvas();
+    if (!loader) return;
+    if (reducedMotion) { loader.classList.add("done"); settleKolamPaths(); return; }
+    loader.classList.remove("done");
+    restartDraw();
+    setTimeout(function () { loader.classList.add("done"); }, 1450);
+  }
+  var regenBtn = document.getElementById("ko-regen");
+  if (regenBtn) regenBtn.addEventListener("click", function () { koSeed = (koSeed + 1) % 97; renderKolam(); restartDraw(); });
+  var replayBtn = document.getElementById("ko-replay");
+  if (replayBtn) replayBtn.addEventListener("click", playKolamLoader);
+
+  /* Kolam cursor: looping line around the pulli dots */
+  var koSection = document.getElementById("d-kolam");
+  var koCanvas = document.getElementById("ko-cursor");
+  var koCtx = koCanvas ? koCanvas.getContext("2d") : null;
+  var trail = [], trailRunning = false;
+  function sizeKolamCanvas() {
+    if (!koCanvas || !koSection || !koSection.classList.contains("active")) return;
+    var r = koSection.getBoundingClientRect();
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    koCanvas.width = Math.max(1, Math.round(r.width * dpr));
+    koCanvas.height = Math.max(1, Math.round(r.height * dpr));
+    if (koCtx) koCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function nearestDot(v) { return Math.round((v - 14) / 28) * 28 + 14; }
+  function drawTrail(now) {
+    if (!koCtx || !koCanvas) { trailRunning = false; return; }
+    var r = koSection.getBoundingClientRect();
+    koCtx.clearRect(0, 0, r.width, r.height);
+    trail = trail.filter(function (p) { return now - p.t < 1600; });
+    if (trail.length > 1) {
+      var i, p, mx, my;
+      koCtx.beginPath();
+      koCtx.moveTo(trail[0].x, trail[0].y);
+      for (i = 1; i < trail.length - 1; i++) {
+        mx = (trail[i].x + trail[i + 1].x) / 2; my = (trail[i].y + trail[i + 1].y) / 2;
+        koCtx.quadraticCurveTo(trail[i].x, trail[i].y, mx, my);
+      }
+      koCtx.strokeStyle = "rgba(234,241,255,0.9)"; koCtx.lineWidth = 1.6; koCtx.stroke();
+      for (i = 0; i < trail.length; i += 5) {
+        p = trail[i];
+        koCtx.beginPath();
+        koCtx.arc(nearestDot(p.x), nearestDot(p.y), 13, 0, Math.PI * 2);
+        koCtx.strokeStyle = "rgba(143,216,255," + (0.65 * (1 - (now - p.t) / 1600)).toFixed(3) + ")";
+        koCtx.lineWidth = 1.2; koCtx.stroke();
+      }
+    }
+    if (trail.length && koSection.classList.contains("active")) requestAnimationFrame(drawTrail);
+    else { trailRunning = false; koCtx.clearRect(0, 0, r.width, r.height); }
+  }
+  if (koSection && !reducedMotion && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    koSection.addEventListener("pointermove", function (e) {
+      var r = koSection.getBoundingClientRect();
+      trail.push({ x: e.clientX - r.left, y: e.clientY - r.top, t: performance.now() });
+      if (trail.length > 140) trail.shift();
+      if (!trailRunning) { trailRunning = true; requestAnimationFrame(drawTrail); }
+    });
+    window.addEventListener("resize", sizeKolamCanvas);
+  }
+
+  /* Copy install commands */
+  document.addEventListener("click", function (e) {
+    var c = e.target.closest ? e.target.closest("[data-copy]") : null;
+    if (!c) return;
+    var t = c.getAttribute("data-copy"), old = c.textContent;
+    if (navigator.clipboard) navigator.clipboard.writeText(t).catch(function () {});
+    c.textContent = "Copied!";
+    setTimeout(function () { c.textContent = old; }, 1200);
+  });
+
+  /* Menu Board: parotta smash, dish details, category filter, spice chillies */
+  var mbSection = document.getElementById("d-menu");
+  var mbFirst = document.getElementById("mb-first");
+  var mbCoil = document.getElementById("mb-coil");
+  var mbSmashBtn = document.getElementById("mb-smash");
+  var mbSkipBtn = document.getElementById("mb-skip");
+  function mbReveal(instant) {
+    if (!mbSection || !mbFirst) return;
+    if (instant) mbFirst.style.transition = "none";
+    mbSection.classList.add("smashed");
+    mbFirst.hidden = false;
+    requestAnimationFrame(function () {
+      mbFirst.classList.add("show");
+      if (instant) setTimeout(function () { mbFirst.style.transition = ""; }, 60);
+    });
+    if (mbCoil) mbCoil.setAttribute("aria-expanded", "true");
+    if (mbSmashBtn) mbSmashBtn.textContent = "Coil it again";
+    if (mbSkipBtn) mbSkipBtn.hidden = true;
+  }
+  function mbReset() {
+    if (!mbSection || !mbFirst) return;
+    mbSection.classList.remove("smashed");
+    mbFirst.classList.remove("show");
+    mbFirst.hidden = true;
+    if (mbCoil) mbCoil.setAttribute("aria-expanded", "false");
+    if (mbSmashBtn) mbSmashBtn.textContent = "Smash the parotta";
+    if (mbSkipBtn) mbSkipBtn.hidden = false;
+  }
+  function mbToggle() {
+    if (mbSection && mbSection.classList.contains("smashed")) mbReset();
+    else mbReveal(false);
+  }
+  if (mbCoil) mbCoil.addEventListener("click", mbToggle);
+  if (mbSmashBtn) mbSmashBtn.addEventListener("click", mbToggle);
+  if (mbSkipBtn) mbSkipBtn.addEventListener("click", function () { mbReveal(true); });
+  document.querySelectorAll(".mb .dish-head").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var panel = document.getElementById(b.getAttribute("aria-controls"));
+      if (!panel) return;
+      var open = b.getAttribute("aria-expanded") === "true";
+      b.setAttribute("aria-expanded", open ? "false" : "true");
+      panel.hidden = open;
+    });
+  });
+  document.querySelectorAll("[data-mb-filter]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var f = b.getAttribute("data-mb-filter");
+      document.querySelectorAll("[data-mb-filter]").forEach(function (x) { x.setAttribute("aria-checked", "false"); });
+      b.setAttribute("aria-checked", "true");
+      var visible = 0;
+      document.querySelectorAll("[data-mb-cat]").forEach(function (d) {
+        var showDish = f === "all" || d.getAttribute("data-mb-cat") === f;
+        d.hidden = !showDish;
+        if (showDish) visible++;
+      });
+      document.querySelectorAll("[data-mb-cathead]").forEach(function (h) {
+        h.hidden = !(f === "all" || h.getAttribute("data-mb-cathead") === f);
+      });
+      var empty = document.getElementById("mb-empty");
+      if (empty) empty.hidden = visible > 0;
+    });
+  });
+  document.querySelectorAll("[data-mb-level]").forEach(function (el) {
+    var n = Math.max(0, Math.min(5, Number(el.getAttribute("data-mb-level")) || 0));
+    el.setAttribute("role", "img");
+    el.setAttribute("aria-label", "Spice level " + n + " of 5");
+    var html = "", i;
+    for (i = 1; i <= 5; i++) html += '<svg class="' + (i <= n ? "on" : "off") + '" aria-hidden="true"><use href="#mb-chili"></use></svg>';
+    el.innerHTML = html;
+  });
+  if (reducedMotion) mbReveal(true);
+
+  renderKolam();
+  var __start = (location.hash || "#cassette").slice(1);
+  if (ORDER.indexOf(__start) < 0) __start = "cassette";
+  show(__start);
+</script>
+</body>
+</html>

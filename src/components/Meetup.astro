@@ -19,46 +19,35 @@ const talks: Talk[] = [
 ];
 ---
 
-<section>
-  <div class="space-y-4">
-    {
-      talks.map((talk) => (
-        <div class="flex flex-col gap-1">
-          <p class="font-medium text-foreground-dark">
-            {talk.title}
-          </p>
-          <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-secondary-dark">
+<div class="space-y-5">
+  {
+    talks.map((talk) => (
+      <div class="flex flex-col gap-1.5">
+        <p class="t-body text-ink font-bold m-0" style="text-wrap: balance;">
+          {talk.title}
+        </p>
+        <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+          <a
+            href={talk.eventUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mono t-sm font-bold text-accent-strong underline decoration-2 underline-offset-4 hover:text-ink transition-colors"
+          >
+            {talk.event}
+          </a>
+          <span class="mono t-sm text-muted tabular">{talk.date}</span>
+          {talk.demoUrl && (
             <a
-              href={talk.eventUrl}
+              href={talk.demoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              class="text-accent hover:brightness-125 transition"
+              class="mono t-sm font-bold text-accent-strong underline decoration-2 underline-offset-4 hover:text-ink transition-colors"
             >
-              {talk.event}
+              Demo
             </a>
-            <span>{talk.date}</span>
-            {talk.demoUrl && (
-              <a
-                href={talk.demoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-accent hover:brightness-125 transition"
-              >
-                Demo
-                <svg
-                  class="inline w-3 h-3 ml-0.5 opacity-50"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path d="M7 17L17 7M17 7H7M17 7v10" />
-                </svg>
-              </a>
-            )}
-          </div>
+          )}
         </div>
-      ))
-    }
-  </div>
-</section>
+      </div>
+    ))
+  }
+</div>

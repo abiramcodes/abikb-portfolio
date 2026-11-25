@@ -88,7 +88,7 @@ const FALLBACK_META: Record<string, RepoMeta> = {
     language: "TypeScript",
   },
   "freeCodeCamp/freeCodeCamp": {
-    description: "freeCodeCamp.org's open-source codebase and curriculum. Learn math, programming, and computer science.",
+    description: "freeCodeCamp.org's open-source codebase and curriculum. Learn math, programming, computer science.",
     language: "TypeScript",
   },
   "carbon-design-system/carbon-components-angular": {
@@ -118,8 +118,6 @@ async function fetchRepoMeta(slug: string): Promise<RepoMeta> {
   }
 }
 
-
-
 function extractPrNumber(url: string): string {
   return "#" + url.split("/pull/")[1];
 }
@@ -140,22 +138,22 @@ const metaEntries = await Promise.all(
 const metaByRepo: Record<string, RepoMeta> = Object.fromEntries(metaEntries);
 ---
 
-<section>
-  <p class="text-sm text-secondary-dark mb-2" data-reveal>
-    <strong class="text-accent font-semibold">{totalPRs} PRs</strong> merged across{" "}
-    <strong class="text-accent font-semibold">{contributions.length} projects</strong>
+<section class="hw-panel px-5 sm:px-6 py-5 w-full" aria-label="Open source ledger">
+  <p class="t-body text-muted m-0">
+    <strong class="text-accent-strong font-black">{totalPRs} PRs</strong> merged across{" "}
+    <strong class="text-accent-strong font-black">{contributions.length} projects</strong>
   </p>
-  <div>
+  <div class="mt-2">
     {
-      contributions.map((c, i) => (
-        <div class="group relative py-5 border-t border-line" data-reveal style={`--index:${i}`}>
-          <div class="flex items-baseline justify-between gap-2 mb-2">
+      contributions.map((c) => (
+        <div class="group relative py-5 border-t border-line">
+          <div class="flex items-baseline justify-between gap-2 sm:gap-4 flex-wrap">
             <a
               href={c.projectUrl}
               target="_blank"
               rel="noopener noreferrer"
-              class="font-medium text-foreground-dark hover:text-accent transition"
-              aria-describedby={`repo-card-${i}`}
+              class="t-body font-bold text-ink underline decoration-2 underline-offset-4 hover:text-accent-strong transition-colors"
+              aria-describedby={`repo-card-${extractRepo(c.projectUrl).replace(/[^a-z0-9]/gi, "")}`}
             >
               {extractRepo(c.projectUrl)}
               <svg
@@ -164,21 +162,22 @@ const metaByRepo: Record<string, RepoMeta> = Object.fromEntries(metaEntries);
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
+                aria-hidden="true"
               >
                 <path d="M7 17L17 7M17 7H7M17 7v10" />
               </svg>
             </a>
-            <span class="font-mono text-xs text-secondary-dark whitespace-nowrap">
+            <span class="mono t-sm text-muted tabular whitespace-nowrap">
               {c.url.length} {c.url.length === 1 ? "PR" : "PRs"}
             </span>
           </div>
-          <div class="flex flex-wrap gap-1.5">
+          <div class="flex flex-wrap gap-1.5 mt-3">
             {c.url.map((url) => (
               <a
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="font-mono text-xs px-2 py-1 rounded-sm bg-surface-2 border border-line text-accent hover:border-accent transition"
+                class="pr-chip mono tabular"
               >
                 {extractPrNumber(url)}
               </a>
@@ -188,12 +187,12 @@ const metaByRepo: Record<string, RepoMeta> = Object.fromEntries(metaEntries);
             const meta = metaByRepo[extractRepo(c.projectUrl)];
             return meta && meta.description ? (
               <div
-                id={`repo-card-${i}`}
+                id={`repo-card-${extractRepo(c.projectUrl).replace(/[^a-z0-9]/gi, "")}`}
                 role="note"
-                class="hover-card absolute left-0 top-full z-20 mt-1 w-[min(20rem,80vw)] rounded-md border border-line bg-surface p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
+                class="repo-card absolute left-0 top-full z-20 mt-2 w-[min(22rem,80vw)] rounded-md border border-line bg-smoked p-4 shadow-[0_12px_32px_rgba(0,0,0,0.5)]"
               >
-                <p class="text-sm text-secondary-dark leading-relaxed">{meta.description}</p>
-                <div class="flex flex-wrap gap-x-4 gap-y-1 mt-3 font-mono text-xs text-secondary-dark">
+                <p class="t-sm text-smoked-text leading-relaxed m-0">{meta.description}</p>
+                <div class="flex flex-wrap gap-x-4 gap-y-1 mt-3 mono t-sm text-smoked-muted">
                   {meta.language && <span>{meta.language}</span>}
                 </div>
               </div>
@@ -204,3 +203,55 @@ const metaByRepo: Record<string, RepoMeta> = Object.fromEntries(metaEntries);
     }
   </div>
 </section>
+
+<style>
+  .pr-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border: 1px solid var(--key-edge);
+    border-radius: 5px;
+    background: linear-gradient(180deg, var(--key-face), var(--key-face-2));
+    color: var(--key-text);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow:
+      0 3px 0 var(--key-edge),
+      inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    transition:
+      transform 160ms var(--ease),
+      box-shadow 160ms var(--ease),
+      color 160ms var(--ease);
+  }
+  .pr-chip:hover,
+  .pr-chip:focus-visible {
+    color: var(--led-side-a);
+    transform: translateY(2px);
+    box-shadow:
+      0 1px 0 #141a21,
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+  .pr-chip:active {
+    transform: translateY(3px);
+  }
+
+  .repo-card {
+    opacity: 0;
+    transform: translateY(4px);
+    pointer-events: none;
+    transition:
+      opacity 180ms var(--ease),
+      transform 180ms var(--ease);
+  }
+  .group:focus-within .repo-card {
+    opacity: 1;
+    transform: none;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .group:hover .repo-card {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

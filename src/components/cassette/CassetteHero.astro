@@ -1,0 +1,60 @@
+---
+import TransportKey from "./TransportKey.astro";
+
+interface Props {
+  /** First selected project, server-rendered. */
+  trackName: string;
+  trackSub: string;
+  /** Build-time experience value; client code recalculates on load. */
+  expYears: number;
+}
+
+const { trackName, trackSub, expYears } = Astro.props;
+---
+
+<div class="face-top grid gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(300px,0.85fr)] items-stretch">
+  <div class="min-w-0">
+    <h1 class="name m-0">ABIRAM</h1>
+    <p class="role t-body text-muted m-0 mt-4" style="text-wrap: pretty;">
+      <b class="text-ink">Frontend engineer building micro frontends and migrating large Angular
+      applications</b>, with React, Astro, and modern tooling where they fit better.
+    </p>
+    <div class="mt-5">
+      <TransportKey href="/Abirama_Kannan_FE_Engineer.pdf" primary download>
+        Download resume
+      </TransportKey>
+    </div>
+  </div>
+
+  <div class="hw-smoked p-4 flex flex-col justify-between gap-4 min-h-[190px]">
+    <div>
+      <p class="led t-sm flex justify-between gap-3 m-0">
+        <span><span class="lamp on" aria-hidden="true"></span> <span id="af-led-state">Power on</span></span>
+        <span>Console</span>
+      </p>
+      <p class="led led-glow t-head font-semibold m-0 mt-3" id="af-led-name" style="overflow-wrap: anywhere;">
+        {trackName}
+      </p>
+      <p class="led t-sm m-0 mt-1.5" id="af-led-sub">{trackSub}</p>
+    </div>
+    <p class="led t-sm flex justify-between gap-3 m-0">
+      <span>Experience</span>
+      <span class="tabular"><span id="af-exp">{expYears.toFixed(1)}</span> yrs</span>
+    </p>
+  </div>
+</div>
+
+<style>
+  .name {
+    font-size: clamp(3.6rem, 9vw, 7.6rem);
+    font-weight: 900;
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    text-shadow: 0 2px 0 rgba(255, 255, 255, 0.45);
+  }
+  .text-ink {
+    color: var(--ink);
+    font-weight: 700;
+  }
+</style>

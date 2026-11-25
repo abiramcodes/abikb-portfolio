@@ -1,0 +1,170 @@
+---
+import { BANKS, type Bank } from "../../data/projects";
+import { EXPERIENCE_METER_MAX, getExperienceYears } from "../../utils/career";
+import CassetteWindow from "./CassetteWindow.astro";
+import RotaryDial from "./RotaryDial.astro";
+import ToggleSwitch from "./ToggleSwitch.astro";
+import TransportKey from "./TransportKey.astro";
+import VuMeter from "./VuMeter.astro";
+
+const first = BANKS.A[0];
+const expYears = getExperienceYears();
+const expNeedle = -42 + (84 * Math.min(expYears, EXPERIENCE_METER_MAX)) / EXPERIENCE_METER_MAX;
+
+const stackOf = (tech: string[]) => tech.join(", ");
+const hrefFor = (p: (typeof BANKS)[Bank][number]) => p.internalHref ?? `/projects#${p.slug ?? p.id}`;
+
+// Client payload: only what the tuner swaps at runtime.
+const payload = {
+  A: BANKS.A.map((p) => ({
+    id: p.id,
+    name: p.name,
+    shortLabel: p.shortLabel,
+    description: p.description,
+    stack: stackOf(p.tech),
+    command: p.command,
+    github: p.github,
+    docs: p.docs,
+    internalHref: p.internalHref,
+  })),
+  B: BANKS.B.map((p) => ({
+    id: p.id,
+    name: p.name,
+    shortLabel: p.shortLabel,
+    description: p.description,
+    stack: stackOf(p.tech),
+    command: p.command,
+    github: p.github,
+    docs: p.docs,
+    internalHref: p.internalHref,
+  })),
+};
+---
+
+<div class="deck grid gap-4 mt-6 lg:mt-8" data-deck>
+  <!-- Cassette window -->
+  <div class="zone-window">
+    <CassetteWindow bankA={BANKS.A} bankB={BANKS.B} index={0} />
+  </div>
+
+  <!-- Printed readout: the first selected project is server-rendered -->
+  <div class="zone-readout hw-panel p-5 sm:p-6 flex flex-col min-w-0">
+    <h2 class="t-head font-black tracking-tight m-0" id="af-proj-title" style="overflow-wrap: anywhere;">
+      {first.name}
+    </h2>
+    <p class="mono t-sm text-muted m-0 mt-1.5" id="af-proj-stack">{stackOf(first.tech)}</p>
+    <p class="t-body text-muted leading-relaxed m-0 mt-3" id="af-proj-desc" style="text-wrap: pretty;">
+      {first.description}
+    </p>
+
+    <div class="cmdline mt-auto pt-4" id="af-cmd-wrap">
+      <span class="t-sm font-bold text-muted block mb-1.5">Install command</span>
+      <code
+        class="led mono t-sm block rounded px-3 py-2.5 overflow-x-auto whitespace-nowrap m-0"
+        id="af-cmd"
+        style="background: var(--smoked);"
+      >{first.command}</code>
+    </div>
+    <div class="flex flex-wrap gap-2 mt-3" id="af-actions">
+      <TransportKey id="af-copy" copy={first.command}>
+        Copy command
+      </TransportKey>
+      <a class="hw-key" id="af-github" href={first.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a class="hw-key" id="af-docs" href={first.docs} target="_blank" rel="noopener noreferrer">Docs</a>
+      <a class="hw-key" id="af-internal" href={hrefFor(first)} hidden>View on Projects</a>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="zone-controls hw-panel p-4 sm:p-5 flex flex-col gap-4">
+    <p class="t-sm font-extrabold text-muted flex justify-between gap-3 m-0">
+      <span>Project selector</span>
+      <output class="mono text-ink font-semibold" id="af-track-out">Track 1 / {BANKS.A.length}</output>
+    </p>
+    <RotaryDial projects={BANKS.A} index={0} />
+    <div class="grid grid-cols-2 gap-2.5">
+      <VuMeter id="lock" label="Tuning lock" needleDeg={42} srText="Tuning locked" />
+      <VuMeter
+        id="exp"
+        label="Experience"
+        needleDeg={expNeedle}
+        srText={`Experience ${expYears.toFixed(1)} of 6 years`}
+      />
+    </div>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+      <ToggleSwitch id="af-sw-power" name="Power" checked stateText="On" />
+      <ToggleSwitch id="af-sw-play" name="Play tracks" stateText="Off" />
+      <ToggleSwitch id="af-sw-side" name="Side select" stateText="Side A" />
+      <ToggleSwitch id="af-sw-sound" name="Sound" checked stateText="On" />
+    </div>
+  </div>
+</div>
+
+<!-- Lower chassis vent -->
+<div class="hw-vent mt-6" aria-hidden="true"></div>
+
+<script type="application/json" id="af82-data" set:html={JSON.stringify(payload)} />
+
+<script is:inline>
+  // Restore the stored power state before first paint. Attribute-only,
+  // no content swap, so nothing flashes. The tuner module then syncs
+  // the switch to this truth.
+  try {
+    if (localStorage.getItem("af82-power") === "off") {
+      document.getElementById("af82").setAttribute("data-power", "off");
+    }
+  } catch (e) {
+    /* storage unavailable: power stays on */
+  }
+</script>
+
+<script src="../../scripts/project-tuner.ts"></script>
+<script src="../../scripts/copy-command.ts"></script>
+
+<style>
+  .deck {
+    grid-template-columns: minmax(260px, 0.95fr) minmax(0, 1.2fr) minmax(280px, 0.9fr);
+    align-items: stretch;
+  }
+
+  /* Tablet: controls and readout first, window becomes a strip below. */
+  @media (max-width: 1023px) {
+    .deck {
+      grid-template-columns: 1fr 1fr;
+    }
+    .zone-controls {
+      grid-row: 1;
+      grid-column: 1;
+    }
+    .zone-readout {
+      grid-row: 1;
+      grid-column: 2;
+    }
+    .zone-window {
+      grid-row: 2;
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* Mobile: controls, readout, then the window. */
+  @media (max-width: 639px) {
+    .deck {
+      grid-template-columns: 1fr;
+    }
+    .zone-controls {
+      grid-row: auto;
+      grid-column: auto;
+      order: 1;
+    }
+    .zone-readout {
+      grid-row: auto;
+      grid-column: auto;
+      order: 2;
+    }
+    .zone-window {
+      grid-row: auto;
+      grid-column: auto;
+      order: 3;
+    }
+  }
+</style>

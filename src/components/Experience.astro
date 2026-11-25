@@ -32,25 +32,23 @@ const experiences: Experience[] = [
 ];
 ---
 
-<section class="space-y-8">
+<section class="flex flex-col gap-4" aria-label="Service log">
   {
-    experiences.map((job, i) => (
-      <div class="py-8 border-t border-line" data-reveal style={`--index:${i}`}>
-        <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-4">
+    experiences.map((job) => (
+      <article class="hw-panel p-5 sm:p-6 min-w-0">
+        <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4">
           <div>
-            <h3 class="text-lg sm:text-xl font-semibold text-foreground-dark">
-              {job.role}
-            </h3>
-            <p class="text-sm text-accent font-medium">{job.company}</p>
+            <h3 class="t-body font-black m-0">{job.role}</h3>
+            <p class="mono t-sm text-accent-strong font-semibold m-0 mt-1">{job.company}</p>
           </div>
-          <span class="text-sm text-secondary-dark whitespace-nowrap">{job.duration}</span>
+          <time class="mono t-sm text-muted tabular">{job.duration}</time>
         </div>
-        <ul class="space-y-1.5 text-sm sm:text-base text-secondary-dark" style="text-wrap: balance;">
+        <ul class="t-body text-muted leading-relaxed m-0 mt-3 pl-5 list-disc space-y-1.5">
           {job.highlights.map((h) => (
-            <li class="leading-relaxed" set:html={h} />
+            <li set:html={h} />
           ))}
         </ul>
-      </div>
+      </article>
     ))
   }
 </section>

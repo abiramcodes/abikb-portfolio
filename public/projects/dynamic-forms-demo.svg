@@ -14,44 +14,38 @@
       <path d="M630 290 L690 230 H820 L870 176 H880"/>
     </g>
   </defs>
-  <rect width="1200" height="675" fill="#141008"/>
-  <path stroke="#c98a3d" stroke-opacity="0.07" stroke-width="1" fill="none"
+  <rect width="1200" height="675" fill="#101820"/>
+  <path stroke="#2A333D" stroke-opacity="0.35" stroke-width="1" fill="none"
     d="M75 0V675M150 0V675M225 0V675M300 0V675M375 0V675M450 0V675M525 0V675M600 0V675M675 0V675M750 0V675M825 0V675M900 0V675M975 0V675M1050 0V675M1125 0V675M0 75H1200M0 150H1200M0 225H1200M0 300H1200M0 375H1200M0 450H1200M0 525H1200M0 600H1200"/>
-  <use href="#traces" stroke="#c98a3d" stroke-opacity="0.14" stroke-width="8"/>
-  <use href="#traces" stroke="#c98a3d" stroke-opacity="0.6" stroke-width="2.5"/>
-  <!-- alternate dashed route: the unselected path -->
-  <path d="M630 310 L690 370 H820 L870 266 H880" fill="none" stroke="#c98a3d" stroke-opacity="0.35" stroke-width="2" stroke-dasharray="6 8"/>
-  <!-- form fields -->
-  <g fill="none" stroke="#a08c5f" stroke-opacity="0.55" stroke-width="2">
+  <use href="#traces" stroke="#98A2AC" stroke-opacity="0.14" stroke-width="8"/>
+  <use href="#traces" stroke="#98A2AC" stroke-opacity="0.55" stroke-width="2.5"/>
+  <path d="M630 310 L690 370 H820 L870 266 H880" fill="none" stroke="#98A2AC" stroke-opacity="0.35" stroke-width="2" stroke-dasharray="6 8"/>
+  <g fill="none" stroke="#8FA0AE" stroke-opacity="0.55" stroke-width="2">
     <rect x="120" y="140" width="240" height="52" rx="8"/>
     <rect x="120" y="240" width="240" height="52" rx="8"/>
     <rect x="120" y="340" width="240" height="52" rx="8"/>
   </g>
-  <g stroke="#a08c5f" stroke-opacity="0.25" stroke-width="2" stroke-linecap="round">
+  <g stroke="#8FA0AE" stroke-opacity="0.25" stroke-width="2" stroke-linecap="round">
     <path d="M160 192 H330"/><path d="M160 292 H290"/><path d="M160 392 H310"/>
   </g>
-  <rect x="152" y="158" width="5" height="18" fill="#ffb454"/>
-  <!-- toggle switches -->
-  <g fill="none" stroke="#a08c5f" stroke-opacity="0.55" stroke-width="2">
+  <rect x="152" y="158" width="5" height="18" fill="#FFB454"/>
+  <g fill="none" stroke="#8FA0AE" stroke-opacity="0.55" stroke-width="2">
     <rect x="880" y="150" width="70" height="32" rx="16"/>
     <rect x="880" y="250" width="70" height="32" rx="16"/>
   </g>
-  <circle cx="918" cy="166" r="11" fill="#ffb454"/>
-  <circle cx="902" cy="266" r="11" fill="none" stroke="#c98a3d" stroke-width="2"/>
-  <!-- junction node -->
-  <circle cx="620" cy="300" r="12" fill="#1d160c" stroke="#c98a3d" stroke-width="2.5"/>
-  <circle cx="620" cy="300" r="4" fill="#ffb454"/>
-  <!-- traveling pulse -->
-  <circle cx="430" cy="166" r="5" fill="#ffb454"/>
-  <circle cx="430" cy="166" r="11" fill="#ffb454" opacity="0.18"/>
-  <!-- vias -->
-  <g fill="none" stroke="#c98a3d" stroke-opacity="0.8" stroke-width="1.5">
+  <circle cx="918" cy="166" r="11" fill="#FFB454"/>
+  <circle cx="902" cy="266" r="11" fill="none" stroke="#98A2AC" stroke-width="2"/>
+  <circle cx="620" cy="300" r="12" fill="#16232F" stroke="#D94F1E" stroke-width="2.5"/>
+  <circle cx="620" cy="300" r="4" fill="#D94F1E"/>
+  <circle cx="430" cy="166" r="5" fill="#FFB454"/>
+  <circle cx="430" cy="166" r="11" fill="#FFB454" opacity="0.18"/>
+  <g fill="none" stroke="#98A2AC" stroke-opacity="0.8" stroke-width="1.5">
     <circle cx="1050" cy="480" r="5"/><circle cx="180" cy="560" r="5"/><circle cx="1080" cy="90" r="5"/>
   </g>
-  <g fill="#141008">
+  <g fill="#101820">
     <circle cx="1050" cy="480" r="1.8"/><circle cx="180" cy="560" r="1.8"/><circle cx="1080" cy="90" r="1.8"/>
   </g>
-  <text x="150" y="124" fill="#a08c5f" fill-opacity="0.55" font-family="Geist Mono, monospace" font-size="16">FORMS</text>
+  <text x="150" y="124" fill="#8FA0AE" fill-opacity="0.55" font-family="IBM Plex Mono, monospace" font-size="16">FORMS</text>
   <rect width="1200" height="675" fill="url(#scan)"/>
   <rect width="1200" height="675" fill="url(#vig)"/>
 </svg>

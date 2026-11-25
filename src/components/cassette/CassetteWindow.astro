@@ -1,0 +1,105 @@
+---
+import type { Project } from "../../data/projects";
+
+interface Props {
+  bankA: Project[];
+  bankB: Project[];
+  index?: number;
+}
+
+const { bankA, bankB, index = 0 } = Astro.props;
+
+const hrefFor = (p: Project) => p.internalHref ?? `/projects#${p.slug ?? p.id}`;
+const pad3 = (i: number) => String(i + 1).padStart(3, "0");
+---
+
+<div class="hw-smoked p-4 flex flex-col">
+  <p class="led t-sm flex justify-between gap-3 m-0">
+    <span id="af-side-label">Side A · Shipped tools</span>
+    <span class="tabular" id="af-counter">{pad3(index)}</span>
+  </p>
+
+  <svg viewBox="0 0 340 190" class="w-full h-auto mt-2" aria-hidden="true">
+    <rect x="8" y="14" width="324" height="142" rx="12" class="hw-svg-frame" />
+    <g class="reel hw-svg-metal" stroke-width="4">
+      <circle cx="96" cy="84" r="41" />
+      <circle cx="96" cy="84" r="9" class="hw-svg-metal-fill" />
+      <path d="M96 47v74M59 84h74M70 58l52 52M122 58L70 110" />
+    </g>
+    <g class="reel hw-svg-metal" stroke-width="4">
+      <circle cx="244" cy="84" r="41" />
+      <circle cx="244" cy="84" r="9" class="hw-svg-metal-fill" />
+      <path d="M244 47v74M207 84h74M218 58l52 52M270 58l-52 52" />
+    </g>
+    <path d="M96 125c48 16 100 16 148 0" class="hw-svg-tape" stroke-width="5" />
+    <rect x="62" y="164" width="216" height="10" rx="5" class="hw-svg-hub" />
+  </svg>
+
+  <p class="t-sm text-smoked-muted mt-3 mb-0 mono">Track listing, linked to the library</p>
+  {
+    [bankA, bankB].map((bank, bi) => (
+      <ol
+        class="tlist m-0 mt-2 p-0 grid gap-1.5 list-none"
+        data-bank-list={bi === 0 ? "A" : "B"}
+        hidden={bi === 1}
+      >
+        {bank.map((p, i) => (
+          <li>
+            <a
+              class="trow"
+              href={hrefFor(p)}
+              data-index={i}
+              aria-current={bi === 0 && i === index ? "true" : undefined}
+            >
+              <span>{`${i + 1} · ${p.name}`}</span>
+              <span>{p.tech[0]}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    ))
+  }
+</div>
+
+<style>
+  .reel {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  :global([data-play="on"]) .reel {
+    animation: af-reel 3.4s linear infinite;
+  }
+  :global(.spinning) .reel {
+    animation: af-reel 0.7s var(--ease);
+  }
+  @keyframes af-reel {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .trow {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: var(--text-sm);
+    color: var(--smoked-muted);
+    text-decoration: none;
+    transition: color 180ms var(--ease);
+  }
+  .trow:hover,
+  .trow:focus-visible {
+    color: var(--smoked-text);
+  }
+  .trow[aria-current="true"] {
+    color: var(--led);
+  }
+  :global([data-power="off"]) .trow[aria-current="true"] {
+    color: var(--led-dim);
+  }
+  .tlist {
+    border-top: 1px solid var(--smoke-rule);
+    padding-top: 10px;
+  }
+</style>

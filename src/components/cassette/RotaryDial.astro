@@ -1,0 +1,172 @@
+---
+import type { Project } from "../../data/projects";
+
+interface Props {
+  projects: Project[];
+  index?: number;
+}
+
+const { projects, index = 0 } = Astro.props;
+const n = projects.length;
+
+// Detent angles derived from the active bank length, -135deg to 135deg.
+const angleAt = (i: number) => (n > 1 ? -135 + (270 * i) / (n - 1) : 0);
+const polar = (deg: number, r: number) => {
+  const a = (deg * Math.PI) / 180;
+  return { x: 120 + r * Math.sin(a), y: 120 - r * Math.cos(a) };
+};
+const ticks = projects.map((_, i) => {
+  const a = angleAt(i);
+  return {
+    deg: a,
+    from: polar(a, 102),
+    to: polar(a, 116),
+    label: polar(a, 86),
+    n: i + 1,
+  };
+});
+---
+
+<div class="dial-stage relative mx-auto" style="width: min(238px, 100%); aspect-ratio: 1;">
+  <svg class="ticks absolute inset-0 w-full h-full" id="af-ticks" viewBox="0 0 240 240" aria-hidden="true">
+    <g class="hw-svg-dim" stroke-width="3" stroke-linecap="round">
+      {
+        ticks.map((t) => (
+          <line x1={t.from.x.toFixed(1)} y1={t.from.y.toFixed(1)} x2={t.to.x.toFixed(1)} y2={t.to.y.toFixed(1)} />
+        ))
+      }
+    </g>
+    <g class="mono" font-size="13" font-weight="600">
+      {
+        ticks.map((t) => (
+          <text class="hw-svg-dim-fill" x={t.label.x.toFixed(1)} y={(t.label.y + 4).toFixed(1)} text-anchor="middle">
+            {t.n}
+          </text>
+        ))
+      }
+    </g>
+  </svg>
+  <button
+    type="button"
+    id="af-dial"
+    class="dial absolute"
+    role="slider"
+    aria-valuemin="1"
+    aria-valuemax={n}
+    aria-valuenow={index + 1}
+    aria-valuetext={`${projects[index].name}, track ${index + 1} of ${n}`}
+    aria-label="Project selector dial. Drag to tune, press arrow keys, Home, or End."
+    aria-describedby="af-dial-help"
+    style={`transform: rotate(${angleAt(index).toFixed(2)}deg);`}
+  >
+    <span class="pointer" aria-hidden="true"></span>
+    <span class="cap" aria-hidden="true"></span>
+  </button>
+</div>
+
+<p class="ctl-label t-sm font-extrabold text-muted flex justify-between gap-3 m-0" id="af-dial-help">
+  <span>Drag, click, or arrow keys</span>
+  <span class="mono" id="af-lock-word">Locked</span>
+</p>
+
+<div
+  class="detents grid gap-1.5 mt-1"
+  style={`grid-template-columns: repeat(${n}, 1fr);`}
+  role="radiogroup"
+  aria-label="Choose a project"
+  id="af-detents"
+>
+  {
+    projects.map((p, i) => (
+      <button
+        type="button"
+        class="detent"
+        role="radio"
+        aria-checked={i === index ? "true" : "false"}
+        data-track={i}
+      >
+        {p.shortLabel}
+      </button>
+    ))
+  }
+</div>
+
+<style is:global>
+  /* Global on purpose: the tuner regenerates ticks and detents per
+     bank on the client, and scoped rules would not match the new
+     nodes. These class names exist only inside the AF-82 console. */
+  .ctl-label output {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .dial {
+    inset: 27px;
+    appearance: none;
+    border: 1px solid var(--smoked-line);
+    border-radius: 50%;
+    background: repeating-conic-gradient(from 0deg, var(--key-face) 0deg 6deg, var(--key-face-2) 6deg 12deg);
+    box-shadow:
+      0 10px 20px rgba(0, 0, 0, 0.3),
+      inset 0 3px 6px rgba(255, 255, 255, 0.16),
+      inset 0 -10px 18px rgba(0, 0, 0, 0.45);
+    cursor: grab;
+    touch-action: none;
+    transition: transform 200ms var(--ease);
+  }
+  .dial:active {
+    cursor: grabbing;
+  }
+  .dial.dragging {
+    transition: none;
+  }
+  .dial .cap {
+    position: absolute;
+    inset: 31%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 36% 30%, var(--cap-hi), var(--cap-mid) 62%, var(--cap-lo));
+    border: 1px solid var(--cap-line);
+    box-shadow:
+      inset 0 2px 4px rgba(255, 255, 255, 0.6),
+      0 3px 8px rgba(0, 0, 0, 0.35);
+  }
+  .dial .pointer {
+    position: absolute;
+    left: calc(50% - 3px);
+    top: 8px;
+    width: 6px;
+    height: 42px;
+    border-radius: 3px;
+    background: var(--accent);
+    box-shadow: 0 1px 3px rgba(6, 10, 14, 0.45);
+  }
+
+  .detent {
+    appearance: none;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: linear-gradient(180deg, var(--panel), var(--panel-2));
+    color: var(--muted);
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    min-height: 40px;
+    padding: 6px 2px;
+    cursor: pointer;
+    box-shadow: 0 3px 0 var(--chassis-deep);
+    transition:
+      transform 160ms var(--ease),
+      box-shadow 160ms var(--ease),
+      color 160ms var(--ease),
+      background-color 160ms var(--ease);
+  }
+  .detent[aria-checked="true"] {
+    color: var(--ink);
+    background: linear-gradient(180deg, var(--panel-2), var(--chassis));
+    transform: translateY(2px);
+    box-shadow:
+      0 1px 0 var(--chassis-deep),
+      inset 0 3px 0 var(--accent);
+  }
+</style>

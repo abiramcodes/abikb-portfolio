@@ -1,0 +1,23 @@
+---
+interface Props {
+  class?: string;
+  /** Corner screws: only for large, deliberately mechanical panels. */
+  screws?: boolean;
+}
+
+const { class: className, screws = false } = Astro.props;
+---
+
+<div class:list={["hw-panel relative", className]}>
+  {
+    screws && (
+      <>
+        <span class="hw-screw left-2.5 top-2.5" aria-hidden="true" />
+        <span class="hw-screw right-2.5 top-2.5" aria-hidden="true" />
+        <span class="hw-screw left-2.5 bottom-2.5" aria-hidden="true" />
+        <span class="hw-screw right-2.5 bottom-2.5" aria-hidden="true" />
+      </>
+    )
+  }
+  <slot />
+</div>

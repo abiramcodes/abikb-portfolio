@@ -3,24 +3,26 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="Page not found · Abiram" description="This page does not exist on abikb.xyz.">
-  <section
-    class="crt-stage w-full flex-1 flex flex-col items-center justify-center gap-6 px-4 py-32 text-center"
-  >
-    <h1
-      class="font-display font-bold tracking-[-0.02em] text-foreground-dark"
-      style="font-size: clamp(3rem, 12vw, 9rem); line-height: 0.95;"
-    >
-      NO SIGNAL
+  <section class="flex-1 w-full flex flex-col items-center justify-center gap-7 px-4 py-24 text-center">
+    <svg class="w-[220px] h-auto" viewBox="0 0 340 190" aria-hidden="true">
+      <rect x="8" y="14" width="324" height="142" rx="12" class="hw-svg-frame" />
+      <g class="hw-svg-tape" stroke-width="4">
+        <circle cx="96" cy="84" r="41" />
+        <circle cx="96" cy="84" r="9" class="hw-svg-frame-line" />
+        <path d="M96 47v74M59 84h74M70 58l52 52M122 58L70 110" />
+      </g>
+      <g class="hw-svg-tape" stroke-width="4">
+        <circle cx="244" cy="84" r="41" />
+        <circle cx="244" cy="84" r="9" class="hw-svg-frame-line" />
+        <path d="M244 47v74M207 84h74M218 58l52 52M270 58l-52 52" />
+      </g>
+      <path d="M96 125c48 16 100 16 148 0" class="hw-svg-frame-line" stroke-width="5" />
+      <rect x="62" y="164" width="216" height="10" rx="5" class="hw-svg-hub" />
+    </svg>
+    <h1 class="m-0 text-bench-text" style="font-size: clamp(4rem, 16vw, 9rem); font-weight: 900; letter-spacing: -0.04em; line-height: 0.9;">
+      404
     </h1>
-    <p class="text-lg sm:text-xl text-secondary-dark">
-      This page doesn't exist.
-    </p>
-    <a
-      href="/"
-      data-magnetic
-      class="mt-2 text-sm font-medium px-4 py-2 rounded-md bg-accent text-background-dark hover:brightness-110 transition"
-    >
-      &larr; Back home
-    </a>
+    <p class="t-body text-bench-muted m-0">This side is blank.</p>
+    <a href="/" class="hw-key primary mt-2">Back home</a>
   </section>
 </BaseLayout>

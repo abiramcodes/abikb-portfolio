@@ -16,47 +16,46 @@
       <path d="M-10 90 H250 L310 150 H1210"/>
     </g>
   </defs>
-  <rect width="1200" height="675" fill="#141008"/>
-  <path stroke="#c98a3d" stroke-opacity="0.07" stroke-width="1" fill="none"
+  <rect width="1200" height="675" fill="#101820"/>
+  <path stroke="#2A333D" stroke-opacity="0.35" stroke-width="1" fill="none"
     d="M75 0V675M150 0V675M225 0V675M300 0V675M375 0V675M450 0V675M525 0V675M600 0V675M675 0V675M750 0V675M825 0V675M900 0V675M975 0V675M1050 0V675M1125 0V675M0 75H1200M0 150H1200M0 225H1200M0 300H1200M0 375H1200M0 450H1200M0 525H1200M0 600H1200"/>
-  <use href="#traces" stroke="#c98a3d" stroke-opacity="0.14" stroke-width="8"/>
-  <use href="#traces" stroke="#c98a3d" stroke-opacity="0.6" stroke-width="2.5"/>
+  <use href="#traces" stroke="#98A2AC" stroke-opacity="0.14" stroke-width="8"/>
+  <use href="#traces" stroke="#98A2AC" stroke-opacity="0.55" stroke-width="2.5"/>
   <!-- diagnostic module -->
-  <rect x="450" y="170" width="300" height="230" fill="#1d160c" stroke="#a08c5f" stroke-opacity="0.55" stroke-width="1.5"/>
-  <g stroke="#a08c5f" stroke-opacity="0.45" stroke-width="1.5" fill="none">
+  <rect x="450" y="170" width="300" height="230" fill="#16232F" stroke="#8FA0AE" stroke-opacity="0.55" stroke-width="1.5"/>
+  <g stroke="#8FA0AE" stroke-opacity="0.45" stroke-width="1.5" fill="none">
     <path d="M444 200 H450 M444 233 H450 M444 266 H450 M444 300 H450 M444 333 H450 M444 366 H450"/>
     <path d="M750 200 H756 M750 233 H756 M750 266 H756 M750 300 H756 M750 333 H756 M750 366 H756"/>
   </g>
-  <circle cx="466" cy="384" r="3.5" fill="#c98a3d" fill-opacity="0.8"/>
-  <text x="466" y="196" fill="#a08c5f" fill-opacity="0.55" font-family="Geist Mono, monospace" font-size="16">U1</text>
+  <circle cx="466" cy="384" r="3.5" fill="#D94F1E" fill-opacity="0.9"/>
+  <text x="466" y="196" fill="#8FA0AE" fill-opacity="0.55" font-family="IBM Plex Mono, monospace" font-size="16">U1</text>
   <!-- scope screen -->
-  <rect x="490" y="240" width="220" height="120" fill="#0d0a06" stroke="#a08c5f" stroke-opacity="0.3" stroke-width="1"/>
-  <g stroke="#c98a3d" stroke-opacity="0.12" stroke-width="1">
+  <rect x="490" y="240" width="220" height="120" fill="#0B1118" stroke="#8FA0AE" stroke-opacity="0.3" stroke-width="1"/>
+  <g stroke="#2A333D" stroke-opacity="0.6" stroke-width="1">
     <path d="M490 270 H710 M490 300 H710 M490 330 H710"/>
   </g>
-  <path d="M505 300 h24 l7-24 l9 48 l7-24 h28 l7-13 l6 26 l7-13 h30 l7-19 l9 38 l7-19 h28 l6 0"
-    fill="none" stroke="#ffb454" stroke-opacity="0.3" stroke-width="6" stroke-linejoin="round"/>
   <path d="M505 300 h24 l7-24 l9 48 l7-24 h28 l7-13 l6 26 l7-13 h30 l7-19 l9 38 l7-19 h28"
-    fill="none" stroke="#ffb454" stroke-width="2.5" stroke-linejoin="round"/>
-  <circle cx="692" cy="300" r="4" fill="#ffb454"/>
+    fill="none" stroke="#FFB454" stroke-opacity="0.3" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M505 300 h24 l7-24 l9 48 l7-24 h28 l7-13 l6 26 l7-13 h30 l7-19 l9 38 l7-19 h28"
+    fill="none" stroke="#FFB454" stroke-width="2.5" stroke-linejoin="round"/>
+  <circle cx="692" cy="300" r="4" fill="#FFB454"/>
   <!-- calibration ruler -->
-  <g stroke="#a08c5f" stroke-opacity="0.4" stroke-width="1.5">
+  <g stroke="#8FA0AE" stroke-opacity="0.4" stroke-width="1.5">
     <path d="M240 600 V612 M320 600 V612 M400 600 V612 M480 600 V612 M560 600 V612 M640 600 V612 M720 600 V612 M800 600 V612 M880 600 V612 M960 600 V612"/>
     <path d="M200 606 H1000"/>
   </g>
-  <path d="M560 596 V616" stroke="#ffb454" stroke-width="2.5"/>
-  <!-- vias + pulses -->
-  <g fill="none" stroke="#c98a3d" stroke-opacity="0.8" stroke-width="1.5">
+  <path d="M560 596 V616" stroke="#D94F1E" stroke-width="2.5"/>
+  <g fill="none" stroke="#98A2AC" stroke-opacity="0.8" stroke-width="1.5">
     <circle cx="180" cy="440" r="5"/><circle cx="1050" cy="460" r="5"/><circle cx="600" cy="90" r="5"/>
   </g>
-  <g fill="#141008">
+  <g fill="#101820">
     <circle cx="180" cy="440" r="1.8"/><circle cx="1050" cy="460" r="1.8"/><circle cx="600" cy="90" r="1.8"/>
   </g>
-  <g fill="#ffb454">
+  <g fill="#FFB454">
     <circle cx="240" cy="260" r="4.5" opacity="0.9"/>
     <circle cx="930" cy="270" r="4" opacity="0.7"/>
   </g>
-  <circle cx="240" cy="260" r="10" fill="#ffb454" opacity="0.16"/>
+  <circle cx="240" cy="260" r="10" fill="#FFB454" opacity="0.16"/>
   <rect width="1200" height="675" fill="url(#scan)"/>
   <rect width="1200" height="675" fill="url(#vig)"/>
 </svg>

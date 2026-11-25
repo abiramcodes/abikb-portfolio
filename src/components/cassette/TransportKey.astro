@@ -1,0 +1,48 @@
+---
+interface Props {
+  id?: string;
+  href?: string;
+  primary?: boolean;
+  /** When set, the key becomes a copy-command button. */
+  copy?: string;
+  ariaLabel?: string;
+  target?: string;
+  download?: boolean;
+  class?: string;
+}
+
+const {
+  id,
+  href,
+  primary = false,
+  copy,
+  ariaLabel,
+  target,
+  download = false,
+  class: className,
+} = Astro.props;
+
+const cls = ["hw-key", primary && "primary", className];
+---
+
+{
+  href ? (
+    <a
+      class={cls}
+      id={id}
+      href={href}
+      target={target}
+      rel={target ? "noopener noreferrer" : undefined}
+      download={download || undefined}
+      aria-label={ariaLabel}
+    >
+      <slot />
+    </a>
+  ) : (
+    <button type="button" class={cls} id={id} data-copy={copy} aria-label={ariaLabel}>
+      <span data-copy-label>
+        <slot />
+      </span>
+    </button>
+  )
+}

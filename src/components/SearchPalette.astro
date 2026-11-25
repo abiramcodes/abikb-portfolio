@@ -1,7 +1,52 @@
 ---
-// ⌘K command palette. Markup ships as a ~1KB shell; the index and
-// interactions live in the bundled script. Native <dialog popover>
-// provides top-layer, Esc, light-dismiss, and focus handling.
+import { PROJECTS } from "../data/projects";
+
+// ⌘K command palette: smoked cassette-library drawer. The shell ships
+// small; the index, filtering, and keyboard interaction live in the
+// bundled script. Project entries are generated from the canonical
+// project data instead of a hand-copied list.
+
+const ENTRIES = [
+  // Pages
+  { label: "Home", group: "Pages", kind: "page", href: "/", keywords: "hero intro abiram console tuner" },
+  { label: "Projects", group: "Pages", kind: "page", href: "/projects", keywords: "tools work apps demos library" },
+  { label: "Open Source", group: "Pages", kind: "page", href: "/open-source", keywords: "oss contributions prs merged" },
+  { label: "Skills", group: "Pages", kind: "page", href: "/skills", keywords: "stack angular react ai tooling" },
+  { label: "Experience", group: "Pages", kind: "page", href: "/experience", keywords: "work roles deloitte tcs log" },
+
+  // Projects, generated from src/data/projects.ts
+  ...PROJECTS.flatMap((p) => {
+    const base = {
+      name: p.name,
+      keywords: [p.shortLabel, p.tech.join(" "), p.bank === "A" ? "personal demo tool" : "client work deloitte"].join(" ").toLowerCase(),
+    };
+    if (p.bank === "B") {
+      return [{ ...base, label: p.name, hint: "work", group: "Projects", kind: "page" as const, href: p.internalHref! }];
+    }
+    const rows = [{ ...base, label: p.name, hint: "repo", group: "Projects", kind: "external" as const, href: p.github! }];
+    if (p.docs) rows.push({ ...base, label: `${p.name} docs`, hint: "docs", group: "Projects", kind: "external" as const, href: p.docs! });
+    return rows;
+  }),
+
+  // Actions
+  { label: "Copy: npm i -D @abiramcodes/ng-point", hint: "copy", group: "Actions", kind: "copy", copy: "npm i -D @abiramcodes/ng-point", keywords: "install ng-point npm package" },
+  { label: "Copy: npx @abiramcodes/angular-doctor@latest", hint: "copy", group: "Actions", kind: "copy", copy: "npx @abiramcodes/angular-doctor@latest", keywords: "install angular doctor npx run scan" },
+  { label: "Download resume", hint: "pdf", group: "Actions", kind: "link", href: "/Abirama_Kannan_FE_Engineer.pdf", icon: "download", download: true, keywords: "cv curriculum vitae" },
+  { label: "Email akbhere20@gmail.com", group: "Actions", kind: "link", href: "mailto:akbhere20@gmail.com", icon: "mail", keywords: "contact get in touch output" },
+
+  // Open source (contributions live on /open-source)
+  { label: "pangular-inspector", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "devtools signals di routes chrome extension" },
+  { label: "spartan-ng", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "spartan full stack angular ui" },
+  { label: "ng-primitives", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "headless accessible primitives" },
+  { label: "ng-icons", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "icon library" },
+  { label: "freeCodeCamp", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "curriculum learn" },
+  { label: "carbon-components-angular", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "ibm design system" },
+
+  // External
+  { label: "GitHub - abiramcodes", hint: "profile", group: "External", kind: "external", href: "https://github.com/abiramcodes" },
+  { label: "LinkedIn - Abirama Kannan", hint: "profile", group: "External", kind: "external", href: "https://www.linkedin.com/in/abirama-kannan-baskar" },
+  { label: "X - @abiramcodes", hint: "profile", group: "External", kind: "external", href: "https://x.com/abiramcodes" },
+];
 ---
 
 <dialog id="search-palette" popover="auto" aria-labelledby="search-title">
@@ -21,7 +66,7 @@
     <input
       id="palette-input"
       type="search"
-      placeholder="Search pages, projects, actions..."
+      placeholder="Search the cassette library..."
       aria-label="Search the site"
       role="combobox"
       aria-expanded="true"
@@ -60,58 +105,25 @@
 </dialog>
 
 <script>
-  type EntryKind = "page" | "external" | "link" | "copy" | "action";
+  import { sfx } from "../scripts/console-audio";
 
-  interface Entry {
+  type EntryKind = "page" | "external" | "link" | "copy" | "action";
+  type Entry = {
     label: string;
     group: string;
     kind: EntryKind;
     href?: string;
     copy?: string;
-    run?: "theme";
     hint?: string;
     keywords?: string;
     icon?: string;
     download?: boolean;
-  }
+  };
 
-  const ENTRIES: Entry[] = [
-    // Pages
-    { label: "Home", group: "Pages", kind: "page", href: "/", keywords: "hero intro abiram" },
-    { label: "Projects", group: "Pages", kind: "page", href: "/projects", keywords: "tools work apps demos" },
-    { label: "Open Source", group: "Pages", kind: "page", href: "/open-source", keywords: "oss contributions prs merged" },
-    { label: "Skills", group: "Pages", kind: "page", href: "/skills", keywords: "stack angular react ai tooling" },
-    { label: "Experience", group: "Pages", kind: "page", href: "/experience", keywords: "work roles deloitte tcs" },
-
-    // Projects
-    { label: "ng-point", hint: "repo", group: "Projects", kind: "external", href: "https://github.com/abiramcodes/ng-point", keywords: "alt click llm agent context dev-mode library angular" },
-    { label: "ng-point docs", hint: "docs", group: "Projects", kind: "external", href: "https://abiramcodes.github.io/ng-point/", keywords: "ng-point documentation landing" },
-    { label: "angular-doctor", hint: "repo", group: "Projects", kind: "external", href: "https://github.com/abiramcodes/angular-doctor", keywords: "health scan score diagnostics cli lint" },
-    { label: "angular-doctor docs", hint: "docs", group: "Projects", kind: "external", href: "https://ngdoctor.dev/", keywords: "angular-doctor documentation rules" },
-    { label: "md-Pdf-converter", hint: "repo", group: "Projects", kind: "external", href: "https://github.com/abiramcodes/MD-PDF", keywords: "markdown pdf nestjs puppeteer" },
-    { label: "dynamic-forms-demo", hint: "repo", group: "Projects", kind: "external", href: "https://github.com/abiramcodes/dynamic-forms-demo", keywords: "ng india chennai meetup talk demo forms" },
-    { label: "mini-url", hint: "repo", group: "Projects", kind: "external", href: "https://github.com/abiramcodes/mini-url-frontEnd", keywords: "url shortener coding challenge" },
-
-    // Actions
-    { label: "Copy: npm i -D @abiramcodes/ng-point", hint: "copy", group: "Actions", kind: "copy", copy: "npm i -D @abiramcodes/ng-point", keywords: "install ng-point npm package" },
-    { label: "Copy: npx @abiramcodes/angular-doctor@latest", hint: "copy", group: "Actions", kind: "copy", copy: "npx @abiramcodes/angular-doctor@latest", keywords: "install angular doctor npx run scan" },
-    { label: "Download resume", hint: "pdf", group: "Actions", kind: "link", href: "/Abirama_Kannan_FE_Engineer.pdf", icon: "download", download: true, keywords: "cv curriculum vitae" },
-    { label: "Email akbhere20@gmail.com", group: "Actions", kind: "link", href: "mailto:akbhere20@gmail.com", icon: "mail", keywords: "contact get in touch" },
-    { label: "Toggle theme", hint: "dark / light", group: "Actions", kind: "action", run: "theme", icon: "theme" },
-
-    // Open source (contributions live on /open-source)
-    { label: "pangular-inspector", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "devtools signals di routes chrome extension" },
-    { label: "spartan-ng", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "spartan full stack angular ui" },
-    { label: "ng-primitives", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "headless accessible primitives" },
-    { label: "ng-icons", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "icon library" },
-    { label: "freeCodeCamp", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "curriculum learn" },
-    { label: "carbon-components-angular", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "ibm design system" },
-
-    // External
-    { label: "GitHub - abiramcodes", hint: "profile", group: "External", kind: "external", href: "https://github.com/abiramcodes" },
-    { label: "LinkedIn - Abirama Kannan", hint: "profile", group: "External", kind: "external", href: "https://www.linkedin.com/in/abirama-kannan-baskar" },
-    { label: "X - @abiramcodes", hint: "profile", group: "External", kind: "external", href: "https://x.com/abiramcodes" },
-  ];
+  // Entries are injected server-side from the canonical project data.
+  const ENTRIES: Entry[] = JSON.parse(
+    document.getElementById("palette-entries")!.textContent!,
+  );
 
   const KIND_ICON: Record<EntryKind, string> = {
     page: "M5 12h14M13 6l6 6-6 6",
@@ -123,7 +135,6 @@
   const EXTRA_ICONS: Record<string, string> = {
     download: "M12 3v12M7 10l5 5 5-5M5 21h14",
     mail: "M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM22 6l-10 7L2 6",
-    theme: KIND_ICON.action,
   };
 
   const DEFAULTS = ENTRIES.filter((e) => e.group === "Pages" || e.group === "Actions");
@@ -193,7 +204,7 @@
 
   function rowFor(entry: Entry, i: number, terms: string[]): HTMLElement {
     let row: HTMLElement;
-    if (entry.kind === "copy" || entry.run) {
+    if (entry.kind === "copy") {
       row = document.createElement("button");
       row.type = "button";
     } else {
@@ -283,39 +294,35 @@
     setActive(0);
   }
 
-  async function copyText(text: string): Promise<boolean> {
-    try {
-      await navigator.clipboard.writeText(text);
-      return true;
-    } catch {
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      ta.remove();
-      return true;
-    }
-  }
-
   results.addEventListener("click", async (e) => {
     const row = (e.target as Element).closest<HTMLElement>(".palette-row");
     if (!row) return;
     const entry = current[Number(row.dataset.index)];
     if (!entry) return;
 
-    if (entry.run === "theme") {
-      document.getElementById("theme-toggle")?.click();
-      dialog.hidePopover();
-      return;
-    }
     if (entry.copy) {
-      await copyText(entry.copy);
+      e.preventDefault();
+      let ok = false;
+      try {
+        await navigator.clipboard.writeText(entry.copy);
+        ok = true;
+      } catch {
+        const ta = document.createElement("textarea");
+        ta.value = entry.copy;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        ok = document.execCommand("copy");
+        ta.remove();
+      }
+      sfx.play(ok ? "confirm" : "error");
       const label = row.querySelector<HTMLElement>(".palette-label");
       const hint = row.querySelector<HTMLElement>(".palette-hint");
-      if (label) label.textContent = "Copied to clipboard";
-      if (hint) hint.textContent = "✓";
-      window.setTimeout(() => dialog.hidePopover(), 450);
+      if (label) label.textContent = ok ? "Copied to clipboard" : "Copy failed, command stays selected";
+      if (hint) hint.textContent = ok ? "✓" : "!";
+      window.setTimeout(() => dialog.hidePopover(), ok ? 450 : 1200);
       return;
     }
     // Anchors navigate on their own; just dismiss the palette first
@@ -344,6 +351,9 @@
       input.value = "";
       refresh();
       input.focus();
+      sfx.play("drawer-open");
+    } else {
+      sfx.play("drawer-close");
     }
   });
 
@@ -368,3 +378,5 @@
     el.textContent = isMac ? "⌘ K" : "Ctrl K";
   });
 </script>
+
+<script type="application/json" id="palette-entries" set:html={JSON.stringify(ENTRIES)} />

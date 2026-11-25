@@ -14,41 +14,36 @@
       <path d="M-10 380 H200 L260 320 H1210"/>
     </g>
   </defs>
-  <rect width="1200" height="675" fill="#141008"/>
-  <path stroke="#c98a3d" stroke-opacity="0.07" stroke-width="1" fill="none"
+  <rect width="1200" height="675" fill="#101820"/>
+  <path stroke="#2A333D" stroke-opacity="0.35" stroke-width="1" fill="none"
     d="M75 0V675M150 0V675M225 0V675M300 0V675M375 0V675M450 0V675M525 0V675M600 0V675M675 0V675M750 0V675M825 0V675M900 0V675M975 0V675M1050 0V675M1125 0V675M0 75H1200M0 150H1200M0 225H1200M0 300H1200M0 375H1200M0 450H1200M0 525H1200M0 600H1200"/>
-  <use href="#traces" stroke="#c98a3d" stroke-opacity="0.14" stroke-width="8"/>
-  <use href="#traces" stroke="#c98a3d" stroke-opacity="0.6" stroke-width="2.5"/>
+  <use href="#traces" stroke="#98A2AC" stroke-opacity="0.14" stroke-width="8"/>
+  <use href="#traces" stroke="#98A2AC" stroke-opacity="0.55" stroke-width="2.5"/>
   <!-- document module with folded corner -->
-  <path d="M520 150 H690 L760 220 V550 H520 Z" fill="#1d160c" stroke="#a08c5f" stroke-opacity="0.55" stroke-width="1.5"/>
-  <path d="M690 150 V220 H760" fill="none" stroke="#a08c5f" stroke-opacity="0.55" stroke-width="1.5"/>
-  <!-- fold lines -->
-  <path d="M520 330 H760 M520 430 H760" fill="none" stroke="#a08c5f" stroke-opacity="0.25" stroke-width="1" stroke-dasharray="4 8"/>
-  <!-- text lines on the page -->
-  <g stroke="#a08c5f" stroke-opacity="0.4" stroke-width="3" stroke-linecap="round">
+  <path d="M520 150 H690 L760 220 V550 H520 Z" fill="#16232F" stroke="#8FA0AE" stroke-opacity="0.55" stroke-width="1.5"/>
+  <path d="M690 150 V220 H760" fill="none" stroke="#8FA0AE" stroke-opacity="0.55" stroke-width="1.5"/>
+  <path d="M520 330 H760 M520 430 H760" fill="none" stroke="#8FA0AE" stroke-opacity="0.25" stroke-width="1" stroke-dasharray="4 8"/>
+  <g stroke="#8FA0AE" stroke-opacity="0.4" stroke-width="3" stroke-linecap="round">
     <path d="M560 260 H680"/><path d="M560 288 H640"/><path d="M560 362 H700"/><path d="M560 390 H620"/>
   </g>
-  <text x="560" y="180" fill="#a08c5f" fill-opacity="0.55" font-family="Geist Mono, monospace" font-size="16">U7</text>
-  <!-- input chevrons -->
-  <g stroke="#ffb454" stroke-opacity="0.85" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <text x="560" y="180" fill="#8FA0AE" fill-opacity="0.55" font-family="IBM Plex Mono, monospace" font-size="16">U7</text>
+  <path d="M694 154 L756 216" stroke="#D94F1E" stroke-opacity="0.8" stroke-width="2"/>
+  <g stroke="#FFB454" stroke-opacity="0.85" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
     <path d="M330 522 l12 8 -12 8"/>
     <path d="M410 582 l12 8 -12 8"/>
   </g>
-  <!-- pulse entering the module -->
-  <circle cx="512" cy="538" r="5.5" fill="#ffb454"/>
-  <circle cx="512" cy="538" r="12" fill="#ffb454" opacity="0.18"/>
-  <!-- output pulse -->
-  <circle cx="1080" cy="360" r="4.5" fill="#ffb454" opacity="0.8"/>
-  <circle cx="1080" cy="360" r="10" fill="#ffb454" opacity="0.14"/>
-  <!-- pads + vias -->
-  <g fill="#c98a3d" fill-opacity="0.8">
+  <circle cx="512" cy="538" r="5.5" fill="#FFB454"/>
+  <circle cx="512" cy="538" r="12" fill="#FFB454" opacity="0.18"/>
+  <circle cx="1080" cy="360" r="4.5" fill="#FFB454" opacity="0.8"/>
+  <circle cx="1080" cy="360" r="10" fill="#FFB454" opacity="0.14"/>
+  <g fill="#98A2AC" fill-opacity="0.75">
     <circle cx="210" cy="530" r="5"/><circle cx="400" cy="590" r="5"/>
     <circle cx="960" cy="360" r="5"/><circle cx="440" cy="150" r="5"/><circle cx="260" cy="320" r="5"/>
   </g>
-  <g fill="none" stroke="#c98a3d" stroke-opacity="0.8" stroke-width="1.5">
+  <g fill="none" stroke="#98A2AC" stroke-opacity="0.8" stroke-width="1.5">
     <circle cx="140" cy="200" r="5"/><circle cx="1000" cy="480" r="5"/><circle cx="860" cy="90" r="5"/>
   </g>
-  <g fill="#141008">
+  <g fill="#101820">
     <circle cx="140" cy="200" r="1.8"/><circle cx="1000" cy="480" r="1.8"/><circle cx="860" cy="90" r="1.8"/>
   </g>
   <rect width="1200" height="675" fill="url(#scan)"/>

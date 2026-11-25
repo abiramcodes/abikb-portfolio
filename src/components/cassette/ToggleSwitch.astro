@@ -1,0 +1,62 @@
+---
+interface Props {
+  id: string;
+  name: string;
+  checked?: boolean;
+  stateText: string;
+}
+
+const { id, name, checked = false, stateText } = Astro.props;
+---
+
+<button type="button" class="sw" id={id} role="switch" aria-checked={checked ? "true" : "false"}>
+  <span class="slot" aria-hidden="true"><span class="lever"></span></span>
+  <span class="sw-name t-sm font-extrabold leading-tight">{name}</span>
+  <span class="sw-state mono t-sm text-muted" id={`${id}-state`}>{stateText}</span>
+</button>
+
+<style>
+  .sw {
+    appearance: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 6px 9px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: linear-gradient(180deg, var(--panel), var(--panel-2));
+    color: var(--ink);
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    transition:
+      background-color 180ms var(--ease),
+      box-shadow 180ms var(--ease);
+  }
+  .sw .slot {
+    position: relative;
+    width: 28px;
+    height: 54px;
+    border-radius: 15px;
+    background: var(--smoked-2);
+    box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.8);
+  }
+  .sw .lever {
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    width: 20px;
+    height: 27px;
+    border-radius: 5px;
+    background: linear-gradient(180deg, var(--key-face), var(--key-face-2));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.25),
+      0 2px 4px rgba(0, 0, 0, 0.5);
+    transform: translateY(19px);
+    transition: transform 180ms var(--ease);
+  }
+  .sw[aria-checked="true"] .lever {
+    transform: translateY(0);
+  }
+</style>

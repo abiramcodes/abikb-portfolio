@@ -1,65 +1,29 @@
 ---
-interface Project {
-  title: string;
-  description: string;
-  tech: string[];
-  scale: string;
-  stats?: string[];
-}
-
-const projects: Project[] = [
-  {
-    title: "Micro Frontend Platform",
-    description: "Architected a Shell + Remote MFE platform with seamless routing, leading a team of 4 developers. Received an Applause Award for delivery.",
-    tech: ["Angular 22", "Native Federation", "React 19", "Module Federation", "Nginx", "Ingress"],
-    scale: "Multi-app platform",
-    stats: ["Team of 4", "Applause Award"],
-  },
-  {
-    title: "Large-Scale UI Migration",
-    description: "Migrated PrimeNG to Optimus UI and Angular 21 to 22 with Signal APIs across 8 micro frontend repos, leveraging AI agents for speed.",
-    tech: ["Angular 22", "Optimus UI", "Claude Code", "Copilot"],
-    scale: "Micro Frontends (Multiple Repo's)",
-    stats: ["8 repos", "AI-assisted"],
-  },
-  {
-    title: "Framework Modernization",
-    description: "Led Angular 17 to 20 migration with zero defects, earning an Applause Award. Reduced build size and improved runtime performance.",
-    tech: ["Angular 20", "Jest", "Karma", "Standalone APIs"],
-    scale: "Enterprise app",
-    stats: ["0 defects", "Applause Award"],
-  },
-  {
-    title: "State-Driven Dashboard",
-    description: "Built complex UI workflows with NgRx state management, reducing redundant API calls by 50% and page load times by 40%.",
-    tech: ["Angular 15+", "NgRx", "Angular Material", "Azure"],
-    scale: "5+ modules",
-    stats: ["-50% API calls", "-40% load time"],
-  },
-];
+import { SIDE_B } from "../data/projects";
 ---
 
-<section class="w-full max-w-3xl mx-auto px-4 sm:px-0">
-  <h2 class="font-display text-4xl sm:text-5xl tracking-[-0.02em] mb-3">What I built at work</h2>
-  <p class="text-secondary-dark mb-8" data-reveal>Selected work platforms and migrations.</p>
-  <div class="grid gap-4 sm:grid-cols-2">
+<section class="w-full" aria-labelledby="work-h">
+  <h2 id="work-h" class="t-head font-black tracking-tight m-0">What I built at work</h2>
+  <p class="t-body text-muted m-0 mt-1.5">Selected work platforms and migrations.</p>
+
+  <div class="flex flex-col gap-4 mt-6">
     {
-      projects.map((p, i) => (
-        <div class="rounded-md border border-line bg-surface p-5 flex flex-col gap-2" data-reveal style={`--index:${i}`}>
-          <div class="flex items-baseline justify-between gap-2">
-            <h3 class="font-medium text-foreground-dark">{p.title}</h3>
-            <span class="text-xs text-accent whitespace-nowrap">{p.scale}</span>
+      SIDE_B.map((p) => (
+        <article class="hw-panel p-5 sm:p-6 min-w-0" id={p.id}>
+          <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+            <h3 class="t-body font-black m-0">{p.name}</h3>
+            {p.scale && <span class="mono t-sm text-accent-strong font-semibold">{p.scale}</span>}
           </div>
-          <p class="text-sm text-secondary-dark leading-relaxed text-balance">{p.description}</p>
+          <p class="t-body text-muted leading-relaxed m-0 mt-2" style="text-wrap: pretty;">
+            {p.description}
+          </p>
           {p.stats && (
-            <p class="text-xs text-accent-2">
-              {p.stats.join(" · ")}
-            </p>
+            <p class="mono t-sm text-ink font-semibold m-0 mt-3">{p.stats.join(" · ")}</p>
           )}
-          <p class="mt-auto pt-2 text-xs text-secondary-dark" style="text-wrap: pretty;">
+          <p class="mono t-sm text-muted m-0 mt-1.5" style="text-wrap: pretty;">
             {p.tech.join(" · ")}
           </p>
-        </div>
+        </article>
       ))
     }
   </div>

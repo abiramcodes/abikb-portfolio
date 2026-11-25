@@ -4,9 +4,30 @@ import Exp from "../components/Experience.astro";
 ---
 
 <BaseLayout title="Experience · Abiram" description="Work experience of Abiram, Frontend Consultant at Deloitte USI — micro frontend architecture, framework migrations, and awards.">
-  <section class="w-full max-w-3xl mx-auto px-4 sm:px-0 pt-10 sm:pt-14 pb-24 sm:pb-10">
-    <h1 class="font-display text-4xl sm:text-5xl tracking-[-0.02em] mb-3">Experience</h1>
-    <p class="text-secondary-dark mb-10" data-reveal>Roles, migrations, and recognition since Dec 2021.</p>
+  <div class="mx-auto w-full max-w-[76rem] px-4 sm:px-6 pt-10 sm:pt-14 pb-24 sm:pb-16 flex flex-col gap-8">
+    <header class="w-full">
+      <h1 class="page-h1">Experience</h1>
+      <p class="t-body text-bench-muted m-0 mt-4 measure">
+        Roles, migrations, and recognition since Dec 2021.
+      </p>
+      <hr class="seam" aria-hidden="true" />
+    </header>
     <Exp />
-  </section>
+  </div>
 </BaseLayout>
+
+<style>
+  .page-h1 {
+    margin: 0;
+    font-size: clamp(2.75rem, 6vw, 4.5rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    color: var(--bench-text);
+  }
+  .seam {
+    border: 0;
+    border-top: 1px solid var(--bench-line);
+    margin: 20px 0 0;
+  }
+</style>

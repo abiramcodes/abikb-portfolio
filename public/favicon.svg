@@ -1,5 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect width="100" height="100" rx="20" fill="#141008"/>
-  <text x="38" y="70" text-anchor="middle" font-family="Space Mono, Geist Mono, ui-monospace, monospace" font-weight="700" font-size="58" fill="#ffb454">A</text>
-  <rect x="58" y="56" width="14" height="14" fill="#ffb454"/>
+  <rect width="100" height="100" rx="20" fill="#16232F"/>
+  <circle cx="50" cy="50" r="34" fill="#232B34" stroke="#2C3B48" stroke-width="2"/>
+  <path d="M12 50 h8 M80 50 h8" stroke="#46586A" stroke-width="3" stroke-linecap="round"/>
+  <rect x="47" y="14" width="6" height="24" rx="3" fill="#D94F1E"/>
+  <circle cx="50" cy="50" r="9" fill="#98A2AC"/>
 </svg>

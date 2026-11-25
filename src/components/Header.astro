@@ -1,267 +1,239 @@
 ---
-import { Moon, Sun } from "@lucide/astro";
-import { SITE_TITLE } from "../consts";
-import Center from "./Center.astro";
 import SearchPalette from "./SearchPalette.astro";
-
-interface Props {
-  title?: string;
-}
-
-const { title = SITE_TITLE } = Astro.props;
 
 const githubIcon =
   "M12.006 2a9.847 9.847 0 0 0-6.484 2.44 10.32 10.32 0 0 0-3.393 6.17 10.48 10.48 0 0 0 1.317 6.955 10.045 10.045 0 0 0 5.4 4.418c.504.095.683-.223.683-.494 0-.245-.01-1.052-.014-1.908-2.78.62-3.366-1.21-3.366-1.21a2.711 2.711 0 0 0-1.11-1.5c-.907-.637.07-.621.07-.621.317.044.62.163.885.346.266.183.487.426.647.71.135.253.318.476.538.655a2.079 2.079 0 0 0 2.37.196c.045-.52.27-1.006.635-1.37-2.219-.259-4.554-1.138-4.554-5.07a4.022 4.022 0 0 1 1.031-2.75 3.77 3.77 0 0 1 .096-2.713s.839-.275 2.749 1.05a9.26 9.26 0 0 1 5.004 0c1.906-1.325 2.74-1.05 2.74-1.05.37.858.406 1.828.101 2.713a4.017 4.017 0 0 1 1.029 2.75c0 3.939-2.339 4.805-4.564 5.058a2.471 2.471 0 0 1 .679 1.897c0 1.372-.012 2.477-.012 2.814 0 .272.18.592.687.492a10.05 10.05 0 0 0 5.388-4.421 10.473 10.473 0 0 0 1.313-6.948 10.32 10.32 0 0 0-3.39-6.165A9.847 9.847 0 0 0 12.007 2Z";
 ---
 
 <header class="site-header">
-  <Center>
-    <div
-      class="w-full max-w-3xl mx-auto flex items-center justify-between min-w-0 py-4 px-4 sm:px-0"
-    >
-      <a
-        href="/"
-        class="font-display text-xl sm:text-2xl font-bold tracking-tight text-foreground-dark truncate"
-      >
-        {title}<span class="text-accent">_</span>
-      </a>
+  <div
+    class="mx-auto w-full max-w-[76rem] px-4 sm:px-6 py-3 flex items-center justify-between gap-4"
+  >
+    <a href="/" class="shrink-0">
+      <span class="t-head font-black tracking-tight text-bench-text">ABIRAM</span>
+    </a>
 
-      <div class="flex items-center gap-5">
-        <!-- Desktop inline nav -->
-        <nav class="hidden sm:flex items-center gap-6 text-sm">
-          <a href="/" class="nav-link link-draw">Home</a>
-          <a href="/projects" class="nav-link link-draw">Projects</a>
-          <a href="/open-source" class="nav-link link-draw">Open Source</a>
-          <a href="/skills" class="nav-link link-draw">Skills</a>
-          <a href="/experience" class="nav-link link-draw">Experience</a>
-        </nav>
+    <div class="flex items-center gap-4 sm:gap-5 min-w-0">
+      <!-- Desktop navigation: one compact line -->
+      <nav class="hidden sm:flex items-center gap-6" aria-label="Primary">
+        <a href="/" class="nav-link t-sm font-bold">Home</a>
+        <a href="/projects" class="nav-link t-sm font-bold">Projects</a>
+        <a href="/open-source" class="nav-link t-sm font-bold">Open Source</a>
+        <a href="/skills" class="nav-link t-sm font-bold">Skills</a>
+        <a href="/experience" class="nav-link t-sm font-bold">Experience</a>
+      </nav>
 
-        <div class="flex items-center gap-2">
-          <button
-            type="button"
-            class="palette-trigger"
-            popovertarget="search-palette"
-            data-magnetic
-            aria-label="Open search"
+      <div class="flex items-center gap-2">
+        <button
+          type="button"
+          id="palette-key"
+          class="search-key"
+          aria-pressed="false"
+          aria-label="Switch color palette, current Silver"
+          title="Switch color palette"
+        >
+          <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="9" cy="12" r="6" fill="#CBD1D7" />
+            <circle cx="15.5" cy="12" r="6" fill="#E9DFC9" fill-opacity="0.92" />
+          </svg>
+          <span data-pal-name class="mono hidden sm:inline">Silver</span>
+        </button>
+
+        <button
+          type="button"
+          id="search-key"
+          class="search-key"
+          popovertarget="search-palette"
+          aria-label="Open search"
+        >
+          <svg
+            class="w-4 h-4 shrink-0"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
           >
-            <svg
-              class="w-4 h-4"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              aria-hidden="true"
-            >
-              <circle cx="11" cy="11" r="7" />
-              <path stroke-linecap="round" d="m20 20-3.8-3.8" />
-            </svg>
-            <kbd data-kbd-hint class="hidden sm:inline">⌘ K</kbd>
-          </button>
-
-          <button
-            id="theme-toggle"
-            type="button"
-            data-magnetic
-            class="theme-toggle"
-            aria-label="Toggle color theme"
-            title="Toggle color theme"
-          >
-            <Moon class="theme-icon-moon" size={20} stroke-width={1.8} aria-hidden="true" />
-            <Sun class="theme-icon-sun" size={20} stroke-width={1.8} aria-hidden="true" />
-          </button>
-        </div>
+            <circle cx="11" cy="11" r="7" />
+            <path stroke-linecap="round" d="m20 20-3.8-3.8" />
+          </svg>
+          <kbd data-kbd-hint class="mono hidden sm:inline">⌘ K</kbd>
+        </button>
       </div>
     </div>
-  </Center>
+  </div>
 </header>
 
-<!-- Floating bottom dock (mobile) -->
-<nav
-  id="bottom-dock"
-  class="sm:hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 flex items-center gap-0.5 px-1.5 py-1.5 rounded-full border border-line bg-surface/90 backdrop-blur-xl"
->
-  <a href="/" class="dock-item" data-magnetic data-page="/">
-    <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z" />
-    </svg>
-    <span>Home</span>
-  </a>
-  <a href="/projects" class="dock-item" data-magnetic data-page="/projects">
-    <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-    </svg>
-    <span>Projects</span>
-  </a>
-  <a href="/open-source" class="dock-item" data-magnetic data-page="/open-source">
-    <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path fill-rule="evenodd" d={githubIcon} clip-rule="evenodd" />
-    </svg>
-    <span>OSS</span>
-  </a>
-  <a href="/skills" class="dock-item" data-magnetic data-page="/skills">
-    <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="m8 8-4 4 4 4m8-8 4 4-4 4" />
-    </svg>
-    <span>Skills</span>
-  </a>
-  <a href="/experience" class="dock-item" data-magnetic data-page="/experience">
-    <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m8 0H8m8 0a2 2 0 012 2v1M8 6a2 2 0 00-2 2v1" />
-    </svg>
-    <span>Work</span>
-  </a>
+<!-- Mobile transport bar: chunky keys, one per destination -->
+<nav id="transport-bar" class="sm:hidden fixed bottom-0 inset-x-0 z-50" aria-label="Primary mobile">
+  <div class="flex border-t bench-bar">
+    <a href="/" class="transport-key" data-page="/">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z" />
+      </svg>
+      <span>Home</span>
+    </a>
+    <a href="/projects" class="transport-key" data-page="/projects">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+      </svg>
+      <span>Projects</span>
+    </a>
+    <a href="/open-source" class="transport-key" data-page="/open-source">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d={githubIcon} clip-rule="evenodd" />
+      </svg>
+      <span>OSS</span>
+    </a>
+    <a href="/skills" class="transport-key" data-page="/skills">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m8 8-4 4 4 4m8-8 4 4-4 4" />
+      </svg>
+      <span>Skills</span>
+    </a>
+    <a href="/experience" class="transport-key" data-page="/experience">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m8 0H8m8 0a2 2 0 012 2v1M8 6a2 2 0 00-2 2v1" />
+      </svg>
+      <span>Work</span>
+    </a>
+  </div>
 </nav>
 
 <SearchPalette />
 
 <script>
+  import { sfx } from "../scripts/console-audio";
+
   function markActiveRoute() {
     const path = window.location.pathname.replace(/\/$/, "") || "/";
-    document.querySelectorAll<HTMLAnchorElement>(".dock-item").forEach((el) => {
-      el.classList.toggle("active", (el.dataset.page || "/") === path);
+    document.querySelectorAll<HTMLAnchorElement>(".transport-key").forEach((el) => {
+      const active = (el.dataset.page || "/") === path;
+      el.classList.toggle("active", active);
+      if (active) el.setAttribute("aria-current", "page");
+      else el.removeAttribute("aria-current");
     });
     document.querySelectorAll<HTMLAnchorElement>(".nav-link").forEach((el) => {
       const href = (el.getAttribute("href") || "/").replace(/\/$/, "") || "/";
-      el.classList.toggle("active", href === path);
+      const active = href === path;
+      el.classList.toggle("active", active);
+      if (active) el.setAttribute("aria-current", "page");
+      else el.removeAttribute("aria-current");
     });
   }
   markActiveRoute();
 
-  // Lift the dock above the footer when it enters the viewport so
-  // footer text is never covered. Dock stays visible for navigation.
-  const dock = document.getElementById("bottom-dock");
-  const foot = document.querySelector("footer");
-  if (dock && foot) {
-    const syncFooter = () => {
-      const r = foot.getBoundingClientRect();
-      const visible = r.top < window.innerHeight && r.bottom > 0;
-      dock.classList.toggle("footer-visible", visible);
-    };
-    new IntersectionObserver(syncFooter, { threshold: 0.05 }).observe(foot);
-    window.addEventListener("scroll", syncFooter, { passive: true });
-    syncFooter();
-  }
-
-  // Theme toggle. The head script always sets an explicit attribute
-  // (stored choice wins, phosphor dark otherwise), so the resolved
-  // theme is simply the attribute — a missing attribute must never
-  // be assumed to mean light, or the first click under the default
-  // would "switch" to the already-visible dark and look broken.
+  // Palette key: Silver test equipment or Walnut home hi-fi. The
+  // pre-paint script in the layout restores the stored choice, so
+  // this only syncs the key's own state and handles toggling.
+  const PAL_NAMES: Record<string, string> = { silver: "Silver", walnut: "Walnut" };
   const rootEl = document.documentElement;
+  const palBtn = document.getElementById("palette-key");
+  const palName = document.querySelector("[data-pal-name]");
   const themeColor = document.querySelector('meta[name="theme-color"]');
 
-  function resolvedTheme(): string {
-    return rootEl.getAttribute("data-theme") === "light" ? "light" : "dark";
+  function currentPal(): string {
+    return rootEl.getAttribute("data-pal") === "walnut" ? "walnut" : "silver";
   }
 
-  function applyTheme(target: string, animate: boolean) {
-    if (animate) rootEl.classList.add("theme-anim");
-    rootEl.setAttribute("data-theme", target);
-    themeColor?.setAttribute("content", target === "dark" ? "#141008" : "#f4f1e8");
-    if (animate) window.setTimeout(() => rootEl.classList.remove("theme-anim"), 500);
-  }
-
-  // Heal any missing attribute up front so icon state and the first
-  // click both start from the truth.
-  applyTheme(resolvedTheme(), false);
-
-  const toggle = document.getElementById("theme-toggle");
-  toggle?.addEventListener("click", () => {
-    const target = resolvedTheme() === "dark" ? "light" : "dark";
-    try {
-      localStorage.setItem("theme", target);
-    } catch (e) {
-      /* storage unavailable: theme still applies for this page */
+  function applyPal(pal: string, persist: boolean) {
+    rootEl.setAttribute("data-pal", pal);
+    themeColor?.setAttribute("content", pal === "walnut" ? "#211711" : "#0E1720");
+    palBtn?.setAttribute("aria-pressed", pal === "walnut" ? "true" : "false");
+    palBtn?.setAttribute("aria-label", `Switch color palette, current ${PAL_NAMES[pal]}`);
+    if (palName) palName.textContent = PAL_NAMES[pal];
+    if (persist) {
+      try {
+        localStorage.setItem("af82-pal", pal);
+      } catch {
+        /* storage unavailable: applies for this page only */
+      }
     }
-    applyTheme(target, true);
+  }
+
+  applyPal(currentPal(), false);
+
+  palBtn?.addEventListener("click", () => {
+    const next = currentPal() === "walnut" ? "silver" : "walnut";
+    sfx.play(next === "walnut" ? "toggle-on" : "toggle-off");
+    applyPal(next, true);
   });
 </script>
 
 <style>
   .nav-link {
-    color: var(--muted-text);
-    transition: color 0.2s var(--ease-out);
+    color: var(--bench-muted);
+    text-decoration: none;
+    transition: color 160ms var(--ease);
+  }
+  .nav-link:hover,
+  .nav-link:focus-visible {
+    color: var(--bench-text);
   }
   .nav-link.active {
-    color: var(--accent);
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .nav-link:hover {
-      color: var(--accent);
-    }
-  }
-
-  .theme-toggle {
-    align-items: center;
-    justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 9999px;
-    color: var(--muted-text);
-    border: 1px solid var(--line);
-    background: var(--surface);
-    cursor: pointer;
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .theme-toggle:hover {
-      color: var(--accent);
-    }
+    color: var(--bench-text);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
   }
 
-  .palette-trigger {
+  .search-key {
     display: flex;
     align-items: center;
-    gap: 0.45rem;
-    height: 2rem;
-    padding: 0 0.7rem;
-    border-radius: 9999px;
-    color: var(--muted-text);
-    border: 1px solid var(--line);
-    background: var(--surface);
+    gap: 0.5rem;
+    min-height: 36px;
+    padding: 4px 10px;
+    border: 1px solid var(--smoked-line);
+    border-radius: 6px;
+    background: linear-gradient(180deg, var(--smoked-2), var(--smoked));
+    color: var(--bench-muted);
     cursor: pointer;
+    box-shadow:
+      inset 0 2px 8px rgba(0, 0, 0, 0.55),
+      inset 0 -1px 0 var(--smoked-hi);
+    transition: color 160ms var(--ease), box-shadow 160ms var(--ease);
   }
-  .palette-trigger kbd {
-    font-size: 13px;
+  .search-key:hover,
+  .search-key:focus-visible {
+    color: var(--led-side-a);
+  }
+  .search-key kbd,
+  .search-key [data-pal-name] {
+    font-size: var(--text-sm);
     line-height: 1;
   }
-  @media (hover: hover) and (pointer: fine) {
-    .palette-trigger:hover {
-      color: var(--accent);
-    }
-  }
 
-  #bottom-dock {
-    transition: bottom 250ms var(--ease-in-out);
+  .bench-bar {
+    background: var(--bench-2);
+    border-top: 1px solid var(--bench-line);
   }
-  #bottom-dock.footer-visible {
-    bottom: 6.5rem;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    #bottom-dock {
-      transition: none;
-    }
-  }
-  .dock-item {
+  .transport-key {
+    flex: 1;
+    min-height: 56px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.3rem;
-    padding: 0.45rem 0.6rem;
-    border-radius: 9999px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--muted-text);
-    transition:
-      color 0.2s var(--ease-out),
-      background-color 0.2s var(--ease-out);
+    justify-content: center;
+    gap: 3px;
+    padding: 8px 2px;
+    color: var(--bench-dim);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    font-weight: 700;
+    border-left: 1px solid var(--bench-line);
+    transition: color 160ms var(--ease), background-color 160ms var(--ease);
   }
-  @media (hover: hover) and (pointer: fine) {
-    .dock-item:hover {
-      color: var(--ink);
-      background: var(--surface-2);
-    }
+  .transport-key:first-child {
+    border-left: 0;
   }
-  .dock-item.active {
-    color: var(--accent);
-    background: var(--accent-bg);
+  .transport-key:hover,
+  .transport-key:focus-visible {
+    color: var(--bench-text);
+  }
+  .transport-key.active {
+    color: var(--bench-text);
+    background: var(--bench-3);
+    box-shadow: inset 0 3px 0 var(--accent);
   }
 </style>
