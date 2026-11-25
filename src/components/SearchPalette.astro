@@ -61,6 +61,7 @@
 
 <script>
   import { navPages, projects, contributions, socials } from "../data/content";
+  import { playCopy } from "../utils/sfx";
 
   type EntryKind = "page" | "external" | "link" | "copy" | "action";
 
@@ -341,6 +342,7 @@
     }
     if (entry.copy) {
       await copyText(entry.copy);
+      playCopy();
       const label = row.querySelector<HTMLElement>(".palette-label");
       const hint = row.querySelector<HTMLElement>(".palette-hint");
       if (label) label.textContent = "Copied to clipboard";

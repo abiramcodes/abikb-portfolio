@@ -7,11 +7,14 @@ import "../styles/global.css";
 interface Props {
   title?: string;
   description?: string;
+  /** Opt into the wide (72rem) wrap. Home first; other pages follow. */
+  wide?: boolean;
 }
 
 const {
   title = "Abiram — Frontend Engineer",
   description = "Abiram — Frontend developer building clean, performant web applications with Angular, React, and modern web technologies.",
+  wide = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
@@ -28,10 +31,10 @@ const personSchema = {
 };
 ---
 
-<html lang="en" data-type="software">
+<html lang="en" data-type="software" data-wide={wide || undefined}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="page-type" content="software" />
     <meta name="site-kind" content="software" />
     <meta name="color-scheme" content="light dark" />
@@ -67,11 +70,16 @@ const personSchema = {
         } catch (e) {
           d.setAttribute("data-theme", "light");
         }
+        try {
+          d.setAttribute("data-sound", localStorage.getItem("sound") === "off" ? "off" : "on");
+        } catch (e) {
+          d.setAttribute("data-sound", "on");
+        }
       })();
     </script>
   </head>
   <body
-    class="font-sans bg-background-dark text-foreground-dark flex flex-col min-h-screen text-sm sm:text-base antialiased"
+    class="font-sans bg-background-dark text-foreground-dark flex flex-col min-h-dvh text-sm sm:text-base antialiased"
   >
     <a href="#main" class="skip-link">Skip to content</a>
     <Header />
@@ -81,6 +89,8 @@ const personSchema = {
     <Footer />
 
     <script>
+      import { playCopy } from "../utils/sfx";
+
       function checkScroll() {
         const scrollY = window.scrollY;
         document.documentElement.toggleAttribute("data-scrolled", scrollY > 20);
@@ -109,6 +119,7 @@ const personSchema = {
             document.execCommand("copy");
             ta.remove();
           }
+          playCopy();
           const label = el.textContent;
           el.classList.add("is-swapping");
           window.setTimeout(() => {

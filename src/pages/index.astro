@@ -6,12 +6,13 @@ import AuthoredProjects from "../components/AuthoredProjects.astro";
 import { totalPRs, contributions, featuredProjects, talks } from "../data/content";
 ---
 
-<BaseLayout>
-  <div class="flex flex-col gap-12 sm:gap-20 pb-24 sm:pb-10">
-    <section class="w-full max-w-3xl mx-auto px-4 sm:px-0 flex flex-col min-w-0">
+<BaseLayout wide>
+  <div class="site-wrap px-4 sm:px-0 grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-12 xl:gap-16 pb-24 sm:pb-10">
+    <!-- Identity rail: sticky on wide screens while work scrolls past. -->
+    <section class="lg:sticky lg:top-20 self-start flex flex-col min-w-0">
       <h1 class="font-display text-4xl sm:text-5xl leading-[1.1] tracking-[-0.02em]" data-enter>
         Hey, I'm Abiram<span class="text-accent">.</span>
-        <span class="block text-2xl sm:text-3xl text-secondary-dark mt-3">
+        <span class="block text-2xl sm:text-3xl text-secondary-dark mt-3 text-balance">
           I build micro frontends and Angular tooling.
         </span>
       </h1>
@@ -22,11 +23,11 @@ import { totalPRs, contributions, featuredProjects, talks } from "../data/conten
       </p>
 
       <div class="mt-8 flex flex-col gap-4" data-enter style="--index:2">
-        <div class="flex flex-wrap items-center gap-3">
-          <a href="/Abirama_Kannan_FE_Engineer.pdf" download data-magnetic class="btn btn-primary">
+        <div class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3">
+          <a href="/Abirama_Kannan_FE_Engineer.pdf" download data-magnetic class="btn btn-primary w-full sm:w-auto">
             Download resume
           </a>
-          <a href="/projects" data-magnetic class="btn btn-secondary">
+          <a href="/projects" data-magnetic class="btn btn-secondary w-full sm:w-auto">
             View projects
           </a>
         </div>
@@ -36,20 +37,17 @@ import { totalPRs, contributions, featuredProjects, talks } from "../data/conten
             href="mailto:akbhere20@gmail.com"
             class="text-sm font-medium text-accent link-draw inline-flex items-center min-h-11 px-1"
           >
-            Get in touch &rarr;
+            Get in touch <span class="arr" aria-hidden="true">&rarr;</span>
           </a>
         </div>
-        <p class="text-xs font-mono text-secondary-dark">
+        <p class="text-xs font-mono text-secondary-dark text-balance">
           Author of {featuredProjects.length} npm packages · {totalPRs} merged OSS PRs across {contributions.length} projects · Speaker, {talks[0].event} '25
         </p>
       </div>
     </section>
 
-    <div class="w-full max-w-3xl mx-auto px-4 sm:px-0">
+    <div class="flex flex-col gap-12 sm:gap-16 min-w-0">
       <AuthoredProjects />
-    </div>
-
-    <div class="w-full max-w-3xl mx-auto px-4 sm:px-0">
       <Meetup />
     </div>
   </div>

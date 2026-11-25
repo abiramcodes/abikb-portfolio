@@ -57,7 +57,7 @@ const metaByRepo: Record<string, RepoMeta> = Object.fromEntries(metaEntries);
             >
               {repoSlug(c.projectUrl)}
               <svg
-                class="inline w-3.5 h-3.5 ml-1 opacity-40"
+                class="arrow-ext inline w-3.5 h-3.5 ml-1 opacity-40"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -89,7 +89,7 @@ const metaByRepo: Record<string, RepoMeta> = Object.fromEntries(metaEntries);
               <div
                 id={`repo-card-${i}`}
                 role="note"
-                class="hover-card absolute left-0 top-full z-20 mt-1 w-[min(20rem,80vw)] rounded-xl border border-line bg-surface p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
+                class="hover-card repo-card absolute left-0 top-full z-20 mt-1 w-[min(20rem,80vw)] rounded-xl border border-line bg-surface p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
               >
                 <p class="text-sm text-secondary-dark leading-relaxed">{meta.description}</p>
                 <div class="flex flex-wrap gap-x-4 gap-y-1 mt-3 font-mono text-xs text-secondary-dark">

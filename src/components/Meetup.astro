@@ -8,7 +8,7 @@ import { talks } from "../data/content";
     {
       talks.map((talk) => (
         <div class="flex flex-col gap-1">
-          <p class="font-medium text-foreground-dark">{talk.title}</p>
+          <p class="font-medium text-foreground-dark text-balance">{talk.title}</p>
           <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-secondary-dark">
             <a
               href={talk.eventUrl}
@@ -28,7 +28,7 @@ import { talks } from "../data/content";
               >
                 Demo
                 <svg
-                  class="inline w-3 h-3 ml-0.5 opacity-50"
+                  class="arrow-ext inline w-3 h-3 ml-0.5 opacity-50"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"

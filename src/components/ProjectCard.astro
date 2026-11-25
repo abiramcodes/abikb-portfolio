@@ -19,7 +19,7 @@ const { project } = Astro.props;
       {project.name}
     </h3>
     <svg
-      class="w-4 h-4 shrink-0 opacity-30 group-hover:opacity-70 transition-opacity duration-200 ease-out-strong"
+      class="arrow-ext w-4 h-4 shrink-0 opacity-30 group-hover:opacity-70"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -37,11 +37,11 @@ const { project } = Astro.props;
   {
     project.fragment === "ng-point" && (
       <div class="rounded-lg border border-line bg-background-dark p-3 font-mono text-[11px] leading-relaxed text-secondary-dark" aria-hidden="true">
-        <p><span class="text-accent">Alt+Click</span> · captured context</p>
-        <p>component&nbsp;&nbsp;app-header</p>
-        <p>file:line&nbsp;&nbsp;header.component.ts:42</p>
-        <p>template&nbsp;&nbsp;&nbsp;&lt;nav&gt;…&lt;/nav&gt;</p>
-        <p class="text-accent">redacted at capture</p>
+        <p class="ctx-line"><span class="text-accent">Alt+Click</span> · captured context</p>
+        <p class="ctx-line" style="--i:1">component&nbsp;&nbsp;app-header</p>
+        <p class="ctx-line" style="--i:2">file:line&nbsp;&nbsp;header.component.ts:42</p>
+        <p class="ctx-line" style="--i:3">template&nbsp;&nbsp;&nbsp;&lt;nav&gt;…&lt;/nav&gt;</p>
+        <p class="ctx-line text-accent" style="--i:4">redacted at capture</p>
       </div>
     )
   }
@@ -52,7 +52,7 @@ const { project } = Astro.props;
         <p class="mt-1.5 flex items-center gap-2">
           <span>Health score</span>
           <span class="h-1.5 flex-1 rounded-full bg-surface-2 overflow-hidden">
-            <span class="block h-full w-4/5 rounded-full bg-accent" />
+            <span class="health-bar block h-full w-full rounded-full bg-accent" />
           </span>
         </p>
         <p class="mt-1.5">diagnostics · oxlint · template eslint</p>
@@ -82,7 +82,7 @@ const { project } = Astro.props;
             aria-label={`Read ${project.name} docs`}
             class="text-xs font-medium text-accent link-draw whitespace-nowrap inline-flex items-center min-h-11 px-1"
           >
-            Docs &rarr;
+            Docs <span class="arr" aria-hidden="true">&rarr;</span>
           </a>
         )}
       </div>

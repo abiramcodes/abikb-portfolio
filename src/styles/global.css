@@ -2,6 +2,22 @@
 @config "../../tailwind.config.mjs";
 @plugin "@tailwindcss/typography";
 
+/* ── Theme colors are registered so the variables themselves
+   can transition: one fade on :root melts every surface, border,
+   and text color in lockstep when the theme flips. Browsers
+   without @property simply swap instantly. ── */
+@property --bg { syntax: "<color>"; inherits: true; initial-value: #fcfcfa; }
+@property --surface { syntax: "<color>"; inherits: true; initial-value: #ffffff; }
+@property --surface-2 { syntax: "<color>"; inherits: true; initial-value: #f4f4f0; }
+@property --ink { syntax: "<color>"; inherits: true; initial-value: #1a1d1a; }
+@property --muted-text { syntax: "<color>"; inherits: true; initial-value: #5f645e; }
+@property --line { syntax: "<color>"; inherits: true; initial-value: #e6e8e3; }
+@property --accent { syntax: "<color>"; inherits: true; initial-value: #3e7c4f; }
+@property --accent-bg { syntax: "<color>"; inherits: true; initial-value: #eff5ec; }
+@property --accent-2 { syntax: "<color>"; inherits: true; initial-value: #8a6108; }
+@property --accent-2-bg { syntax: "<color>"; inherits: true; initial-value: #f7eed3; }
+@property --clay { syntax: "<color>"; inherits: true; initial-value: #a6502b; }
+
 /* ── Self-hosted fonts (SIL Open Font License 1.1, see LICENSE files) ── */
 @font-face {
   font-family: "Geist Sans";
@@ -64,6 +80,12 @@
   :root {
     --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
     --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    /* Even-velocity curve for slow ambient morphs (theme fade). */
+    --ease-soft: cubic-bezier(0.65, 0, 0.35, 1);
+
+    /* Content wrap. Pages that opt into the wide layout (home
+       first) set data-wide on <html> and every .site-wrap follows. */
+    --wrap: 48rem;
 
     /* Light (default) — Editor Ink: green = links, amber = tags, clay = rare */
     color-scheme: light;
@@ -115,6 +137,8 @@
 
   html {
     font-size: 14px;
+    /* Press states carry the feedback; no grey tap flash. */
+    -webkit-tap-highlight-color: transparent;
   }
 
   @media (min-width: 640px) {
@@ -134,6 +158,16 @@
     line-height: 1.6;
     background-color: var(--bg);
     color: var(--ink);
+  }
+
+  /* Important short text (every heading level) balances its
+     lines instead of stranding a widow word on the last line.
+     Body prose keeps `pretty` where set — balance is only for
+     short blocks, and older browsers simply ignore it. */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
   }
 
   /* ── Keyboard focus — one visible ring for every control ── */
@@ -166,19 +200,24 @@
     }
   }
 
-  /* ── Theme change crossfade (class present only during a toggle).
-     Scoped to structural surfaces so a toggle never restyles every
-     node on the page; token colors elsewhere swap instantly. ── */
-  html.theme-anim body,
-  html.theme-anim header,
-  html.theme-anim article,
-  html.theme-anim footer,
-  html.theme-anim #bottom-dock,
-  html.theme-anim #search-palette {
+  /* ── Theme fade (class present only during a toggle). The
+     registered variables transition on :root, so every consumer
+     — surfaces, text, borders, even the scroll edge gradients —
+     melts in lockstep from a single transition list. Layers
+     trail by a beat: ground first, then surfaces, text, accents. ── */
+  html.theme-anim {
     transition:
-      background-color 250ms var(--ease-in-out),
-      color 250ms var(--ease-in-out),
-      border-color 250ms var(--ease-in-out) !important;
+      --bg 480ms var(--ease-soft),
+      --surface 480ms var(--ease-soft) 30ms,
+      --surface-2 480ms var(--ease-soft) 30ms,
+      --line 480ms var(--ease-soft) 30ms,
+      --ink 480ms var(--ease-soft) 60ms,
+      --muted-text 480ms var(--ease-soft) 60ms,
+      --accent 480ms var(--ease-soft) 90ms,
+      --accent-bg 480ms var(--ease-soft) 90ms,
+      --accent-2 480ms var(--ease-soft) 90ms,
+      --accent-2-bg 480ms var(--ease-soft) 90ms,
+      --clay 480ms var(--ease-soft) 90ms;
   }
 
   /* ── Hero entrance — once on load, never on scroll. Content below
@@ -212,14 +251,10 @@
     .pressable:active {
       transform: none;
     }
-    /* Theme changes keep a short color fade, nothing spatial. */
-    html.theme-anim body,
-    html.theme-anim header,
-    html.theme-anim article,
-    html.theme-anim footer,
-    html.theme-anim #bottom-dock,
-    html.theme-anim #search-palette {
+    /* Theme changes keep a short color fade, no stagger. */
+    html.theme-anim {
       transition-duration: 150ms !important;
+      transition-delay: 0ms !important;
     }
   }
 
@@ -259,6 +294,7 @@
   html[data-at-bottom] body::after {
     opacity: 0;
   }
+
 }
 
 /* ── Theme toggle icons — unlayered so they always win over
@@ -313,6 +349,52 @@ html .theme-toggle:active {
   }
 }
 
+/* ── Sound toggle icons — same stacked crossfade as the theme
+   toggle, keyed to the persisted data-sound state. ── */
+html .sound-toggle {
+  display: grid;
+  place-items: center;
+}
+html .sound-toggle .sound-icon-on,
+html .sound-toggle .sound-icon-off {
+  grid-area: 1 / 1;
+  justify-self: center;
+  align-self: center;
+  transition:
+    opacity 240ms var(--ease-in-out),
+    transform 240ms var(--ease-in-out),
+    visibility 0s linear 260ms;
+}
+html .sound-icon-on {
+  opacity: 1;
+  transform: scale(1);
+  visibility: visible;
+  transition-delay: 0s, 0s, 0s;
+}
+html .sound-icon-off {
+  opacity: 0;
+  transform: scale(0.9);
+  visibility: hidden;
+}
+html[data-sound="off"] .sound-icon-on {
+  opacity: 0;
+  transform: scale(0.9);
+  visibility: hidden;
+}
+html[data-sound="off"] .sound-icon-off {
+  opacity: 1;
+  transform: scale(1);
+  visibility: visible;
+  transition-delay: 0s, 0s, 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html .sound-toggle .sound-icon-on,
+  html .sound-toggle .sound-icon-off {
+    transition: none;
+  }
+}
+
 /* ── Hover metadata cards (open-source titles, social icons).
    Origin at the trigger (top-left, where the card hangs); entry
    180ms, exit 120ms — leaving always snappier than arriving. ── */
@@ -348,6 +430,20 @@ html .theme-toggle:active {
   }
 }
 
+/* Touch has no hover to reveal with, so repo descriptions —
+   real content, unlike the social handles — render inline in
+   flow below the PR chips instead of staying invisible. */
+@media (hover: none) {
+  .hover-card.repo-card {
+    position: static;
+    width: auto;
+    margin-top: 0.6rem;
+    opacity: 1;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
 /* ── Cross-page view transitions ──
    Opt-in only for motion-tolerant visitors; browsers without support
    (and reduced-motion users) get standard instant navigation. */
@@ -363,6 +459,14 @@ html .theme-toggle:active {
 
 ::view-transition-new(root) {
   animation: 240ms var(--ease-out) both rise-page-in;
+}
+
+/* The active-nav marker keeps its identity across pages, so the
+   browser morphs it to the new link instead of teleporting. */
+::view-transition-group(nav-active),
+::view-transition-group(dock-active) {
+  animation-duration: 240ms;
+  animation-timing-function: var(--ease-out);
 }
 
 @keyframes fade-page-out {
@@ -424,6 +528,33 @@ html .theme-toggle:active {
     border-color 200ms var(--ease-out),
     opacity 160ms var(--ease-out),
     translate 250ms var(--ease-out);
+}
+
+/* Keep the footer clear of the home indicator (unlayered so it
+   wins over the py-6 utility on the footer element). */
+footer {
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+/* ── Shared content wrap — header, footer, and page sections all
+   ride --wrap so edges stay equal at either width. Wide pages
+   also gain real side padding so content never touches the
+   viewport edge between breakpoints. ── */
+html[data-wide] {
+  --wrap: 72rem;
+}
+.site-wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+}
+html[data-wide] .site-wrap {
+  padding-inline: 1rem;
+}
+@media (min-width: 640px) {
+  html[data-wide] .site-wrap {
+    padding-inline: 1.5rem;
+  }
 }
 
 /* ── Buttons — one pair, one radius step (pill). Cards take the
@@ -496,6 +627,78 @@ button[data-copy].is-swapping {
   opacity: 0.7;
 }
 
+/* Long commands scroll inside the chip; keep the bar invisible. */
+button[data-copy] {
+  scrollbar-width: none;
+}
+button[data-copy]::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Arrow nudges — direction feedback on outbound/forward links.
+   2px at 160ms: felt, not watched. Hover-gated like all hover. ── */
+.arr,
+.arr-back {
+  display: inline-block;
+  transition: transform 160ms var(--ease-out);
+}
+.arrow-ext {
+  transition:
+    transform 160ms var(--ease-out),
+    opacity 200ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  a:hover .arr {
+    transform: translateX(2px);
+  }
+  a:hover .arr-back {
+    transform: translateX(-2px);
+  }
+  a:hover .arrow-ext {
+    transform: translate(1px, -1px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  a:hover .arr,
+  a:hover .arr-back,
+  a:hover .arrow-ext {
+    transform: none;
+  }
+}
+
+/* ── Tool fragment loops — the product explains itself on hover.
+   transform/opacity only; resting state is the finished picture,
+   so reduced-motion and touch visitors lose nothing. ── */
+.health-bar {
+  transform: scaleX(0.8);
+  transform-origin: 0 50%;
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .group:hover .health-bar {
+    animation: health-sweep 300ms var(--ease-out);
+  }
+  .group:hover .ctx-line {
+    animation: ctx-print 240ms var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 30ms);
+  }
+}
+
+@keyframes health-sweep {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(0.8);
+  }
+}
+
+@keyframes ctx-print {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+}
+
 /* ── ⌘K search palette ──
    A non-modal <dialog popover>: the UA keeps it display:none while
    closed, so layout styles are scoped to :popover-open only. */
@@ -508,8 +711,10 @@ button[data-copy].is-swapping {
   position: fixed;
   inset: 0;
   margin: 8vh auto auto;
+  margin: 8dvh auto auto;
   width: min(34rem, calc(100vw - 2rem));
   max-height: min(32rem, 72vh);
+  max-height: min(32rem, 72dvh);
   padding: 0;
   border: 1px solid var(--line);
   border-radius: 0.75rem;
@@ -539,6 +744,8 @@ button[data-copy].is-swapping {
   outline: none;
   color: var(--ink);
   font: inherit;
+  /* Below 16px iOS Safari auto-zooms the page on focus. */
+  font-size: 16px;
 }
 
 #palette-input::placeholder {
@@ -650,6 +857,17 @@ button[data-copy].is-swapping {
   font-size: 0.65rem;
   color: var(--muted-text);
   flex: none;
+}
+
+/* Touch has no arrows or Esc to hint at; the count stays for AT. */
+@media (pointer: coarse) {
+  .palette-foot {
+    padding: 0;
+    border-top: none;
+  }
+  .palette-foot > span:not(#palette-count) {
+    display: none;
+  }
 }
 
 .palette-foot kbd {
