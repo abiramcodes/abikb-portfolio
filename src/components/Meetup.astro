@@ -1,38 +1,20 @@
 ---
-interface Talk {
-  title: string;
-  event: string;
-  eventUrl: string;
-  date: string;
-  demoUrl?: string;
-}
-
-const talks: Talk[] = [
-  {
-    title: "Building Flexible UI's with Dynamic Components and Forms in Angular",
-    event: "ng-India Chennai",
-    eventUrl: "https://www.nomadcoder.ai/event/8",
-    date: "Sept 2025",
-    demoUrl:
-      "https://github.com/abiramcodes/dynamic-forms-demo/tree/development",
-  },
-];
+import { talks } from "../data/content";
 ---
 
 <section>
+  <h2 class="font-display text-2xl sm:text-3xl tracking-[-0.02em] mb-2">Talks</h2>
   <div class="space-y-4">
     {
       talks.map((talk) => (
         <div class="flex flex-col gap-1">
-          <p class="font-medium text-foreground-dark">
-            {talk.title}
-          </p>
+          <p class="font-medium text-foreground-dark">{talk.title}</p>
           <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-secondary-dark">
             <a
               href={talk.eventUrl}
               target="_blank"
               rel="noopener noreferrer"
-              class="text-accent hover:brightness-125 transition"
+              class="text-accent link-draw py-1"
             >
               {talk.event}
             </a>
@@ -42,7 +24,7 @@ const talks: Talk[] = [
                 href={talk.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-accent hover:brightness-125 transition"
+                class="text-accent link-draw py-1"
               >
                 Demo
                 <svg
@@ -51,6 +33,7 @@ const talks: Talk[] = [
                   fill="none"
                   stroke="currentColor"
                   stroke-width="2"
+                  aria-hidden="true"
                 >
                   <path d="M7 17L17 7M17 7H7M17 7v10" />
                 </svg>

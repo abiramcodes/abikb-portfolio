@@ -1,101 +1,12 @@
 ---
-type URL = `https://github.com/${string}/pull/${number}`;
-
-interface Contribution {
-  project: string;
-  projectUrl: string;
-  url: URL[];
-}
-
-const contributions: Contribution[] = [
-  {
-    project: "pangular-inspector",
-    projectUrl: "https://github.com/pangular-inspector/devtools",
-    url: [
-      "https://github.com/pangular-inspector/devtools/pull/28",
-      "https://github.com/pangular-inspector/devtools/pull/45",
-      "https://github.com/pangular-inspector/devtools/pull/62",
-      "https://github.com/pangular-inspector/devtools/pull/200",
-      "https://github.com/pangular-inspector/devtools/pull/201",
-    ]
-  },
-  {
-    project: "spartan ng",
-    projectUrl: "https://github.com/spartan-ng/spartan",
-    url: [
-      "https://github.com/spartan-ng/spartan/pull/981",
-      "https://github.com/spartan-ng/spartan/pull/980",
-      "https://github.com/spartan-ng/spartan/pull/979",
-    ],
-  },
-  {
-    project: "ng-primitives",
-    projectUrl: "https://github.com/ng-primitives/ng-primitives",
-    url: ["https://github.com/ng-primitives/ng-primitives/pull/499"],
-  },
-  {
-    project: "ng-icons",
-    projectUrl: "https://github.com/ng-icons/ng-icons",
-    url: [
-      "https://github.com/ng-icons/ng-icons/pull/202",
-      "https://github.com/ng-icons/ng-icons/pull/203",
-      "https://github.com/ng-icons/ng-icons/pull/204",
-    ],
-  },
-  {
-    project: "free-Code-Camp",
-    projectUrl: "https://github.com/freeCodeCamp/freeCodeCamp",
-    url: ["https://github.com/freeCodeCamp/freeCodeCamp/pull/62576"],
-  },
-  {
-    project: "carbon-components-angular",
-    projectUrl:
-      "https://github.com/carbon-design-system/carbon-components-angular",
-    url: [
-      "https://github.com/carbon-design-system/carbon-components-angular/pull/2945",
-      "https://github.com/carbon-design-system/carbon-components-angular/pull/2939",
-      "https://github.com/carbon-design-system/carbon-components-angular/pull/2789",
-      "https://github.com/carbon-design-system/carbon-components-angular/pull/2764",
-      "https://github.com/carbon-design-system/carbon-components-angular/pull/2748",
-      "https://github.com/carbon-design-system/carbon-components-angular/pull/2741",
-      "https://github.com/carbon-design-system/carbon-components-angular/pull/2740",
-    ],
-  },
-];
-
-interface RepoMeta {
-  description: string;
-  language: string | null;
-}
-
-// Snapshots from the GitHub API, used when a build-time fetch fails
-// or rate-limits so the hover card never renders empty.
-const FALLBACK_META: Record<string, RepoMeta> = {
-  "pangular-inspector/devtools": {
-    description: "Angular DevTools: inspect components, signals, DI, and routes. Runs as a Chrome extension and standalone app.",
-    language: "TypeScript",
-  },
-  "spartan-ng/spartan": {
-    description: "Cutting-edge tools powering Angular full-stack development.",
-    language: "TypeScript",
-  },
-  "ng-primitives/ng-primitives": {
-    description: "Headless, composable primitives for building accessible UI components in Angular.",
-    language: "TypeScript",
-  },
-  "ng-icons/ng-icons": {
-    description: "The ultimate icon library for Angular",
-    language: "TypeScript",
-  },
-  "freeCodeCamp/freeCodeCamp": {
-    description: "freeCodeCamp.org's open-source codebase and curriculum. Learn math, programming, and computer science.",
-    language: "TypeScript",
-  },
-  "carbon-design-system/carbon-components-angular": {
-    description: "An Angular implementation of the Carbon Design System for IBM.",
-    language: "TypeScript",
-  },
-};
+import {
+  contributions,
+  totalPRs,
+  FALLBACK_META,
+  repoSlug,
+  prNumber,
+  type RepoMeta,
+} from "../data/content";
 
 async function fetchRepoMeta(slug: string): Promise<RepoMeta> {
   // Dev renders per-request: hitting the API there would stall every
@@ -118,22 +29,9 @@ async function fetchRepoMeta(slug: string): Promise<RepoMeta> {
   }
 }
 
-
-
-function extractPrNumber(url: string): string {
-  return "#" + url.split("/pull/")[1];
-}
-
-function extractRepo(url: string): string {
-  const match = url.match(/github\.com\/([^/]+\/[^/]+)/);
-  return match ? match[1] : "";
-}
-
-const totalPRs = contributions.reduce((sum, c) => sum + c.url.length, 0);
-
 const metaEntries = await Promise.all(
   contributions.map(async (c) => {
-    const slug = extractRepo(c.projectUrl);
+    const slug = repoSlug(c.projectUrl);
     return [slug, await fetchRepoMeta(slug)] as const;
   }),
 );
@@ -141,29 +39,30 @@ const metaByRepo: Record<string, RepoMeta> = Object.fromEntries(metaEntries);
 ---
 
 <section>
-  <p class="text-sm text-secondary-dark mb-2" data-reveal>
+  <p class="text-sm text-secondary-dark mb-2">
     <strong class="text-accent font-semibold">{totalPRs} PRs</strong> merged across{" "}
     <strong class="text-accent font-semibold">{contributions.length} projects</strong>
   </p>
   <div>
     {
       contributions.map((c, i) => (
-        <div class="group relative py-5 border-t border-line" data-reveal style={`--index:${i}`}>
+        <div class="group relative py-5 border-t border-line">
           <div class="flex items-baseline justify-between gap-2 mb-2">
             <a
               href={c.projectUrl}
               target="_blank"
               rel="noopener noreferrer"
-              class="font-medium text-foreground-dark hover:text-accent transition"
+              class="font-medium text-foreground-dark hover:text-accent transition-colors duration-200 ease-out-strong py-1"
               aria-describedby={`repo-card-${i}`}
             >
-              {extractRepo(c.projectUrl)}
+              {repoSlug(c.projectUrl)}
               <svg
                 class="inline w-3.5 h-3.5 ml-1 opacity-40"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
+                aria-hidden="true"
               >
                 <path d="M7 17L17 7M17 7H7M17 7v10" />
               </svg>
@@ -172,20 +71,20 @@ const metaByRepo: Record<string, RepoMeta> = Object.fromEntries(metaEntries);
               {c.url.length} {c.url.length === 1 ? "PR" : "PRs"}
             </span>
           </div>
-          <div class="flex flex-wrap gap-1.5">
+          <div class="flex flex-wrap gap-2">
             {c.url.map((url) => (
               <a
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="font-mono text-xs px-2 py-1 rounded-full bg-surface-2 border border-line text-accent hover:border-accent transition"
+                class="font-mono text-xs inline-flex items-center min-h-11 px-3 rounded-full bg-surface-2 border border-line text-accent hover:border-accent transition-colors duration-200 ease-out-strong"
               >
-                {extractPrNumber(url)}
+                {prNumber(url)}
               </a>
             ))}
           </div>
           {(() => {
-            const meta = metaByRepo[extractRepo(c.projectUrl)];
+            const meta = metaByRepo[repoSlug(c.projectUrl)];
             return meta && meta.description ? (
               <div
                 id={`repo-card-${i}`}

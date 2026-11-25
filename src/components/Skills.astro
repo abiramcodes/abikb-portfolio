@@ -1,72 +1,15 @@
 ---
-interface SkillGroup {
-  label: string;
-  items: string[];
-  primary?: boolean;
-}
-
-const groups: SkillGroup[] = [
-  {
-    label: "Frontend",
-    primary: true,
-    items: [
-      "HTML",
-      "CSS / SCSS",
-      "JavaScript (ES6+)",
-      "TypeScript",
-      "Angular 20+",
-      "React.js 19+",
-      "Astro",
-      "Micro-Frontends",
-    ],
-  },
-  {
-    label: "Libraries & Tools",
-    items: [
-      "Angular Material",
-      "PrimeNG / Optimus UI",
-      "Ionic 7+",
-      "Git & GitHub",
-      "RESTful APIs",
-      "RxJs",
-      "NgRx",
-      "TanStack Query",
-      "TanStack Table",
-      "TanStack Form",
-      "Zod",
-      "TailwindCSS",
-      "Native Federation",
-      "Module Federation",
-      "Rspack",
-      "Figma (Basic)",
-    ],
-  },
-  {
-    label: "AI Tooling",
-    items: [
-      "Claude Code",
-      "GitHub Copilot",
-      "OpenCode",
-      "Muse CLI",
-      "Antigravity CLI",
-      "Cursor CLI",
-    ],
-  },
-];
+import { skillGroups } from "../data/content";
 ---
 
 <section>
   <div>
     {
-      groups.map((group, i) => (
-        <div
-          class="grid sm:grid-cols-[160px_1fr] gap-2 sm:gap-6 py-5 border-t border-line"
-          data-reveal
-          style={`--index:${i}`}
-        >
-          <h3 class={`font-mono text-xs uppercase tracking-[0.08em] pt-1 ${group.primary ? "text-accent" : "text-secondary-dark"}`}>
+      skillGroups.map((group) => (
+        <div class="grid sm:grid-cols-[160px_1fr] gap-2 sm:gap-6 py-5 border-t border-line">
+          <h2 class={`font-mono text-xs uppercase tracking-[0.08em] pt-1 ${group.primary ? "text-accent" : "text-secondary-dark"}`}>
             {group.label}
-          </h3>
+          </h2>
           <div class="flex flex-wrap gap-1.5">
             {group.items.map((skill) => (
               <span class={`text-sm px-2.5 py-1 rounded-full border border-line ${group.primary ? "bg-accent-2bg text-accent-2 font-medium" : "bg-surface-2 text-foreground-dark"}`}>

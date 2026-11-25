@@ -136,76 +136,89 @@
     color: var(--ink);
   }
 
-  /* ── Theme change crossfade (class present only during a toggle) ── */
-  html.theme-anim body,
-  html.theme-anim body *,
-  html.theme-anim body *::before,
-  html.theme-anim body *::after {
-    transition:
-      background-color 500ms var(--ease-in-out),
-      color 500ms var(--ease-in-out),
-      border-color 500ms var(--ease-in-out),
-      fill 500ms var(--ease-in-out),
-      stroke 500ms var(--ease-in-out) !important;
+  /* ── Keyboard focus — one visible ring for every control ── */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
 
-  /* Surfaces trail the page fade by a beat. */
-  html.theme-anim body article,
-  html.theme-anim body header,
-  html.theme-anim body #bottom-dock {
-    transition-delay: 40ms;
+  /* ── Skip link — first Tab stop, visible only while focused ── */
+  .skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 60;
+    padding: 0.6rem 1rem;
+    border-radius: 9999px;
+    background: var(--ink);
+    color: var(--bg);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transform: translateY(-300%);
   }
-
-  /* ── Scroll entry reveal ── */
+  .skip-link:focus-visible {
+    transform: none;
+  }
   @media (prefers-reduced-motion: no-preference) {
-    html.js [data-reveal] {
-      opacity: 0;
-      transform: translateY(12px);
-    }
-    html.js [data-reveal].revealed {
-      opacity: 1;
-      transform: none;
-      transition:
-        opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
-        transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
-      transition-delay: calc(var(--index, 0) * 80ms);
+    .skip-link {
+      transition: transform 160ms var(--ease-out);
     }
   }
 
-  /* ── Press feedback — every interactive element ── */
+  /* ── Theme change crossfade (class present only during a toggle).
+     Scoped to structural surfaces so a toggle never restyles every
+     node on the page; token colors elsewhere swap instantly. ── */
+  html.theme-anim body,
+  html.theme-anim header,
+  html.theme-anim article,
+  html.theme-anim footer,
+  html.theme-anim #bottom-dock,
+  html.theme-anim #search-palette {
+    transition:
+      background-color 250ms var(--ease-in-out),
+      color 250ms var(--ease-in-out),
+      border-color 250ms var(--ease-in-out) !important;
+  }
+
+  /* ── Hero entrance — once on load, never on scroll. Content below
+     the hero is simply there; page changes carry their own motion. ── */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-enter] {
+      animation: hero-enter 240ms var(--ease-out) both;
+      animation-delay: calc(var(--index, 0) * 40ms);
+    }
+  }
+
+  /* ── Press feedback — pressable controls only, never text links ── */
   button,
-  a,
-  [role="button"] {
+  [role="button"],
+  .btn,
+  .pressable {
     transition: transform 160ms var(--ease-out);
   }
 
   button:active,
-  a:active,
-  [role="button"]:active {
+  [role="button"]:active,
+  .btn:active,
+  .pressable:active {
     transform: scale(0.97);
-  }
-
-  /* ── Hover gating — touch devices don't get hover motion ── */
-  @media (hover: hover) and (pointer: fine) {
-    a:hover,
-    button:hover {
-      transition:
-        transform 160ms var(--ease-out),
-        color 0.2s var(--ease-out);
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     button:active,
-    a:active,
-    [role="button"]:active {
+    [role="button"]:active,
+    .btn:active,
+    .pressable:active {
       transform: none;
     }
     /* Theme changes keep a short color fade, nothing spatial. */
     html.theme-anim body,
-    html.theme-anim body *,
-    html.theme-anim body *::before,
-    html.theme-anim body *::after {
+    html.theme-anim header,
+    html.theme-anim article,
+    html.theme-anim footer,
+    html.theme-anim #bottom-dock,
+    html.theme-anim #search-palette {
       transition-duration: 150ms !important;
     }
   }
@@ -222,7 +235,7 @@
     pointer-events: none;
     z-index: 10;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 200ms var(--ease-out);
   }
 
   html[data-scrolled] body::before {
@@ -240,7 +253,7 @@
     pointer-events: none;
     z-index: 10;
     opacity: 1;
-    transition: opacity 0.3s ease;
+    transition: opacity 200ms var(--ease-out);
   }
 
   html[data-at-bottom] body::after {
@@ -262,9 +275,9 @@ html .theme-toggle .theme-icon-moon {
   justify-self: center;
   align-self: center;
   transition:
-    opacity 300ms var(--ease-in-out),
-    transform 300ms var(--ease-in-out),
-    visibility 0s linear 320ms;
+    opacity 240ms var(--ease-in-out),
+    transform 240ms var(--ease-in-out),
+    visibility 0s linear 260ms;
 }
 html .theme-icon-moon {
   opacity: 1;
@@ -274,12 +287,12 @@ html .theme-icon-moon {
 }
 html .theme-icon-sun {
   opacity: 0;
-  transform: rotate(-90deg) scale(0.6);
+  transform: rotate(-90deg) scale(0.9);
   visibility: hidden;
 }
 html[data-theme="dark"] .theme-icon-moon {
   opacity: 0;
-  transform: rotate(90deg) scale(0.6);
+  transform: rotate(90deg) scale(0.9);
   visibility: hidden;
 }
 html[data-theme="dark"] .theme-icon-sun {
@@ -300,23 +313,32 @@ html .theme-toggle:active {
   }
 }
 
-/* ── Hover metadata cards (open-source titles, social icons) ── */
+/* ── Hover metadata cards (open-source titles, social icons).
+   Origin at the trigger (top-left, where the card hangs); entry
+   180ms, exit 120ms — leaving always snappier than arriving. ── */
 .hover-card {
   opacity: 0;
-  transform: translateY(4px);
+  transform: translateY(4px) scale(0.97);
+  transform-origin: 0 0;
   pointer-events: none;
   transition:
-    opacity 180ms var(--ease-out),
-    transform 180ms var(--ease-out);
+    opacity 120ms var(--ease-out),
+    transform 120ms var(--ease-out);
 }
 .group:focus-within .hover-card {
   opacity: 1;
   transform: none;
+  transition:
+    opacity 180ms var(--ease-out),
+    transform 180ms var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
   .group:hover .hover-card {
     opacity: 1;
     transform: none;
+    transition:
+      opacity 180ms var(--ease-out),
+      transform 180ms var(--ease-out);
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -336,11 +358,11 @@ html .theme-toggle:active {
 }
 
 ::view-transition-old(root) {
-  animation: 200ms ease-in both fade-page-out;
+  animation: 200ms var(--ease-out) both fade-page-out;
 }
 
 ::view-transition-new(root) {
-  animation: 300ms cubic-bezier(0.16, 1, 0.3, 1) both rise-page-in;
+  animation: 240ms var(--ease-out) both rise-page-in;
 }
 
 @keyframes fade-page-out {
@@ -350,6 +372,13 @@ html .theme-toggle:active {
 }
 
 @keyframes rise-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@keyframes hero-enter {
   from {
     opacity: 0;
     transform: translateY(8px);
@@ -380,114 +409,6 @@ html .theme-toggle:active {
   background-size: 100% 1px;
 }
 
-/* ── The period cursor ──
-   html[data-custom-cursor] is set by JS only after confirming a
-   fine pointer and no reduced-motion preference; everyone else keeps
-   the native cursor at zero cost. */
-html[data-custom-cursor] body,
-html[data-custom-cursor] a,
-html[data-custom-cursor] button,
-html[data-custom-cursor] [role="button"],
-html[data-custom-cursor] summary {
-  cursor: none;
-}
-
-/* Editable surfaces keep the native caret cursor. */
-html[data-custom-cursor] input,
-html[data-custom-cursor] textarea,
-html[data-custom-cursor] [contenteditable] {
-  cursor: auto;
-}
-
-#cursor-dot,
-#cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  pointer-events: none;
-  opacity: 0;
-}
-
-#cursor-dot {
-  width: 7px;
-  height: 7px;
-  margin: -3.5px 0 0 -3.5px;
-  border-radius: 9999px;
-  background: var(--accent);
-  transition:
-    opacity 200ms var(--ease-out),
-    scale 200ms var(--ease-out);
-}
-
-#cursor-ring {
-  width: 28px;
-  height: 28px;
-  margin: -14px 0 0 -14px;
-  border-radius: 9999px;
-  border: 1.5px solid var(--accent);
-  transition:
-    opacity 200ms var(--ease-out),
-    background-color 200ms var(--ease-out),
-    scale 450ms cubic-bezier(0.34, 1.56, 0.64, 1);
-  /* Spring-settled bloom; browsers without linear() support keep the
-     declaration above (the invalid value is ignored). */
-  transition:
-    opacity 200ms var(--ease-out),
-    background-color 200ms var(--ease-out),
-    scale 450ms linear(0, 0.4 8.3%, 0.86 16.7%, 1.06 25%, 1.02 33.3%, 1.005 45%, 1);
-}
-
-html.cursor-visible #cursor-dot {
-  opacity: 1;
-}
-
-html.cursor-visible #cursor-ring {
-  opacity: 0.6;
-}
-
-/* Interactive elements bloom the ring; the dot yields. */
-html.cursor-link #cursor-ring {
-  scale: 1.4;
-  opacity: 0.9;
-}
-
-html.cursor-link #cursor-dot {
-  scale: 0.55;
-}
-
-/* Copyable command chips fill softly — "click to copy". */
-html.cursor-copy #cursor-ring {
-  scale: 1.15;
-  background-color: var(--accent-bg);
-  opacity: 0.95;
-}
-
-html.cursor-copy #cursor-dot {
-  scale: 0;
-}
-
-/* Over editable text the native caret takes over. */
-html.cursor-text #cursor-dot,
-html.cursor-text #cursor-ring {
-  opacity: 0;
-}
-
-html.cursor-down #cursor-dot {
-  scale: 0.8;
-}
-
-html.cursor-hidden #cursor-dot,
-html.cursor-hidden #cursor-ring {
-  opacity: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #cursor-dot,
-  #cursor-ring {
-    transition: none;
-  }
-}
 
 /* ── Magnetic elements ──
    JS shifts [data-magnetic] toward the pointer via the independent
@@ -505,24 +426,74 @@ html.cursor-hidden #cursor-ring {
     translate 250ms var(--ease-out);
 }
 
-/* ── Scroll progress hairline ── */
-#scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--accent);
-  transform-origin: 0 50%;
-  transform: scaleX(0);
-  z-index: 20;
-  pointer-events: none;
+/* ── Buttons — one pair, one radius step (pill). Cards take the
+   next step (rounded-xl), chips the small step (rounded-md). ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    transform 160ms var(--ease-out),
+    opacity 160ms var(--ease-out),
+    border-color 200ms var(--ease-out),
+    background-color 200ms var(--ease-out),
+    color 200ms var(--ease-out);
+}
+.btn-primary {
+  background: var(--ink);
+  color: var(--bg);
+  border: 1px solid var(--ink);
+}
+.btn-secondary {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover {
+    opacity: 0.85;
+  }
+  .btn-secondary:hover {
+    border-color: var(--accent);
+  }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  #scroll-progress {
-    display: none;
+/* ── Linked cards lift 2px toward the pointer ── */
+.card-lift {
+  transition:
+    transform 160ms var(--ease-out),
+    border-color 200ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .card-lift:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
   }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card-lift:hover {
+    transform: none;
+  }
+}
+
+/* ── Copy command chips — border feedback, and a blur-masked swap
+   while the label flips to "Copied!" ── */
+button[data-copy] {
+  transition:
+    transform 160ms var(--ease-out),
+    border-color 200ms var(--ease-out),
+    filter 160ms var(--ease-out),
+    opacity 160ms var(--ease-out);
+}
+button[data-copy].is-swapping {
+  filter: blur(2px);
+  opacity: 0.7;
 }
 
 /* ── ⌘K search palette ──
@@ -574,17 +545,21 @@ html.cursor-hidden #cursor-ring {
   color: var(--muted-text);
 }
 
-/* The input's blinking caret is the focus indicator; the shell adds
-   a quiet accent underline while it holds focus. */
+/* The shell carries the focus indicator (a 2px accent underline)
+   so the borderless input needs no outline of its own. */
 #palette-input:focus-visible {
   outline: none;
+}
+
+.palette-top:focus-within {
+  box-shadow: inset 0 -2px 0 var(--accent);
 }
 
 .palette-close {
   display: grid;
   place-items: center;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 2.75rem;
+  height: 2.75rem;
   border-radius: 9999px;
   color: var(--muted-text);
   border: 1px solid var(--line);
@@ -614,6 +589,7 @@ html.cursor-hidden #cursor-ring {
   align-items: center;
   gap: 0.6rem;
   width: 100%;
+  min-height: 2.75rem;
   padding: 0.5rem 0.6rem;
   border-radius: 0.5rem;
   color: var(--ink);

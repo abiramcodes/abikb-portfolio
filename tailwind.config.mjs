@@ -31,6 +31,10 @@ export default {
         },
         clay: "var(--clay)",
       },
+      transitionTimingFunction: {
+        // Emil's strong ease-out — the one curve for UI feedback.
+        "out-strong": "cubic-bezier(0.23, 1, 0.32, 1)",
+      },
       fontFamily: {
         sans: ["Geist Sans", "Helvetica Neue", "Arial", "sans-serif"],
         display: ["Geist Mono", "ui-monospace", "SF Mono", "Menlo", "monospace"],

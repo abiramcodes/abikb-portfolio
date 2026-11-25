@@ -60,6 +60,8 @@
 </dialog>
 
 <script>
+  import { navPages, projects, contributions, socials } from "../data/content";
+
   type EntryKind = "page" | "external" | "link" | "copy" | "action";
 
   interface Entry {
@@ -75,42 +77,61 @@
     download?: boolean;
   }
 
+  // Built from the shared content module so labels, links, and
+  // install commands can never drift from the pages themselves.
   const ENTRIES: Entry[] = [
     // Pages
-    { label: "Home", group: "Pages", kind: "page", href: "/", keywords: "hero intro abiram" },
-    { label: "Projects", group: "Pages", kind: "page", href: "/projects", keywords: "tools work apps demos" },
-    { label: "Open Source", group: "Pages", kind: "page", href: "/open-source", keywords: "oss contributions prs merged" },
-    { label: "Skills", group: "Pages", kind: "page", href: "/skills", keywords: "stack angular react ai tooling" },
-    { label: "Experience", group: "Pages", kind: "page", href: "/experience", keywords: "work roles deloitte tcs" },
+    ...navPages.map(
+      (p): Entry => ({ label: p.label, group: "Pages", kind: "page", href: p.href, keywords: p.keywords }),
+    ),
 
-    // Projects
-    { label: "ng-point", hint: "repo", group: "Projects", kind: "external", href: "https://github.com/abiramcodes/ng-point", keywords: "alt click llm agent context dev-mode library angular" },
-    { label: "ng-point docs", hint: "docs", group: "Projects", kind: "external", href: "https://abiramcodes.github.io/ng-point/", keywords: "ng-point documentation landing" },
-    { label: "angular-doctor", hint: "repo", group: "Projects", kind: "external", href: "https://github.com/abiramcodes/angular-doctor", keywords: "health scan score diagnostics cli lint" },
-    { label: "angular-doctor docs", hint: "docs", group: "Projects", kind: "external", href: "https://ngdoctor.dev/", keywords: "angular-doctor documentation rules" },
-    { label: "md-Pdf-converter", hint: "repo", group: "Projects", kind: "external", href: "https://github.com/abiramcodes/MD-PDF", keywords: "markdown pdf nestjs puppeteer" },
-    { label: "dynamic-forms-demo", hint: "repo", group: "Projects", kind: "external", href: "https://github.com/abiramcodes/dynamic-forms-demo", keywords: "ng india chennai meetup talk demo forms" },
-    { label: "mini-url", hint: "repo", group: "Projects", kind: "external", href: "https://github.com/abiramcodes/mini-url-frontEnd", keywords: "url shortener coding challenge" },
+    // Projects (repo, plus docs where the project has them)
+    ...projects.flatMap((p): Entry[] => {
+      const repo: Entry = {
+        label: p.name,
+        hint: "repo",
+        group: "Projects",
+        kind: "external",
+        href: p.link,
+        keywords: p.keywords,
+      };
+      return p.docs
+        ? [repo, { label: `${p.name} docs`, hint: "docs", group: "Projects", kind: "external", href: p.docs, keywords: `${p.name} documentation` }]
+        : [repo];
+    }),
 
     // Actions
-    { label: "Copy: npm i -D @abiramcodes/ng-point", hint: "copy", group: "Actions", kind: "copy", copy: "npm i -D @abiramcodes/ng-point", keywords: "install ng-point npm package" },
-    { label: "Copy: npx @abiramcodes/angular-doctor@latest", hint: "copy", group: "Actions", kind: "copy", copy: "npx @abiramcodes/angular-doctor@latest", keywords: "install angular doctor npx run scan" },
+    ...projects
+      .filter((p) => p.command)
+      .map(
+        (p): Entry => ({
+          label: `Copy: ${p.command}`,
+          hint: "copy",
+          group: "Actions",
+          kind: "copy",
+          copy: p.command,
+          keywords: `install ${p.name} npm package`,
+        }),
+      ),
     { label: "Download resume", hint: "pdf", group: "Actions", kind: "link", href: "/Abirama_Kannan_FE_Engineer.pdf", icon: "download", download: true, keywords: "cv curriculum vitae" },
     { label: "Email akbhere20@gmail.com", group: "Actions", kind: "link", href: "mailto:akbhere20@gmail.com", icon: "mail", keywords: "contact get in touch" },
     { label: "Toggle theme", hint: "dark / light", group: "Actions", kind: "action", run: "theme", icon: "theme" },
 
     // Open source (contributions live on /open-source)
-    { label: "pangular-inspector", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "devtools signals di routes chrome extension" },
-    { label: "spartan-ng", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "spartan full stack angular ui" },
-    { label: "ng-primitives", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "headless accessible primitives" },
-    { label: "ng-icons", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "icon library" },
-    { label: "freeCodeCamp", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "curriculum learn" },
-    { label: "carbon-components-angular", hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: "ibm design system" },
+    ...contributions.map(
+      (c): Entry => ({ label: c.short, hint: "oss", group: "Open source", kind: "page", href: "/open-source", keywords: c.keywords }),
+    ),
 
     // External
-    { label: "GitHub - abiramcodes", hint: "profile", group: "External", kind: "external", href: "https://github.com/abiramcodes" },
-    { label: "LinkedIn - Abirama Kannan", hint: "profile", group: "External", kind: "external", href: "https://www.linkedin.com/in/abirama-kannan-baskar" },
-    { label: "X - @abiramcodes", hint: "profile", group: "External", kind: "external", href: "https://x.com/abiramcodes" },
+    ...socials.map(
+      (s): Entry => ({
+        label: `${s.label} - ${s.handle.replace(/^in\//, "")}`,
+        hint: "profile",
+        group: "External",
+        kind: "external",
+        href: s.href,
+      }),
+    ),
   ];
 
   const KIND_ICON: Record<EntryKind, string> = {
@@ -297,6 +318,15 @@
       return true;
     }
   }
+
+  // Pointer and keyboard share one active row: hovering a row
+  // makes it the Enter target, so the two never disagree.
+  results.addEventListener("mouseover", (e) => {
+    const row = (e.target as Element).closest<HTMLElement>(".palette-row");
+    if (!row) return;
+    const i = Number(row.dataset.index);
+    if (i !== active) setActive(i);
+  });
 
   results.addEventListener("click", async (e) => {
     const row = (e.target as Element).closest<HTMLElement>(".palette-row");

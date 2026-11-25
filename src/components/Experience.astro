@@ -1,59 +1,25 @@
 ---
-interface Experience {
-  company: string;
-  role: string;
-  duration: string;
-  highlights: string[];
-}
-
-const experiences: Experience[] = [
-  {
-    company: "Deloitte USI",
-    role: "Frontend Consultant",
-    duration: "Jun 2025 - Present",
-    highlights: [
-      "Architected Shell + Remote micro frontend platform (Angular, React 19, Native Federation, Nginx); leading a team of 4. Received Applause Award for delivery.",
-      "Led Angular 17 to 20 migration with zero defects (Applause Award). Reduced build size and improved runtime performance.",
-      "Migrated PrimeNG to Optimus UI and Angular 21 to 22 with Signal APIs across 8 repos using AI agents (Claude Code, Copilot).",
-      "85% test coverage with Jest and Karma.",
-    ],
-  },
-  {
-    company: "Tata Consultancy Services",
-    role: "Frontend Developer",
-    duration: "Dec 2021 - Jun 2025",
-    highlights: [
-      "5+ modules with accessibility compliance; 100+ bugs fixed with GitHub Actions CI/CD on Azure.",
-      "Cut redundant API calls by 50% with NgRx; cut page load times by 40% with virtual scrolling.",
-      "Migrated Angular 13 (Modular) to Angular 17 (Standalone). Reduced build size.",
-      "80% test coverage with Jest.",
-    ],
-  },
-];
+import { roles } from "../data/content";
 ---
 
 <section class="w-full max-w-3xl mx-auto px-4 sm:px-0">
-  <h2 class="font-display text-4xl sm:text-5xl tracking-[-0.02em] mb-3">Experience</h2>
-  <p class="text-secondary-dark mb-10" data-reveal>Roles, migrations, and recognition since Dec 2021.</p>
+  <h1 class="font-display text-4xl sm:text-5xl tracking-[-0.02em] mb-3">Experience</h1>
+  <p class="text-secondary-dark mb-10">Roles, migrations, and recognition since Dec 2021.</p>
   <div class="space-y-10">
     {
-      experiences.map((job) => (
-        <div class="relative pl-5 border-l border-line" data-reveal>
-          <div class="absolute -left-1.75 top-1 w-3 h-3 rounded-full bg-accent" />
+      roles.map((job) => (
+        <div class="relative pl-5 border-l border-line">
+          <div class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-accent" />
           <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-4">
             <div>
-              <h3 class="text-lg sm:text-xl font-semibold">
-                {job.role}
-              </h3>
+              <h2 class="text-lg sm:text-xl font-semibold">{job.role}</h2>
               <p class="text-sm text-accent font-medium">{job.company}</p>
             </div>
-            <span class="text-sm whitespace-nowrap">
-              {job.duration}
-            </span>
+            <span class="text-sm whitespace-nowrap">{job.duration}</span>
           </div>
           <ul class="space-y-1.5 text-sm sm:text-base text-secondary-dark" style="text-wrap: balance;">
             {job.highlights.map((h) => (
-              <li class="leading-relaxed" set:html={h} />
+              <li class="leading-relaxed">{h}</li>
             ))}
           </ul>
         </div>

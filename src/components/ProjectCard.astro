@@ -1,0 +1,91 @@
+---
+import type { Project } from "../data/content";
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<article class="group card-lift flex flex-col gap-2 p-5 rounded-xl border border-line bg-surface">
+  <a
+    href={project.link}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="flex items-baseline justify-between gap-2"
+  >
+    <h3 class="font-semibold text-foreground-dark group-hover:text-accent transition-colors duration-200 ease-out-strong">
+      {project.name}
+    </h3>
+    <svg
+      class="w-4 h-4 shrink-0 opacity-30 group-hover:opacity-70 transition-opacity duration-200 ease-out-strong"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      aria-hidden="true"
+    >
+      <path d="M7 17L17 7M17 7H7M17 7v10" />
+    </svg>
+  </a>
+  <span class="text-xs text-accent font-medium">{project.tech}</span>
+  <p class="text-sm text-secondary-dark leading-relaxed text-balance">
+    {project.description}
+  </p>
+
+  {
+    project.fragment === "ng-point" && (
+      <div class="rounded-lg border border-line bg-background-dark p-3 font-mono text-[11px] leading-relaxed text-secondary-dark" aria-hidden="true">
+        <p><span class="text-accent">Alt+Click</span> · captured context</p>
+        <p>component&nbsp;&nbsp;app-header</p>
+        <p>file:line&nbsp;&nbsp;header.component.ts:42</p>
+        <p>template&nbsp;&nbsp;&nbsp;&lt;nav&gt;…&lt;/nav&gt;</p>
+        <p class="text-accent">redacted at capture</p>
+      </div>
+    )
+  }
+  {
+    project.fragment === "angular-doctor" && (
+      <div class="rounded-lg border border-line bg-background-dark p-3 font-mono text-[11px] leading-relaxed text-secondary-dark" aria-hidden="true">
+        <p class="text-foreground-dark">$ {project.command}</p>
+        <p class="mt-1.5 flex items-center gap-2">
+          <span>Health score</span>
+          <span class="h-1.5 flex-1 rounded-full bg-surface-2 overflow-hidden">
+            <span class="block h-full w-4/5 rounded-full bg-accent" />
+          </span>
+        </p>
+        <p class="mt-1.5">diagnostics · oxlint · template eslint</p>
+        <p class="text-accent">agent-ready report written</p>
+      </div>
+    )
+  }
+
+  {
+    (project.command || project.docs) && (
+      <div class="mt-auto pt-1 flex items-center gap-2">
+        {project.command && (
+          <button
+            type="button"
+            data-copy={project.command}
+            aria-label={`Copy install command: ${project.command}`}
+            class="flex-1 min-w-0 min-h-11 flex items-center text-left text-xs font-mono text-accent bg-background-dark border border-line rounded-md px-2 overflow-x-auto whitespace-nowrap cursor-pointer hover:border-accent"
+          >
+            {project.command}
+          </button>
+        )}
+        {project.docs && (
+          <a
+            href={project.docs}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Read ${project.name} docs`}
+            class="text-xs font-medium text-accent link-draw whitespace-nowrap inline-flex items-center min-h-11 px-1"
+          >
+            Docs &rarr;
+          </a>
+        )}
+      </div>
+    )
+  }
+</article>

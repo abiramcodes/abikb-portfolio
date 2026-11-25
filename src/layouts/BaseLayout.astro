@@ -1,6 +1,7 @@
 ---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import { socials } from "../data/content";
 import "../styles/global.css";
 
 interface Props {
@@ -9,7 +10,7 @@ interface Props {
 }
 
 const {
-  title = "Abiram | Portfolio",
+  title = "Abiram — Frontend Engineer",
   description = "Abiram — Frontend developer building clean, performant web applications with Angular, React, and modern web technologies.",
 } = Astro.props;
 
@@ -23,18 +24,16 @@ const personSchema = {
   url: "https://www.abikb.xyz",
   jobTitle: "Frontend Engineer",
   worksFor: { "@type": "Organization", name: "Deloitte USI" },
-  sameAs: [
-    "https://www.github.com/abiramcodes",
-    "https://www.linkedin.com/in/abirama-kannan-baskar",
-    "https://x.com/abiramcodes",
-  ],
+  sameAs: socials.map((s) => s.href),
 };
 ---
 
-<html lang="en">
+<html lang="en" data-type="software">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="page-type" content="software" />
+    <meta name="site-kind" content="software" />
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fcfcfa" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101214" />
@@ -56,11 +55,9 @@ const personSchema = {
     <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
     <script is:inline>
       // Resolve the theme before first paint: stored choice wins,
-      // otherwise follow the OS. Also flag JS so reveal states only
-      // hide content when they can be revealed again.
+      // otherwise follow the OS.
       (function () {
         var d = document.documentElement;
-        d.classList.add("js");
         try {
           var stored = localStorage.getItem("theme");
           var dark = stored
@@ -76,8 +73,9 @@ const personSchema = {
   <body
     class="font-sans bg-background-dark text-foreground-dark flex flex-col min-h-screen text-sm sm:text-base antialiased"
   >
+    <a href="#main" class="skip-link">Skip to content</a>
     <Header />
-    <main class="pt-10 flex-1 flex flex-col">
+    <main id="main" tabindex="-1" class="pt-10 flex-1 flex flex-col">
       <slot />
     </main>
     <Footer />
@@ -94,116 +92,43 @@ const personSchema = {
       window.addEventListener("scroll", checkScroll, { passive: true });
       checkScroll();
 
-      // Scroll-entry reveals. Content is visible by default; the head
-      // script's `js` class enables the hidden start state, and this
-      // observer resolves it as blocks enter the viewport.
-      if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("revealed");
-                observer.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.12 },
-        );
-        document.querySelectorAll("[data-reveal]").forEach((el) => observer.observe(el));
-      } else {
-        document.querySelectorAll("[data-reveal]").forEach((el) => el.classList.add("revealed"));
-      }
-
-      // Scroll progress hairline. The CSS hides it under reduced
-      // motion; scroll-driven updates are not animations.
-      const progress = document.createElement("div");
-      progress.id = "scroll-progress";
-      document.body.append(progress);
-      const readProgress = () => {
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        const ratio = max > 0 ? window.scrollY / max : 0;
-        progress.style.transform = `scaleX(${Math.min(Math.max(ratio, 0), 1)})`;
-      };
-      window.addEventListener("scroll", readProgress, { passive: true });
-      window.addEventListener("resize", readProgress, { passive: true });
-      readProgress();
+      // Copy-to-clipboard for install-command chips, site-wide.
+      // The label swap is masked with a brief blur so the two states
+      // read as one morph instead of a hard text flash.
+      document.querySelectorAll<HTMLElement>("[data-copy]").forEach((el) => {
+        el.addEventListener("click", async () => {
+          const text = el.getAttribute("data-copy");
+          if (!text) return;
+          try {
+            await navigator.clipboard.writeText(text);
+          } catch {
+            const ta = document.createElement("textarea");
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand("copy");
+            ta.remove();
+          }
+          const label = el.textContent;
+          el.classList.add("is-swapping");
+          window.setTimeout(() => {
+            el.textContent = "Copied!";
+            el.classList.remove("is-swapping");
+          }, 160);
+          window.setTimeout(() => {
+            el.classList.add("is-swapping");
+            window.setTimeout(() => {
+              el.textContent = label;
+              el.classList.remove("is-swapping");
+            }, 160);
+          }, 1200);
+        });
+      });
 
       const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
       const noMotion = window.matchMedia("(prefers-reduced-motion: no-preference)");
 
-      // The period cursor — the wordmark's green dot becomes the
-      // pointer; a ring chases it and blooms over interactive elements.
-      // Touch and reduced-motion visitors keep the native cursor,
-      // untouched, and this block never runs for them.
-      if (finePointer.matches && noMotion.matches) {
-        const root = document.documentElement;
-        root.setAttribute("data-custom-cursor", "");
-
-        const dot = document.createElement("div");
-        dot.id = "cursor-dot";
-        const ring = document.createElement("div");
-        ring.id = "cursor-ring";
-        document.body.append(dot, ring);
-
-        let mx = -100;
-        let my = -100;
-        let rx = -100;
-        let ry = -100;
-        let raf = 0;
-
-        const HOVER_STATES = ["cursor-link", "cursor-copy", "cursor-text"];
-
-        const hoverState = (el: Element | null): string => {
-          if (!el) return "";
-          if (el.closest("input, textarea, [contenteditable]")) return "cursor-text";
-          if (el.closest("[data-copy]")) return "cursor-copy";
-          if (el.closest("a, button, [role='button'], summary")) return "cursor-link";
-          return "";
-        };
-
-        const setHover = (el: Element | null) => {
-          const state = hoverState(el);
-          HOVER_STATES.forEach((c) => root.classList.toggle(c, c === state));
-        };
-
-        const frame = () => {
-          // The ring chases with a soft lag; the dot stays pixel-exact.
-          rx += (mx - rx) * 0.18;
-          ry += (my - ry) * 0.18;
-          dot.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
-          ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
-          if (Math.abs(mx - rx) < 0.05 && Math.abs(my - ry) < 0.05) {
-            raf = 0;
-            return;
-          }
-          raf = requestAnimationFrame(frame);
-        };
-
-        document.addEventListener("pointerover", (e) => {
-          root.classList.remove("cursor-hidden");
-          setHover(e.target as Element);
-        });
-
-        document.addEventListener("pointerout", (e) => {
-          if (!e.relatedTarget) root.classList.add("cursor-hidden");
-        });
-
-        document.addEventListener(
-          "pointermove",
-          (e) => {
-            mx = e.clientX;
-            my = e.clientY;
-            root.classList.add("cursor-visible");
-            if (!raf) raf = requestAnimationFrame(frame);
-          },
-          { passive: true },
-        );
-
-        document.addEventListener("pointerdown", () => root.classList.add("cursor-down"));
-        document.addEventListener("pointerup", () => root.classList.remove("cursor-down"));
-      }
-
-      // Magnetic elements — hero CTAs, theme toggle, dock items drift a
+      // Magnetic elements — hero CTAs and header controls drift a
       // few pixels toward the pointer and ease back. Independent
       // translate composes with the existing :active scale transforms.
       if (finePointer.matches && noMotion.matches) {
