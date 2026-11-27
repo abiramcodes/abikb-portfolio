@@ -20,16 +20,13 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v7
+      # withastro/action already installs (pnpm), builds, and uploads the
+      # `github-pages` artifact via actions/upload-pages-artifact. Do NOT add a
+      # second upload-pages-artifact/upload-artifact step with the same name:
+      # upload-artifact@v4 artifacts are immutable, so a duplicate fails with
+      # 409 Conflict: an artifact with this name already exists.
       - name: Install, build, and upload your site
         uses: withastro/action@v6
-      # Upload Astro's build output as the GitHub Pages artifact. This must run
-      # in the build job, where `astro build` writes dist/; the deploy job has
-      # no checkout, so dist/ would not exist there. Artifacts are shared across
-      # jobs of a workflow run, so deploy-pages can still find this one.
-      - name: Upload GitHub Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
 
   deploy:
     needs: build
